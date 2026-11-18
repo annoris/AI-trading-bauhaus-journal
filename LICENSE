@@ -1,52 +1,48 @@
-Trading Bauhaus — proprietary commercial licensing notice
+TRADING BAUHAUS — SOURCE-AVAILABLE COMMERCIAL & CONTRIBUTION-GATED LICENSE
+==========================================================================
+SPDX-License-Identifier: LicenseRef-TradingBauhaus-Commercial-1.0
+Copyright (c) 2026 Trading Bauhaus (Annoris). All rights reserved.
 
-Status: draft commercial terms; legal review and seller details pending.
+Exclusive Original Ownership Notice:
+Trading Bauhaus is an original software work created from scratch and owned
+100% exclusively by Trading Bauhaus (Annoris). All intellectual property,
+architecture, user interface design, analytics engines, and source code are
+proprietary to the owner.
 
-Original contributions to Trading Bauhaus are reserved to their respective
-rightsholders. Except where a separate license applies, use, installation,
-copying, modification, distribution, hosting for others, and commercial
-exploitation of those contributions require a purchased commercial license
-and a written agreement with the authorized rightsholder. Possession of the
-source code, a repository invitation, or payment without that agreement does
-not itself grant a license. No free evaluation license is granted here.
+Official Contribution & Licensing Solana (SOL / SPL) Wallet:
+3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm
 
-The signed commercial agreement must identify the licensor and licensee,
-covered version, permitted users/installations, allowed uses, price, term,
-support, and any renewal or termination conditions. Until those details are
-agreed, this notice is not a completed sale offer or an activation mechanism.
-See docs/commercial-license.md for the purchase process and pending details.
+1. GRANT & CONTRIBUTION / COMMERCIAL REQUIREMENT
+Trading Bauhaus is source-available and all rights are reserved exclusively to
+its creator and owner. Any installation, self-hosted deployment, production use,
+copying, modification, or commercial utilization of Trading Bauhaus requires
+EITHER:
+  (a) A verified contribution to the official project Solana wallet
+      (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) in accordance with the
+      published contribution guidelines in `docs/commercial-license.md`, OR
+  (b) An executed written commercial license agreement with the owner.
 
-This notice applies only to contributions that the licensor owns or is
-authorized to license. It does not revoke or restrict rights already granted
-under MIT or any other third-party license, including previously licensed
-copies. Third-party code remains subject to its own license. Keep all
-applicable notices when distributing permitted copies.
+2. RESTRICTIONS & ANTI-CIRCUMVENTION
+Without a valid written commercial license agreement from the owner, you may NOT:
+  (a) Redistribute, sublicense, resell, lease, or publicly mirror the software
+      or modified derivatives as a competing product or managed service (SaaS);
+  (b) Remove, alter, disable, or bypass any payment gate, contribution verification
+      gate, wallet attribution, cryptographic license check, or copyright notice;
+  (c) Use the Trading Bauhaus name, branding, or visual assets to endorse or
+      promote unauthorized forks or commercial offerings.
 
-Inherited MIT notice (preserved below)
-=====================================
+3. ENFORCEMENT & TERMINATION
+Any breach of Section 1 or Section 2 automatically and immediately terminates
+any rights granted under this license. Mere possession of the source code or
+access to the repository does not grant a free commercial or evaluation license.
+See `docs/commercial-license.md` for full commercial licensing terms and
+contribution verification instructions.
 
-This MIT License and copyright notice apply to portions of this project derived
-from the LuxAlgo Trade Journal. They do not claim ownership of original
-Trading Bauhaus contributions.
-
-MIT License
-
-Copyright (c) 2026 LuxAlgo Global, LLC
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
+4. WARRANTY DISCLAIMER & LIMITATION OF LIABILITY
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.

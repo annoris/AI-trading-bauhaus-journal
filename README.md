@@ -12,8 +12,9 @@ A Bauhaus-inspired workspace for trade review, performance analytics, candle rep
 
 [![TypeScript](https://img.shields.io/badge/lang-TypeScript-white)](packages/core/src/types.ts)
 [![SQLite](https://img.shields.io/badge/db-SQLite-white)](#quickstart)
+[![License: Commercial / Contribution-Gated](https://img.shields.io/badge/license-Commercial%20%2F%20Contribution-white)](LICENSE)
 
-[Quickstart](#quickstart) · [Screenshots](#screenshots) · [Features](#features) · [How it works](#how-it-works) · [Licencia comercial · ES](docs/commercial-license.md)
+[Quickstart](#quickstart) · [Screenshots](#screenshots) · [Features](#features) · [How it works](#how-it-works) · [Sponsor & Contribute](#sponsor--contribute) · [Licencia comercial · ES](docs/commercial-license.md)
 
 </div>
 
@@ -288,13 +289,16 @@ External requests serve the features you choose: broker sync, market history, an
 
 Trading Bauhaus reports and analyzes what your broker reports. Nothing it computes or generates (including AI recaps, critiques, and answers) is investment advice, and no metric predicts future results. Verify important numbers against your broker's own statements.
 
+## Sponsor & Contribute
+
+Trading Bauhaus is sustained through direct community contributions and commercial licensing. To support ongoing development, broker integrations, and analytics improvements—or to fulfill the contribution requirement under our license—you can contribute directly via **Solana (SOL / USDC-SPL)**:
+
+- **Official Solana Wallet:** `3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`
+- **Explorer / Verification:** [View on Solscan](https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm)
+- **GitHub Funding metadata:** [`.github/FUNDING.yml`](.github/FUNDING.yml)
+
 ## License
 
-Trading Bauhaus is a private commercial product. Original contributions require
-purchase of a commercial license through a written agreement with the authorized
-rightsholder; see [LICENSE](LICENSE) and the [purchase and licensing guide (Spanish)](docs/commercial-license.md).
-These are draft terms pending legal review and seller details. There is currently
-no checkout, payment processor, license-key issuer, or runtime activation check.
-The inherited LuxAlgo MIT notice is preserved in full, and existing MIT and
-third-party permissions remain applicable. Workspace packages remain private and
-marked `UNLICENSED` to prevent implying a public package license.
+Trading Bauhaus is an original software work created from scratch and owned 100% exclusively by Trading Bauhaus (Annoris). It is distributed under the **Trading Bauhaus Source-Available Commercial & Contribution-Gated License** (`LicenseRef-TradingBauhaus-Commercial-1.0`, specified as `SEE LICENSE IN LICENSE` in [`package.json`](package.json)).
+
+Usage, self-hosted deployment, or commercial utilization requires either a verified contribution to the official Solana wallet (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) or a written commercial license agreement with the owner. Unauthorized redistribution, resale, public SaaS hosting, or bypassing payment/contribution gates is strictly prohibited. See [LICENSE](LICENSE) and the [purchase and licensing guide (Spanish)](docs/commercial-license.md) for complete terms.

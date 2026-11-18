@@ -24,7 +24,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "tradersync",
     name: "TraderSync",
     category: "Trading Journals",
-    tagline: "Comparing Trading Bauhaus vs. TraderSync for active futures, forex and stock traders.",
+    tagline:
+      "Comparing Trading Bauhaus vs. TraderSync for active futures, forex and stock traders.",
     rows: [
       {
         feature: "Broker Auto-Sync & Import",
@@ -63,7 +64,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign (No monthly SaaS lock-in)",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$29.95 – $79.95/mo ($360–$960/yr)",
       },
       {
@@ -82,7 +83,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "tradezella",
     name: "TradeZella",
     category: "Trading Journals",
-    tagline: "Comparing Trading Bauhaus vs. TradeZella for quantitative review and execution analysis.",
+    tagline:
+      "Comparing Trading Bauhaus vs. TradeZella for quantitative review and execution analysis.",
     rows: [
       {
         feature: "Broker Auto-Sync",
@@ -121,7 +123,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign (Zero recurring subscriptions)",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$29/mo – $49/mo ($348–$588/yr)",
       },
       {
@@ -140,7 +142,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "edgewonk",
     name: "Edgewonk",
     category: "Trading Journals",
-    tagline: "Comparing Trading Bauhaus vs. Edgewonk for modern day trading and psychological tracking.",
+    tagline:
+      "Comparing Trading Bauhaus vs. Edgewonk for modern day trading and psychological tracking.",
     rows: [
       {
         feature: "Software Architecture",
@@ -169,7 +172,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign (Self-hosted)",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$169/year recurring",
       },
       {
@@ -212,7 +215,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$10 – $20/user/mo",
       },
       {
@@ -288,7 +291,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$14.95 – $59.95/mo ($180–$720/yr)",
       },
       {
@@ -326,7 +329,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Starting Price",
-        bauhaus: "Free & Sovereign",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "$35/mo subscription",
       },
       {
@@ -340,7 +343,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "tradeify",
     name: "Tradeify",
     category: "Prop Firm Rule Trackers",
-    tagline: "Comparing Trading Bauhaus vs. Tradeify native dashboard for EOD trailing drawdown and Select Daily payouts.",
+    tagline:
+      "Comparing Trading Bauhaus vs. Tradeify native dashboard for EOD trailing drawdown and Select Daily payouts.",
     rows: [
       {
         feature: "EOD Trailing Drawdown Engine",
@@ -369,7 +373,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Pricing",
-        bauhaus: "Free & Sovereign (No monthly SaaS lock-in)",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "Evaluation / account activation costs",
       },
     ],
@@ -378,7 +382,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "takeprofittrader",
     name: "Take Profit Trader",
     category: "Prop Firm Rule Trackers",
-    tagline: "Comparing Trading Bauhaus vs. Take Profit Trader ProDay tracking for Day-1 withdrawals and risk discipline.",
+    tagline:
+      "Comparing Trading Bauhaus vs. Take Profit Trader ProDay tracking for Day-1 withdrawals and risk discipline.",
     rows: [
       {
         feature: "Day-1 Withdrawal Calculator",
@@ -407,7 +412,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Pricing",
-        bauhaus: "Free & Sovereign",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "Challenge fee + monthly data/platform fees",
       },
     ],
@@ -416,7 +421,8 @@ const COMPARISON_DATA: CompetitorData[] = [
     id: "lucidtrading",
     name: "Lucid Trading",
     category: "Prop Firm Rule Trackers",
-    tagline: "Comparing Trading Bauhaus vs. Lucid Trading for 40% consistency rule compliance and zero-activation-fee accounting.",
+    tagline:
+      "Comparing Trading Bauhaus vs. Lucid Trading for 40% consistency rule compliance and zero-activation-fee accounting.",
     rows: [
       {
         feature: "40% Consistency Rule Monitor",
@@ -445,7 +451,7 @@ const COMPARISON_DATA: CompetitorData[] = [
       },
       {
         feature: "Pricing",
-        bauhaus: "Free & Sovereign (No monthly SaaS lock-in)",
+        bauhaus: "Source-Available / Solana Contributor Pass (No monthly SaaS lock-in)",
         competitor: "Challenge evaluation fees",
       },
     ],
@@ -484,7 +490,8 @@ export default function ComparisonsPage() {
             Compare Trading Journals &amp; Alternatives
           </h1>
           <p className="text-base text-slate-400 max-w-2xl">
-            See how Trading Bauhaus gives you institutional execution analytics, prop firm tracking, and AI feedback without monthly subscription lock-in.
+            See how Trading Bauhaus gives you institutional execution analytics, prop firm tracking,
+            and AI feedback without monthly subscription lock-in.
           </p>
         </div>
 
@@ -506,7 +513,11 @@ export default function ComparisonsPage() {
         </div>
 
         {/* 3D Main Comparison Table Container */}
-        <Futuristic3DCard glowColor="rgba(53, 208, 116, 0.2)" depth={15} className="p-0 overflow-hidden">
+        <Futuristic3DCard
+          glowColor="rgba(53, 208, 116, 0.2)"
+          depth={15}
+          className="p-0 overflow-hidden"
+        >
           <div className="p-6 md:p-8 border-b border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent">
             <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {current.category}
@@ -524,26 +535,15 @@ export default function ComparisonsPage() {
                 <tr className="bg-[#0f1422] text-xs font-bold uppercase tracking-wider text-white border-b border-white/10">
                   <th className="py-4 px-6 w-1/3">FEATURE</th>
                   <th className="py-4 px-6 w-1/3 text-brand">TRADING BAUHAUS</th>
-                  <th className="py-4 px-6 w-1/3 text-slate-300">
-                    {current.name.toUpperCase()}
-                  </th>
+                  <th className="py-4 px-6 w-1/3 text-slate-300">{current.name.toUpperCase()}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 font-sans">
                 {current.rows.map((row, index) => (
-                  <tr
-                    key={index}
-                    className="hover:bg-white/[0.02] transition-colors"
-                  >
-                    <td className="py-4 px-6 font-semibold text-white">
-                      {row.feature}
-                    </td>
-                    <td className="py-4 px-6 font-semibold text-[#35d074]">
-                      {row.bauhaus}
-                    </td>
-                    <td className="py-4 px-6 text-slate-400">
-                      {row.competitor}
-                    </td>
+                  <tr key={index} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-4 px-6 font-semibold text-white">{row.feature}</td>
+                    <td className="py-4 px-6 font-semibold text-[#35d074]">{row.bauhaus}</td>
+                    <td className="py-4 px-6 text-slate-400">{row.competitor}</td>
                   </tr>
                 ))}
               </tbody>
@@ -553,11 +553,10 @@ export default function ComparisonsPage() {
 
         {/* Bottom Callout */}
         <div className="rounded-xl border border-white/10 bg-[#0e1312] p-6 text-center space-y-3">
-          <h3 className="text-lg font-bold text-white">
-            Ready to upgrade your trading journal?
-          </h3>
+          <h3 className="text-lg font-bold text-white">Ready to upgrade your trading journal?</h3>
           <p className="text-sm text-slate-400 max-w-xl mx-auto">
-            Stop paying $350–$600 per year for closed SaaS platforms. Experience sovereign, high-speed execution journaling built for real traders.
+            Stop paying $350–$600 per year for closed SaaS platforms. Experience sovereign,
+            high-speed execution journaling built for real traders.
           </p>
           <div className="pt-2">
             <Link

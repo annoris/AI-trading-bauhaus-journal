@@ -37,7 +37,9 @@ export const POST = handler(async (request: Request) => {
       !Number.isFinite(row.fee ?? 0) ||
       (row.fee !== undefined && row.fee !== null && Number(row.fee) < 0)
     ) {
-      return bad("every execution needs symbol, side, quantity > 0, price > 0, and non-negative fee");
+      return bad(
+        "every execution needs symbol, side, quantity > 0, price > 0, and non-negative fee",
+      );
     }
   }
   const rows = body.executions.map((row) => ({

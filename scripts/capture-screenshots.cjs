@@ -13,7 +13,7 @@ const path = require("path");
   });
   const page = await context.newPage();
   page.on("pageerror", (e) => console.log("PAGEERROR", e.message));
-  const out = __dirname;
+  const out = path.resolve(__dirname, "../docs/imagenes-proyecto");
   for (const [name, url] of [
     ["01-portada", "/"],
     ["02-dashboard-demo", "/demo"],

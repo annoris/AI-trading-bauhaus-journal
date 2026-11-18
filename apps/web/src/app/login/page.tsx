@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BrandLogo } from "@/components/brand-logo";
+import { SolanaContributionGate } from "@/components/solana-contribution-gate";
 import { postJson } from "@/lib/use-api";
 
 export default function LoginPage() {
@@ -40,7 +41,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#080b0a] px-4 text-[#f1f4f1]">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#080b0a] px-4 py-10 text-[#f1f4f1]">
       <Card className="w-full max-w-sm border-white/10 bg-[#0e1311] text-[#f1f4f1] shadow-2xl">
         <CardContent className="pt-7">
           <form onSubmit={submit} className="space-y-4">
@@ -97,6 +98,9 @@ export default function LoginPage() {
           </form>
         </CardContent>
       </Card>
+      <div className="w-full max-w-xl">
+        <SolanaContributionGate mode="invitation" compact />
+      </div>
     </div>
   );
 }

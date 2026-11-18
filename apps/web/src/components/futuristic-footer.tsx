@@ -31,7 +31,10 @@ export function FuturisticFooter() {
         {/* Brand Bar */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 mb-10 border-b border-white/5">
           <div>
-            <Link href="/" className="inline-flex items-center gap-1.5 text-lg font-bold tracking-tight text-white hover:opacity-90 transition">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-lg font-bold tracking-tight text-white hover:opacity-90 transition"
+            >
               <span>TRADING</span>
               <span className="text-brand">BAUHAUS•</span>
             </Link>
@@ -224,7 +227,9 @@ export function FuturisticFooter() {
                   className="flex items-center gap-2 text-slate-400 transition hover:text-white"
                 >
                   <Briefcase className="h-3.5 w-3.5 text-slate-500" /> Careers
-                  <span className="text-[10px] bg-white/10 rounded px-1 text-slate-300">Hiring</span>
+                  <span className="text-[10px] bg-white/10 rounded px-1 text-slate-300">
+                    Hiring
+                  </span>
                 </Link>
               </li>
               <li>
@@ -232,7 +237,8 @@ export function FuturisticFooter() {
                   href="/wall-of-love"
                   className="flex items-center gap-2 text-slate-400 transition hover:text-white"
                 >
-                  <Heart className="h-3.5 w-3.5 text-purple-400 fill-purple-400/20" /> Wall of love 💜
+                  <Heart className="h-3.5 w-3.5 text-purple-400 fill-purple-400/20" /> Wall of love
+                  💜
                 </Link>
               </li>
               <li>
@@ -258,11 +264,17 @@ export function FuturisticFooter() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center md:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-            <span className="font-medium text-slate-400">© {new Date().getFullYear()} Trading Bauhaus. All rights reserved.</span>
+            <span className="font-medium text-slate-400">
+              © {new Date().getFullYear()} Trading Bauhaus. All rights reserved.
+            </span>
             <span className="hidden sm:inline text-slate-700">·</span>
-            <span className="text-[11px] text-slate-500">Read-only demo uses simulated data · Personal journals require owner invitation.</span>
+            <span className="text-[11px] text-slate-500">
+              Read-only demo uses simulated data · Personal journals require owner invitation.
+            </span>
           </div>
-          <span className="font-mono text-[11px] text-slate-500">Sovereign execution journal &amp; performance analytics</span>
+          <span className="font-mono text-[11px] text-slate-500">
+            Sovereign execution journal &amp; performance analytics
+          </span>
         </div>
       </div>
     </footer>

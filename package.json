@@ -2,7 +2,7 @@
   "name": "trading-bauhaus",
   "private": true,
   "description": "Trading Bauhaus workspace. Broker sync, deep analytics, daily journaling, and AI-native reflection.",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=22"
   },
@@ -21,7 +21,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "demo:20": "python3 scripts/seed-demo-20.py",
-    "security:check": "node scripts/check-security-boundaries.mjs"
+    "security:check": "node scripts/check-security-boundaries.mjs",
+    "license:check": "node scripts/check-licenses.mjs"
   },
   "devDependencies": {
     "jsdom": "^26.1.0",

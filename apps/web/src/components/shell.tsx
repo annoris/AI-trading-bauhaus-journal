@@ -38,6 +38,7 @@ import { Button } from "./ui/button";
 import { HoverHint } from "./ui/tooltip";
 import { DemoModeContext } from "./demo-mode-context";
 import { FuturisticFooter } from "@/components/futuristic-footer";
+import { SolanaContributorBadge } from "@/components/solana-contribution-gate";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -527,7 +528,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {navigation(sidebarCollapsed)}
         {!demoMode && sessionReady && (
           <div className="journal-sidebar-privacy border-t p-3">
-            <div className="w-full space-y-1">
+            <div className="w-full space-y-1.5">
+              <SolanaContributorBadge collapsed={sidebarCollapsed} />
               <ThemeToggle iconOnly={sidebarCollapsed} />
               <PrivacyToggle iconOnly={sidebarCollapsed} />
               <Button

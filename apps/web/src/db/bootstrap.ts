@@ -196,4 +196,20 @@ CREATE TABLE IF NOT EXISTS import_batches (
  snapshot_json TEXT NOT NULL, created_at TEXT NOT NULL
 );
 CREATE UNIQUE INDEX IF NOT EXISTS import_batch_unique ON import_batches(account_id, format, fingerprint);
+
+CREATE TABLE IF NOT EXISTS solana_contributions (
+  tx_signature TEXT PRIMARY KEY,
+  recipient_wallet TEXT NOT NULL,
+  sender_wallet TEXT NOT NULL,
+  lamports INTEGER NOT NULL,
+  slot INTEGER NOT NULL,
+  block_time INTEGER,
+  challenge_memo TEXT NOT NULL,
+  proof_type TEXT NOT NULL,
+  redeemed_by_scope TEXT NOT NULL,
+  license_token_hash TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS solana_contributions_sender ON solana_contributions(sender_wallet);
+CREATE INDEX IF NOT EXISTS solana_contributions_scope ON solana_contributions(redeemed_by_scope);
 `;

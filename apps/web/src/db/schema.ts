@@ -357,3 +357,24 @@ export const propAudit = sqliteTable(
   },
   (table) => [index("prop_audit_entity").on(table.entityType, table.entityId)],
 );
+
+export const solanaContributions = sqliteTable(
+  "solana_contributions",
+  {
+    txSignature: text("tx_signature").primaryKey(),
+    recipientWallet: text("recipient_wallet").notNull(),
+    senderWallet: text("sender_wallet").notNull(),
+    lamports: integer("lamports").notNull(),
+    slot: integer("slot").notNull(),
+    blockTime: integer("block_time"),
+    challengeMemo: text("challenge_memo").notNull(),
+    proofType: text("proof_type", { enum: ["memo", "wallet_signature"] }).notNull(),
+    redeemedByScope: text("redeemed_by_scope").notNull(),
+    licenseTokenHash: text("license_token_hash").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (table) => [
+    index("solana_contributions_sender").on(table.senderWallet),
+    index("solana_contributions_scope").on(table.redeemedByScope),
+  ],
+);

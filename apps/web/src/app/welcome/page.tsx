@@ -16,6 +16,7 @@ import {
 import { InvitationCourier } from "@/components/invitation-courier";
 import { FuturisticFooter } from "@/components/futuristic-footer";
 import { DiscordIcon } from "@/components/social-links";
+import { SolanaContributionGate } from "@/components/solana-contribution-gate";
 import "./marketing.css";
 
 export const metadata = {
@@ -317,7 +318,8 @@ export default function Welcome() {
             <p>
               The demo opens the actual Trading Bauhaus app with generated example data. It is
               read-only; editing controls are disabled while you explore. To request your own
-              private journal, join our Discord community to request an invitation directly from the team.
+              private journal, join our Discord community to request an invitation directly from the
+              team.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
@@ -340,6 +342,9 @@ export default function Welcome() {
             <div className="access-readonly-label">
               <ShieldCheck size={14} />
               <span>Demo · generated data · read-only</span>
+            </div>
+            <div className="mt-6">
+              <SolanaContributionGate mode="invitation" />
             </div>
           </div>
           <InvitationCourier />

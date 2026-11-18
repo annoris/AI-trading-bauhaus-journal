@@ -24,7 +24,14 @@ data/
 # misc
 .DS_Store
 *.log
+*.bak
 coverage/
+
+# testing & tooling artifacts
+playwright-report/
+test-results/
+.playwright/
+.vercel/
 
 # Environment files and sensitive deployment/backup artifacts
 .env.*

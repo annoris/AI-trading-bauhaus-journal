@@ -53,8 +53,12 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
 
   // Real-time estimated round-trip PnL preview
   const estPnl = (() => {
-    const buyLegs = legs.filter((l) => l.side === "buy" && Number(l.quantity) > 0 && Number(l.price) > 0);
-    const sellLegs = legs.filter((l) => l.side === "sell" && Number(l.quantity) > 0 && Number(l.price) > 0);
+    const buyLegs = legs.filter(
+      (l) => l.side === "buy" && Number(l.quantity) > 0 && Number(l.price) > 0,
+    );
+    const sellLegs = legs.filter(
+      (l) => l.side === "sell" && Number(l.quantity) > 0 && Number(l.price) > 0,
+    );
     if (buyLegs.length === 1 && sellLegs.length === 1 && buyLegs[0] && sellLegs[0]) {
       const b = buyLegs[0];
       const s = sellLegs[0];
@@ -77,7 +81,9 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
         (!leg.datetime || !leg.price || !(Number(leg.quantity) > 0)),
     );
     if (partiallyFilled !== -1) {
-      setError(`Execution ${partiallyFilled + 1} is incomplete. Please ensure Date & time, Quantity, and Price are all entered.`);
+      setError(
+        `Execution ${partiallyFilled + 1} is incomplete. Please ensure Date & time, Quantity, and Price are all entered.`,
+      );
       return;
     }
 
@@ -133,7 +139,11 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
                   {index + 1}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-                  {index === 0 ? "Entry Execution" : index === 1 ? "Exit Execution" : `Execution ${index + 1}`}
+                  {index === 0
+                    ? "Entry Execution"
+                    : index === 1
+                      ? "Exit Execution"
+                      : `Execution ${index + 1}`}
                 </span>
               </div>
               {legs.length > 1 && (
@@ -261,7 +271,8 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
           className="flex w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
         />
         <p className="text-xs text-muted-foreground">
-          Markdown supported. Saved executions are stitched into round trips automatically with FIFO lot matching.
+          Markdown supported. Saved executions are stitched into round trips automatically with FIFO
+          lot matching.
         </p>
       </div>
 
@@ -273,7 +284,8 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
           <p className="font-semibold">{error}</p>
           {error.includes("Demo mode is read-only") && (
             <p className="text-slate-400">
-              You are testing in read-only demo mode. In your private invited journal, trades are immediately committed to your isolated SQLite database.{" "}
+              You are testing in read-only demo mode. In your private invited journal, trades are
+              immediately committed to your isolated SQLite database.{" "}
               <a
                 href="https://discord.gg/RUbBagUDA6"
                 target="_blank"
@@ -296,13 +308,25 @@ export function ManualTradeEntry({ onSaved }: { onSaved: () => void }) {
             onClick={() =>
               setLegs((current) => [
                 ...current,
-                { datetime: getLocalDatetimeString(0), side: "sell", quantity: "1", price: "", fee: "0" },
+                {
+                  datetime: getLocalDatetimeString(0),
+                  side: "sell",
+                  quantity: "1",
+                  price: "",
+                  fee: "0",
+                },
               ])
             }
           >
             Add execution leg
           </Button>
-          <Button size="sm" type="button" onClick={save} disabled={!valid || busy} className="bg-brand text-[#04150b] hover:bg-brand/90 font-bold">
+          <Button
+            size="sm"
+            type="button"
+            onClick={save}
+            disabled={!valid || busy}
+            className="bg-brand text-[#04150b] hover:bg-brand/90 font-bold"
+          >
             {busy ? "Saving…" : "Save trade"}
           </Button>
         </div>

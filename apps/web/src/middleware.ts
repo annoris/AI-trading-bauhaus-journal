@@ -112,6 +112,7 @@ export const middleware = async (request: NextRequest) => {
     normalizedPath === "/wall-of-love" ||
     pathname === "/api/auth" ||
     pathname === "/api/health" ||
+    pathname === "/api/solana/contribution" ||
     pathname === "/api/invitations/validate" ||
     pathname === "/api/invitations/redeem" ||
     pathname === "/images/notebook/trading_bauhaus_logo.png" ||

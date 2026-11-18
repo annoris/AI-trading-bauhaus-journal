@@ -192,9 +192,7 @@ export default function WallOfLovePage() {
   const [filterMarket, setFilterMarket] = useState<string>("All");
 
   const filtered =
-    filterMarket === "All"
-      ? TESTIMONIALS
-      : TESTIMONIALS.filter((t) => t.market === filterMarket);
+    filterMarket === "All" ? TESTIMONIALS : TESTIMONIALS.filter((t) => t.market === filterMarket);
 
   return (
     <div className="min-h-screen bg-[#080b0a] text-slate-200 px-4 py-12 sm:px-6 lg:px-8">
@@ -223,7 +221,8 @@ export default function WallOfLovePage() {
             Wall of Love <span className="text-purple-400">💜</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-400 max-w-3xl">
-            Real stories and verified experiences from futures, forex, options, and funded prop firm traders (Topstep, Apex, FTMO, TradeDay) who achieved consistency using Trading Bauhaus.
+            Real stories and verified experiences from futures, forex, options, and funded prop firm
+            traders (Topstep, Apex, FTMO, TradeDay) who achieved consistency using Trading Bauhaus.
           </p>
         </div>
 
@@ -263,9 +262,7 @@ export default function WallOfLovePage() {
                       {t.avatarInitials}
                     </div>
                     <div>
-                      <h4 className="font-bold text-white text-base leading-tight">
-                        {t.name}
-                      </h4>
+                      <h4 className="font-bold text-white text-base leading-tight">{t.name}</h4>
                       <p className="text-xs text-slate-400 font-mono">{t.handle}</p>
                     </div>
                   </div>
@@ -288,9 +285,7 @@ export default function WallOfLovePage() {
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <Star key={idx} className="h-4 w-4 fill-amber-400" />
                   ))}
-                  <span className="text-[11px] text-slate-500 ml-2 font-mono">
-                    {t.date}
-                  </span>
+                  <span className="text-[11px] text-slate-500 ml-2 font-mono">{t.date}</span>
                 </div>
 
                 {/* Quote */}
@@ -322,7 +317,8 @@ export default function WallOfLovePage() {
             Join the Community of Profitable &amp; Funded Traders
           </h3>
           <p className="text-sm text-slate-400 max-w-xl mx-auto">
-            Consistency isn&apos;t luck — it&apos;s systematically eliminating unforced errors with audited data and execution discipline.
+            Consistency isn&apos;t luck — it&apos;s systematically eliminating unforced errors with
+            audited data and execution discipline.
           </p>
           <div className="pt-2">
             <Link

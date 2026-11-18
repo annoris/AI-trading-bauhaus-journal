@@ -25,10 +25,7 @@ in focus, while journal data lives in SQLite on your own server.
 The repository includes five real interface screenshots with synthetic demo data,
 setup instructions, and a read-only demo mode you can run yourself.
 
-This is an early commercial project. Original contributions require a purchased
-license through a written agreement; seller details and commercial terms are still
-being finalized. Inherited MIT and other third-party rights remain applicable.
-There is no integrated checkout or license activation service yet.
+This is an original commercial project owned 100% by Trading Bauhaus. Usage requires a verified contribution via the official Solana wallet (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) or a written commercial license agreement; see `LICENSE` and `docs/commercial-license.md`.
 
 Explore the screenshots and documentation in the repository. Feedback on the review
 workflow, import formats, and self-hosting setup is welcome. Trading Bauhaus is a
@@ -49,10 +46,7 @@ en tu servidor.
 El repositorio incluye cinco capturas reales con datos ficticios, instrucciones de
 instalación y un modo demo de solo lectura que puedes ejecutar por tu cuenta.
 
-Es un proyecto comercial en fase inicial. Las aportaciones propias requieren una
-licencia de pago mediante acuerdo escrito; los datos del vendedor y los términos
-comerciales siguen pendientes de completar. Se mantienen los derechos MIT
-heredados y las licencias de terceros. Aún no hay compra ni activación integradas.
+Es un proyecto comercial original perteneciente al 100% a Trading Bauhaus. Su uso requiere una contribución verificada en la wallet oficial de Solana (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) o una licencia comercial por escrito; consulta `LICENSE` y `docs/commercial-license.md`.
 
 Puedes explorar las imágenes y la documentación del repositorio. Son bienvenidos
 los comentarios sobre revisión de operaciones, importadores e instalación.

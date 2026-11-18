@@ -29,7 +29,7 @@ En otra terminal, instalar la herramienta fuera del proyecto y ejecutar el scrip
 
 ```sh
 npm install --prefix /tmp/trading-bauhaus-screenshot-tools playwright-core --no-audit --no-fund
-PLAYWRIGHT_MODULE=/tmp/trading-bauhaus-screenshot-tools/node_modules/playwright-core node docs/imagenes-proyecto/capturar.cjs
+PLAYWRIGHT_MODULE=/tmp/trading-bauhaus-screenshot-tools/node_modules/playwright-core node scripts/capture-screenshots.cjs
 ```
 
 El script usa Chrome instalado en macOS. En otro sistema, establecer `CHROME_PATH` con la ruta de su ejecutable. Al terminar, detener el servidor con Ctrl+C. No ejecutar este servidor de desarrollo mientras se esté generando un build de producción, porque ambos usan `apps/web/.next`.

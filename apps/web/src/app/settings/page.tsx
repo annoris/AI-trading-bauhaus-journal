@@ -7,6 +7,7 @@ import {
   Database,
   Download,
   Globe,
+  ShieldCheck,
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
@@ -15,6 +16,7 @@ import { ContractMultiplierSettings, TimeZoneSettings } from "@/components/journ
 import { MarketDataSettings } from "@/components/market-data-settings";
 import { AiSettings } from "@/components/ai-settings";
 import { CurrencySettings } from "@/components/currency-settings";
+import { SolanaContributionGate } from "@/components/solana-contribution-gate";
 import { FilterBar } from "@/components/filter-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,6 +55,13 @@ const sections = [
     label: "AI",
     icon: Sparkles,
     description: "Choose your AI provider and manage your model and API key.",
+  },
+  {
+    id: "solana-license",
+    label: "Solana license",
+    icon: ShieldCheck,
+    description:
+      "Verify an on-chain Solana contribution to 3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm and activate your contributor license.",
   },
   {
     id: "your-data",
@@ -185,6 +194,7 @@ function Settings() {
                 {id === "currency-conversion" && <CurrencySettings />}
                 {id === "market-data" && <MarketDataSettings />}
                 {id === "ai-settings" && <AiSettings />}
+                {id === "solana-license" && <SolanaContributionGate mode="workspace" />}
                 {id === "your-data" && (
                   <Card>
                     <CardHeader>

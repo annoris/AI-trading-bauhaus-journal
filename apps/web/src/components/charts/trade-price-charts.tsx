@@ -47,7 +47,9 @@ export function FillPriceChart({
     [trade, executions, timeZone, tokens],
   );
   if (!option)
-    return <div className="grid place-items-center text-sm text-muted-foreground" style={{ height }} />;
+    return (
+      <div className="grid place-items-center text-sm text-muted-foreground" style={{ height }} />
+    );
   return <EChart option={option} height={height} />;
 }
 
@@ -74,7 +76,10 @@ export function CandleReplayChart({
   );
   if (!option)
     return (
-      <div className="grid h-[420px] place-items-center text-sm text-muted-foreground" role="status">
+      <div
+        className="grid h-[420px] place-items-center text-sm text-muted-foreground"
+        role="status"
+      >
         Preparing candle replay…
       </div>
     );
