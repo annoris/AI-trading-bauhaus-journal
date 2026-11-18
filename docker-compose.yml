@@ -1,0 +1,12 @@
+services:
+  journal:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./data:/data
+    environment:
+      JOURNAL_PASSWORD: ${JOURNAL_PASSWORD:?Configure owner password}
+      JOURNAL_SECRET: ${JOURNAL_SECRET:?Configure encryption secret}
+      JOURNAL_DATA_DIR: /data
+    restart: unless-stopped

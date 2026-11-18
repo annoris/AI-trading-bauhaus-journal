@@ -1,0 +1,33 @@
+{
+  "name": "trading-bauhaus",
+  "private": true,
+  "description": "Trading Bauhaus workspace. Broker sync, deep analytics, daily journaling, and AI-native reflection.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm security:check && pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "preview": "pnpm build && pnpm start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "backup": "node scripts/backup-journal.mjs",
+    "restore": "node scripts/restore-journal.mjs",
+    "verify:backup": "node scripts/verify-backup.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "demo:20": "python3 scripts/seed-demo-20.py",
+    "security:check": "node scripts/check-security-boundaries.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.0",
+    "vitest": "4.1.12"
+  }
+}

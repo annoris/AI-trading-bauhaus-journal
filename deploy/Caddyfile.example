@@ -1,0 +1,11 @@
+# Install Caddy on the VPS host; replace the example domain and configure DNS.
+# Only Caddy's HTTPS/HTTP ports are public. Never expose PostgreSQL or port 3000.
+journal.example.com {
+    request_body {
+        max_size 10MB
+    }
+    reverse_proxy 127.0.0.1:3000 {
+        header_up X-Journal-Proxy-Token {env.JOURNAL_PROXY_TOKEN}
+        header_up X-Journal-Client-IP {remote_host}
+    }
+}

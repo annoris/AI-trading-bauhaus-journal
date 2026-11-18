@@ -1,0 +1,46 @@
+# Single-host invite-only preview. Its named volume persists owner, member, and demo databases,
+# but the Compose setup does not create off-host backups or provide SaaS tenant isolation.
+# Run from repo root: docker compose --env-file .env.preview -f deploy/compose.preview.yml up -d --build
+services:
+  journal:
+    build:
+      context: ..
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - journal_data:/data
+    environment:
+      NODE_ENV: production
+      JOURNAL_DEPLOYMENT_MODE: hosted
+      JOURNAL_PROXY_TOKEN: ${JOURNAL_PROXY_TOKEN:?Configure trusted proxy token}
+      JOURNAL_DATA_DIR: /data
+      JOURNAL_PASSWORD: ${JOURNAL_PASSWORD:?Configure the preview login password}
+      JOURNAL_SECRET: ${JOURNAL_SECRET:?Configure a persistent encryption secret}
+      JOURNAL_PUBLIC_ORIGIN: ${JOURNAL_PUBLIC_ORIGIN:?Configure the public HTTPS origin}
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /app/apps/web/.next/cache:size=128m,uid=1000,gid=1000
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health',{headers:{'x-journal-proxy-token':process.env.JOURNAL_PROXY_TOKEN,'x-journal-client-ip':'127.0.0.1'}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  journal_data:

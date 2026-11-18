@@ -1,0 +1,52 @@
+Trading Bauhaus — proprietary commercial licensing notice
+
+Status: draft commercial terms; legal review and seller details pending.
+
+Original contributions to Trading Bauhaus are reserved to their respective
+rightsholders. Except where a separate license applies, use, installation,
+copying, modification, distribution, hosting for others, and commercial
+exploitation of those contributions require a purchased commercial license
+and a written agreement with the authorized rightsholder. Possession of the
+source code, a repository invitation, or payment without that agreement does
+not itself grant a license. No free evaluation license is granted here.
+
+The signed commercial agreement must identify the licensor and licensee,
+covered version, permitted users/installations, allowed uses, price, term,
+support, and any renewal or termination conditions. Until those details are
+agreed, this notice is not a completed sale offer or an activation mechanism.
+See docs/commercial-license.md for the purchase process and pending details.
+
+This notice applies only to contributions that the licensor owns or is
+authorized to license. It does not revoke or restrict rights already granted
+under MIT or any other third-party license, including previously licensed
+copies. Third-party code remains subject to its own license. Keep all
+applicable notices when distributing permitted copies.
+
+Inherited MIT notice (preserved below)
+=====================================
+
+This MIT License and copyright notice apply to portions of this project derived
+from the LuxAlgo Trade Journal. They do not claim ownership of original
+Trading Bauhaus contributions.
+
+MIT License
+
+Copyright (c) 2026 LuxAlgo Global, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
