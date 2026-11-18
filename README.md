@@ -19,16 +19,43 @@ A Bauhaus-inspired workspace for trade review, performance analytics, candle rep
 
 ---
 
-**Record every trade. Review the decisions behind it.** Connect a broker, drop in a statement export, or add trades manually from the dashboard. Trading Bauhaus rebuilds your history into round-trip trades, a P&L calendar, analytics, and a daily journal you can type, dictate, or review with your own AI. Your journal lives in an isolated SQLite database; broker sync, market data, and AI connect to services you choose.
-
-> ⚠️ **Early release.** APIs and schema may still move before 1.0. Parser validation varies by format, from synthetic fixtures to cross-checked field sources; per-format status lives in [docs/importers.md](docs/importers.md).
-
 ## Screenshots
 
-![Trading Bauhaus dashboard with synthetic demo trades](docs/imagenes-proyecto/02-dashboard-demo.png)
+**Step inside your trading workspace.** Four real screens, one connected review
+workflow. Every figure below comes from synthetic, read-only demo data.
 
-A dark, geometric interface built around the trading review workflow. All figures
-shown here are synthetic demo data, not trading results or performance claims.
+### Dashboard — start with the whole picture
+
+See your session overview, risk context, and key performance metrics together.
+
+![Trading Bauhaus dashboard showing a sample review and performance metrics](docs/imagenes-proyecto/02-dashboard-demo.png)
+
+### Trades — give every execution context
+
+Review entries, exits, fees, strategy labels, and results alongside your trade history.
+
+![Trading Bauhaus trade history with sample entries, exits, strategies, and results](docs/imagenes-proyecto/03-operaciones-demo.png)
+
+### Calendar — revisit each trading day
+
+Read daily and weekly P&L at a glance, then return to the sessions behind the numbers.
+
+![Trading Bauhaus calendar showing synthetic daily and weekly trading results](docs/imagenes-proyecto/04-calendario-demo.png)
+
+### Reports — explore the patterns in your journal
+
+Compare performance metrics, follow your equity curve, and inspect daily outcomes.
+
+![Trading Bauhaus reports with sample performance metrics, equity curve, and daily P&L](docs/imagenes-proyecto/05-informes-demo.png)
+
+[View the welcome screen](docs/imagenes-proyecto/01-portada.png) ·
+[Capture details and regeneration](docs/imagenes-proyecto/README.md)
+
+## Built for your review process
+
+**Record every trade. Review the decisions behind it.** Connect a supported broker,
+drop in a statement export, or add trades manually. Trading Bauhaus rebuilds your
+history into round-trip trades, a P&L calendar, analytics, and a daily journal.
 
 - **Keep your journal on your server.** SQLite storage, isolated member journals,
   and a read-only public demo.
@@ -37,34 +64,7 @@ shown here are synthetic demo data, not trading results or performance claims.
 - **Replay and reflect.** Candle replay with configured market data, structured
   notes, voice dictation, and optional AI reflection using your chosen provider.
 
-<details>
-<summary>Explore all five screens</summary>
-
-### Welcome
-
-![Trading Bauhaus public landing page](docs/imagenes-proyecto/01-portada.png)
-
-### Dashboard
-
-![Dashboard metrics using synthetic demo data](docs/imagenes-proyecto/02-dashboard-demo.png)
-
-### Trades
-
-![Trade list using synthetic demo data](docs/imagenes-proyecto/03-operaciones-demo.png)
-
-### Calendar
-
-![P&L calendar using synthetic demo data](docs/imagenes-proyecto/04-calendario-demo.png)
-
-### Reports
-
-![Performance reports using synthetic demo data](docs/imagenes-proyecto/05-informes-demo.png)
-
-</details>
-
-See [capture provenance and regeneration instructions](docs/imagenes-proyecto/README.md).
-This is an early commercial project; [licensing terms](#license) and seller details
-are still being finalized.
+> ⚠️ **Early release.** APIs and schema may still move before 1.0. Parser validation varies by format; see [importer status](docs/importers.md). Original contributions require a commercial license; [licensing terms](#license) and seller details are still being finalized. Demo figures are fictional and do not represent actual trading returns.
 
 ## Quickstart
 
