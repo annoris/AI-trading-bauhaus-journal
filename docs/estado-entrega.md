@@ -1,6 +1,6 @@
 # Estado de entrega
 
-Fecha: 18 de noviembre de 2026. Trabajo realizado por cinco agentes dedicados a backend, interfaz, imágenes, licencia y validación. Esta entrega mejora y verifica el proyecto local; no completa el lanzamiento comercial ni lo despliega.
+Fecha: 18 de noviembre de 2026. Trabajo realizado por cinco agentes dedicados a backend, interfaz, imágenes, licencia y validación. Esta entrega mejora y verifica el proyecto y publica su código en GitHub; no completa el lanzamiento comercial ni despliega la aplicación.
 
 ## Cambios terminados
 
@@ -20,7 +20,7 @@ Fecha: 18 de noviembre de 2026. Trabajo realizado por cinco agentes dedicados a 
 | Formato de archivos modificados | Pasa en rutas de cuentas, validador, páginas de recuperación, README, documentación comercial y carpeta de imágenes |
 | Formato global                  | Detectó deuda de formato en 10 archivos fuera del alcance de esta entrega                                           |
 
-Se usaron los ejecutables Node locales porque `pnpm` no estaba disponible en el PATH. El servidor de capturas se detuvo antes del build para evitar conflictos en `.next`. No se volvió a ejecutar la verificación de backups, una auditoría de dependencias ni pruebas de servicios externos. El workspace carece de `.git`, por lo que no se creó commit ni se dispone de un diff de referencia para certificar el estado previo.
+Se usaron los ejecutables Node locales porque `pnpm` no estaba disponible en el PATH. El servidor de capturas se detuvo antes del build para evitar conflictos en `.next`. No se volvió a ejecutar la verificación de backups, una auditoría de dependencias ni pruebas de servicios externos. El workspace carecía de `.git` durante las pruebas, por lo que no se disponía de un diff de referencia para certificar el estado previo. Posteriormente se publicó una copia limpia y se conectó la carpeta original al repositorio.
 
 Los avisos de formato global afectan a `api/executions/route.ts`, las páginas comparisons, contact, privacy, terms, wall-of-love y welcome, y los componentes trade-price-charts, futuristic-footer y manual-trade-entry. No impiden el build.
 
@@ -34,4 +34,4 @@ El [roadmap](launch-roadmap.md) continúa siendo la referencia de operaciones pe
 - Completar la matriz de aislamiento entre usuarios y verificar restauración y descifrado de credenciales en staging.
 - Resolver la verificación de titularidad de correo de invitaciones o mantener su entrega por canal privado, y revisar privacidad, soporte e incidentes.
 
-No se realizaron cargos, publicación ni cambios en cuentas externas.
+No se realizaron cargos ni despliegue. Se publicó el repositorio público [annoris/trading-bauhaus-journal](https://github.com/annoris/trading-bauhaus-journal), con README, capturas, licencia y topics verificados; véase el [informe de publicación](github-publicacion.md).

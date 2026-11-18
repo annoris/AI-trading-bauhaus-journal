@@ -1,14 +1,12 @@
-# Preparación para publicar en GitHub
+# Publicación en GitHub
 
-Estado: preparado localmente; no publicado. Fecha: 18 de noviembre de 2026.
+Estado: publicado el 18 de noviembre de 2026.
 
-El workspace no contiene `.git` y `gh` no está instalado. Se ha preparado una copia de fuentes y documentación en un directorio temporal y un ZIP para entregar a la coordinación. El directorio temporal no sustituye una copia persistente del proyecto.
+Repositorio público: [annoris/trading-bauhaus-journal](https://github.com/annoris/trading-bauhaus-journal). Rama principal: `main`. Commit inicial: `85fdce5`.
 
-## Qué falta
+Se creó el repositorio con la sesión GitHub existente y se subieron los 473 archivos de la copia limpia mediante Git HTTPS con el gestor de credenciales existente. No se crearon tokens ni nuevas credenciales. Se configuraron la descripción y los diez topics del launch kit. Se verificaron el código navegable, el README renderizado y su imagen principal en GitHub.
 
-- Confirmar propietario u organización, nombre o URL del repositorio y visibilidad.
-- Disponer de una sesión GitHub conectada o autenticación Git autorizada para ese destino.
-- Revisar la entrega preparada antes de subirla. Las condiciones comerciales siguen siendo un borrador; la publicación no completa una venta ni habilita cobros.
+La publicación del código no despliega la aplicación ni habilita compra o activación de licencias. Los términos comerciales siguen pendientes de revisión jurídica y datos del vendedor.
 
 ## Contenido de la copia
 
@@ -16,17 +14,15 @@ Incluye código fuente, pruebas, manifiestos y lockfile, scripts, configuración
 
 La revisión por patrones de credenciales es una comprobación local orientativa; no garantiza que un secreto incrustado en un formato no reconocido quede detectado. No se deben subir datos del diario ni configuración de producción.
 
-## Pasos de publicación pendientes
+## Próximas actualizaciones
 
-1. Crear o seleccionar el repositorio en la cuenta y visibilidad confirmadas.
-2. Extraer el ZIP en una carpeta nueva y revisar su contenido. No utilizar el workspace con bases de datos como origen indiscriminado de un upload.
-3. Desde la carpeta limpia, inicializar Git y crear el primer commit con `git init`, `git add .` y `git commit -m "Initial Trading Bauhaus source release"`.
-4. Establecer `main`, añadir como `origin` la URL real del repositorio y hacer push mediante la sesión autenticada correspondiente. No ejecutar estos pasos hasta conocer el destino autorizado.
-5. Revisar en GitHub el README, las cinco imágenes, LICENSE y la visibilidad; configurar los topics y descripción propuestos en el [launch kit](launch-kit.md).
+La carpeta original del proyecto queda conectada al repositorio mediante `origin`. Antes de cada commit, revisar `git status` y los archivos que se añadirán. Las exclusiones existentes preservan datos locales, configuración privada y dependencias fuera de Git. No utilizar `git add -f` para incorporar archivos ignorados.
+
+Los anuncios en español e inglés del [launch kit](launch-kit.md) pueden adaptarse al enlace público real. Esta entrega publica el repositorio; no publica anuncios en redes ni crea un release o una aplicación alojada.
 
 Topics sugeridos: `trading-journal`, `trade-analytics`, `self-hosted`, `bauhaus`, `nextjs`, `typescript`, `sqlite`, `trade-replay`, `journaling`, `performance-analytics`.
 
-Los anuncios en español e inglés del launch kit están preparados para adaptar al enlace real. No se ha publicado ningún anuncio ni enviado mensajes a terceros.
+Los anuncios en español e inglés del launch kit están preparados para adaptar al enlace real. No se ha publicado ningún anuncio en redes sociales ni enviado mensajes a terceros.
 
 ## Resultado de preparación local
 
