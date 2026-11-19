@@ -1,0 +1,1555 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading Bauhaus — Sovereign Trade Journal &amp; Interactive Demo</title>
+    <meta
+      name="description"
+      content="Dark-first Bauhaus trading journal, open Edge Score v2 analytics, candlestick replay, and grounded AI review. Explore the read-only NQ/MNQ interactive demo."
+    />
+    <meta name="theme-color" content="#090b0b" />
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/tokens.css" />
+    <link rel="stylesheet" href="assets/css/accessibility.css" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/workspace.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header" id="site-header">
+      <div class="container header-inner">
+        <a href="#welcome" class="brand-wordmark" aria-label="Trading Bauhaus home">
+          <span>TRADING</span>
+          <strong>BAUHAUS<span class="brand-dot">•</span></strong>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a class="nav-link" href="#welcome">Showcase</a>
+          <a class="nav-link" href="#workspace">Live Workspace</a>
+          <a class="nav-link" href="#architecture">Architecture</a>
+          <a class="nav-link" href="#self-host">Self-Host</a>
+          <a class="nav-link" href="#license">License</a>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="privacy-toggle"
+            aria-pressed="false"
+            aria-label="Toggle dollar masking privacy mode"
+            title="Mask dollar amounts"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span class="icon-btn-label" id="privacy-toggle-label">Privacy</span>
+          </button>
+
+          <button
+            type="button"
+            class="icon-btn"
+            id="theme-toggle"
+            aria-pressed="false"
+            aria-label="Switch color theme"
+            title="Switch dark or light theme"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+            <span class="icon-btn-label" id="theme-toggle-label">Light</span>
+          </button>
+
+          <a
+            href="https://github.com/annoris/AI-trading-bauhaus-journal"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="icon-btn desktop-only-action"
+            aria-label="Trading Bauhaus on GitHub"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+              />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+            <span class="icon-btn-label">GitHub</span>
+          </a>
+
+          <a href="#workspace" class="cta-btn desktop-only-action">
+            Explore Demo
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+
+          <button
+            type="button"
+            class="icon-btn mobile-menu-trigger"
+            id="mobile-nav-btn"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="Open navigation menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="4" x2="20" y1="6" y2="6" />
+              <line x1="4" x2="20" y1="12" y2="12" />
+              <line x1="4" x2="20" y1="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <aside
+      class="mobile-drawer"
+      id="mobile-nav"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
+      hidden
+    >
+      <div class="mobile-drawer-panel">
+        <div class="mobile-drawer-head">
+          <span class="brand-wordmark">
+            <span>TRADING</span>
+            <strong>BAUHAUS<span class="brand-dot">•</span></strong>
+          </span>
+          <button
+            type="button"
+            class="icon-btn"
+            id="mobile-nav-close"
+            aria-label="Close navigation menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <nav class="mobile-drawer-links" aria-label="Mobile sections">
+          <a href="#welcome">Showcase</a>
+          <a href="#workspace">Live Workspace</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#self-host">Self-Host</a>
+          <a href="#license">License</a>
+          <a
+            href="https://github.com/annoris/AI-trading-bauhaus-journal"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub Repository
+          </a>
+        </nav>
+
+        <div class="mobile-drawer-controls">
+          <button type="button" class="icon-btn" id="mobile-privacy-toggle" aria-pressed="false">
+            Toggle Privacy Mask ($••••)
+          </button>
+          <button type="button" class="icon-btn" id="mobile-theme-toggle" aria-pressed="false">
+            Switch Theme (Dark / Light)
+          </button>
+          <a href="#workspace" class="cta-btn" id="mobile-explore-cta">Explore Interactive Demo</a>
+        </div>
+      </div>
+    </aside>
+
+    <main id="main-content">
+      <!-- SECTION 1: EDITORIAL HERO SHOWCASE -->
+      <section class="hero-section" id="welcome">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="section-kicker">
+              <span class="kicker-dot" aria-hidden="true"></span>
+              AI JOURNAL ANALYST · GROUNDED IN YOUR TRADING RECORD
+            </p>
+            <h1>
+              An AI analyst<br />
+              grounded in<br />
+              <em>your journal.</em>
+            </h1>
+            <p class="hero-lead">
+              Ask about playbooks, timing, mistakes, and risk. Answers cite the exact journal
+              metrics they use, flag missing data, and turn your execution history into a structured
+              next-session review.
+            </p>
+
+            <div class="hero-cta-row">
+              <a href="#workspace" class="cta-btn">
+                Explore Interactive Demo
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a href="#self-host" class="cta-btn cta-btn-secondary">Self-Host Guide</a>
+            </div>
+
+            <p class="hero-meta-note">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Read-only browser demo · 51 synthetic NQ/MNQ futures trades across Oct–Nov 2026.
+            </p>
+            <p class="hero-meta-note">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+                />
+              </svg>
+              Self-hosted instance supports OpenAI or Anthropic BYOK + local SQLite isolation.
+            </p>
+
+            <div class="hero-proof" aria-label="Journal capabilities">
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Answers cite journal metrics
+              </span>
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Patterns by playbook, time &amp; mistake
+              </span>
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Missing data called out
+              </span>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <span class="corner-label corner-label-top" aria-hidden="true">PROCESS / 01</span>
+            <span class="corner-label corner-label-bottom" aria-hidden="true">REVIEW → REFINE</span>
+            <div class="hero-orbit hero-orbit-outer" aria-hidden="true"></div>
+            <div class="hero-orbit hero-orbit-inner" aria-hidden="true"></div>
+            <div class="hero-crosshair" aria-hidden="true">
+              <span></span>
+              <span></span>
+            </div>
+
+            <figure class="hero-preview-card">
+              <div class="preview-toolbar">
+                <span class="preview-dots" aria-hidden="true"> <i></i><i></i><i></i> </span>
+                <span>TRADING BAUHAUS / LIVE DEMO</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                </svg>
+              </div>
+              <div class="preview-body" id="hero-preview-body"></div>
+              <figcaption class="preview-footnote">
+                <span>Live computed preview · fictional NQ/MNQ dataset</span>
+                <span class="tabular-nums">Edge Score v2</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: FULL INTERACTIVE TRADING WORKSPACE -->
+      <section class="workspace-section" id="workspace" aria-labelledby="workspace-heading">
+        <div class="container">
+          <div class="workspace-intro">
+            <div>
+              <p class="section-kicker">
+                <span class="kicker-dot" aria-hidden="true"></span>
+                INTERACTIVE CLIENT-SIDE WORKSPACE
+              </p>
+              <h2 id="workspace-heading">Trading Bauhaus Demo Terminal</h2>
+              <p>
+                Switch views, filter symbols or windows, inspect calendar sessions, scrub
+                candlestick replays, and audit cash ROI.
+              </p>
+            </div>
+          </div>
+
+          <div class="demo-banner" id="demo-banner" role="status">
+            <div class="demo-banner-left">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+                />
+                <path d="M12 9v4M12 17h.01" />
+              </svg>
+              <span>DEMO · fictional NQ/MNQ sample data · interactive client-side preview</span>
+            </div>
+            <div class="demo-banner-right">
+              <span class="scope-pill tabular-nums" id="workspace-scope-pill"
+                >51 trades · All · All Symbols</span
+              >
+              <button type="button" class="ghost-reset-btn" id="reset-filters-btn">
+                Reset Filters
+              </button>
+            </div>
+          </div>
+
+          <div class="workspace-shell">
+            <aside class="workspace-sidebar" aria-label="Workspace views">
+              <nav class="sidebar-nav" aria-label="Journal workspace sections">
+                <button
+                  type="button"
+                  class="sidebar-btn"
+                  data-view-target="dashboard"
+                  aria-current="page"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect width="7" height="9" x="3" y="3" rx="1" />
+                    <rect width="7" height="5" x="14" y="3" rx="1" />
+                    <rect width="7" height="9" x="14" y="12" rx="1" />
+                    <rect width="7" height="5" x="3" y="16" rx="1" />
+                  </svg>
+                  Dashboard
+                </button>
+                <button type="button" class="sidebar-btn" data-view-target="trades">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 3v18h18" />
+                    <path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
+                  Trades
+                </button>
+                <button type="button" class="sidebar-btn" data-view-target="calendar">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect width="18" height="18" x="3" y="4" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Calendar
+                </button>
+                <button type="button" class="sidebar-btn" data-view-target="reports">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 3v18h18" />
+                    <path d="M18 17V9M13 17V5M8 17v-3" />
+                  </svg>
+                  Reports
+                </button>
+                <button type="button" class="sidebar-btn" data-view-target="journal">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                  </svg>
+                  Journal
+                </button>
+                <button type="button" class="sidebar-btn" data-view-target="prop-firms">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 18V6" />
+                  </svg>
+                  Prop Firms
+                </button>
+              </nav>
+
+              <div class="sidebar-account-card">
+                <span class="sidebar-account-title">NQ / MNQ Prop Evaluation · Demo</span>
+                <div class="sidebar-account-meta">
+                  <span>Starting Balance</span>
+                  <strong class="tabular-nums" data-maskable="50000">$50,000.00</strong>
+                </div>
+                <div class="sidebar-account-meta">
+                  <span>Trailing Drawdown</span>
+                  <strong class="tabular-nums">$2,000.00</strong>
+                </div>
+                <div class="sidebar-account-meta">
+                  <span>Profit Target</span>
+                  <strong class="tabular-nums">$3,000.00</strong>
+                </div>
+                <div class="sidebar-account-meta">
+                  <span>Session TZ</span>
+                  <strong>America/New_York</strong>
+                </div>
+              </div>
+            </aside>
+
+            <div class="workspace-main" id="workspace-viewport">
+              <!-- VIEW A: DASHBOARD -->
+              <section
+                class="workspace-view"
+                id="view-dashboard"
+                data-view="dashboard"
+                aria-label="Dashboard overview"
+              >
+                <div class="filter-bar">
+                  <div
+                    class="filter-group"
+                    id="dash-range-filters"
+                    role="group"
+                    aria-label="Timeframe filter"
+                  >
+                    <span class="filter-label">Window</span>
+                    <button type="button" class="filter-chip" data-range="7d" aria-pressed="false">
+                      7D
+                    </button>
+                    <button type="button" class="filter-chip" data-range="30d" aria-pressed="false">
+                      30D
+                    </button>
+                    <button type="button" class="filter-chip" data-range="90d" aria-pressed="false">
+                      90D
+                    </button>
+                    <button type="button" class="filter-chip" data-range="all" aria-pressed="true">
+                      All
+                    </button>
+                  </div>
+
+                  <div
+                    class="filter-group"
+                    id="dash-symbol-filters"
+                    role="group"
+                    aria-label="Symbol filter"
+                  >
+                    <span class="filter-label">Symbol</span>
+                    <button type="button" class="filter-chip" data-symbol="ALL" aria-pressed="true">
+                      All
+                    </button>
+                    <button type="button" class="filter-chip" data-symbol="NQ" aria-pressed="false">
+                      NQ
+                    </button>
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-symbol="MNQ"
+                      aria-pressed="false"
+                    >
+                      MNQ
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ai-panel">
+                  <div class="ai-panel-head">
+                    <div class="ai-title-lockup">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+                        />
+                      </svg>
+                      <h3>Simulated AI Journal Analyst</h3>
+                    </div>
+                    <span class="ai-badge">Grounded in filtered metrics</span>
+                  </div>
+
+                  <div class="ai-briefing-grid" id="ai-briefing-grid"></div>
+
+                  <div
+                    class="ai-prompt-bar"
+                    id="ai-prompt-chips"
+                    role="group"
+                    aria-label="Analyst prompt queries"
+                  >
+                    <button
+                      type="button"
+                      class="ai-prompt-chip"
+                      data-ai-prompt="best-setup"
+                      aria-pressed="true"
+                    >
+                      Best setup edge?
+                    </button>
+                    <button
+                      type="button"
+                      class="ai-prompt-chip"
+                      data-ai-prompt="mistake-cost"
+                      aria-pressed="false"
+                    >
+                      Cost of mistakes?
+                    </button>
+                    <button
+                      type="button"
+                      class="ai-prompt-chip"
+                      data-ai-prompt="rule-compliance"
+                      aria-pressed="false"
+                    >
+                      Rule compliance?
+                    </button>
+                  </div>
+
+                  <div class="ai-answer-box" id="ai-prompt-answer" aria-live="polite"></div>
+                </div>
+
+                <div class="kpi-grid-5" id="dash-kpi-grid"></div>
+
+                <div class="dash-split">
+                  <div class="panel-card">
+                    <div class="panel-head">
+                      <h3>Cumulative Net P&amp;L Curve</h3>
+                      <span class="panel-readout tabular-nums" id="dash-equity-readout"
+                        >Hover a point to inspect trade</span
+                      >
+                    </div>
+                    <div id="dash-equity-chart"></div>
+                  </div>
+
+                  <div class="panel-card">
+                    <div class="panel-head">
+                      <h3>Recent Executions</h3>
+                      <span class="panel-readout">Click row for candle replay</span>
+                    </div>
+                    <div class="recent-list" id="dash-recent-trades"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- VIEW B: TRADES EXPLORER -->
+              <section
+                class="workspace-view"
+                id="view-trades"
+                data-view="trades"
+                aria-label="Trades explorer"
+                hidden
+              >
+                <div class="trades-toolbar">
+                  <label class="sr-only" for="trades-search">Search trades</label>
+                  <input
+                    type="search"
+                    id="trades-search"
+                    class="input-control"
+                    placeholder="Search symbol, setup, mistake tag, or ID..."
+                  />
+
+                  <label class="sr-only" for="trades-setup-filter">Filter by setup</label>
+                  <select id="trades-setup-filter" class="select-control">
+                    <option value="ALL">All Setups</option>
+                    <option value="Opening range pullback">Opening range pullback</option>
+                    <option value="VWAP reclaim/reject">VWAP reclaim/reject</option>
+                    <option value="Breakout retest">Breakout retest</option>
+                  </select>
+
+                  <div
+                    class="filter-group"
+                    id="trades-outcome-filters"
+                    role="group"
+                    aria-label="Outcome filter"
+                  >
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-outcome="all"
+                      aria-pressed="true"
+                    >
+                      All
+                    </button>
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-outcome="win"
+                      aria-pressed="false"
+                    >
+                      Wins
+                    </button>
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-outcome="loss"
+                      aria-pressed="false"
+                    >
+                      Losses
+                    </button>
+                  </div>
+                </div>
+
+                <div class="summary-strip" id="trades-summary-strip"></div>
+
+                <div class="table-scroll">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>
+                          <button
+                            type="button"
+                            class="sort-btn"
+                            data-sort="date"
+                            aria-sort="descending"
+                          >
+                            Date
+                          </button>
+                        </th>
+                        <th>
+                          <button type="button" class="sort-btn" data-sort="symbol">Symbol</button>
+                        </th>
+                        <th>Side</th>
+                        <th>Setup</th>
+                        <th>Tags</th>
+                        <th>
+                          <button type="button" class="sort-btn" data-sort="duration">
+                            Duration
+                          </button>
+                        </th>
+                        <th>
+                          <button type="button" class="sort-btn" data-sort="realizedR">
+                            Result (R)
+                          </button>
+                        </th>
+                        <th>
+                          <button type="button" class="sort-btn" data-sort="netPnl">
+                            Net P&amp;L
+                          </button>
+                        </th>
+                        <th>Replay</th>
+                      </tr>
+                    </thead>
+                    <tbody id="trades-table-body"></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- VIEW C: P&L CALENDAR -->
+              <section
+                class="workspace-view"
+                id="view-calendar"
+                data-view="calendar"
+                aria-label="P&L Calendar"
+                hidden
+              >
+                <div class="calendar-header">
+                  <div
+                    class="filter-group"
+                    id="cal-month-tabs"
+                    role="group"
+                    aria-label="Select month"
+                  >
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-month="2026-10"
+                      aria-pressed="false"
+                    >
+                      October 2026
+                    </button>
+                    <button
+                      type="button"
+                      class="filter-chip"
+                      data-month="2026-11"
+                      aria-pressed="true"
+                    >
+                      November 2026
+                    </button>
+                  </div>
+                  <span class="panel-readout"
+                    >Click any shaded session to inspect trades &amp; journal notes</span
+                  >
+                </div>
+
+                <div class="calendar-insights" id="cal-insights-strip"></div>
+                <div class="calendar-grid" id="cal-grid"></div>
+                <div class="day-inspector" id="cal-day-inspector" aria-live="polite"></div>
+              </section>
+
+              <!-- VIEW D: REPORTS & ANALYTICS -->
+              <section
+                class="workspace-view"
+                id="view-reports"
+                data-view="reports"
+                aria-label="Reports and analytics"
+                hidden
+              >
+                <div
+                  class="subtab-bar"
+                  id="reports-subtabs"
+                  role="tablist"
+                  aria-label="Report sections"
+                >
+                  <button
+                    type="button"
+                    class="subtab-btn"
+                    role="tab"
+                    data-report-tab="overview"
+                    aria-selected="true"
+                  >
+                    Overview
+                  </button>
+                  <button
+                    type="button"
+                    class="subtab-btn"
+                    role="tab"
+                    data-report-tab="setups"
+                    aria-selected="false"
+                  >
+                    Setups &amp; Mistakes
+                  </button>
+                  <button
+                    type="button"
+                    class="subtab-btn"
+                    role="tab"
+                    data-report-tab="explorer"
+                    aria-selected="false"
+                  >
+                    Trade Explorer
+                  </button>
+                </div>
+
+                <div id="reports-panel-overview" role="tabpanel">
+                  <div class="reports-kpi-7" id="reports-kpi-grid"></div>
+                  <div class="reports-charts-stack">
+                    <div class="panel-card">
+                      <div class="panel-head">
+                        <h3>Cumulative Net P&amp;L</h3>
+                        <span class="panel-readout tabular-nums" id="reports-eq-readout"
+                          >Closed-trade cumulative curve</span
+                        >
+                      </div>
+                      <div id="reports-equity-chart"></div>
+                    </div>
+                    <div class="panel-card">
+                      <div class="panel-head">
+                        <h3>Daily Net P&amp;L</h3>
+                        <span class="panel-readout tabular-nums" id="reports-bar-readout"
+                          >Zero-anchored session totals</span
+                        >
+                      </div>
+                      <div id="reports-daily-bars"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="reports-panel-setups" role="tabpanel" hidden>
+                  <div class="panel-card">
+                    <div class="panel-head">
+                      <h3>Setup Performance Breakdown</h3>
+                      <span class="panel-readout">Filtered NQ / MNQ strategies</span>
+                    </div>
+                    <div class="table-scroll">
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>Setup</th>
+                            <th>Trades</th>
+                            <th>Win %</th>
+                            <th>Profit Factor</th>
+                            <th>Avg R</th>
+                            <th>Net P&amp;L</th>
+                          </tr>
+                        </thead>
+                        <tbody id="reports-setup-table"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="mistake-grid" id="reports-mistake-cards"></div>
+                </div>
+
+                <div id="reports-panel-explorer" role="tabpanel" hidden>
+                  <div class="panel-card">
+                    <div class="panel-head">
+                      <div>
+                        <h3>Holding Duration vs. Outcome Scatter</h3>
+                        <span class="panel-readout" id="reports-scatter-readout"
+                          >Hover or click any marker to open candle replay</span
+                        >
+                      </div>
+                      <div
+                        class="filter-group"
+                        id="scatter-metric-toggle"
+                        role="group"
+                        aria-label="Scatter Y-axis metric"
+                      >
+                        <button
+                          type="button"
+                          class="filter-chip"
+                          data-scatter-metric="pnl"
+                          aria-pressed="true"
+                        >
+                          Net P&amp;L ($)
+                        </button>
+                        <button
+                          type="button"
+                          class="filter-chip"
+                          data-scatter-metric="r"
+                          aria-pressed="false"
+                        >
+                          Realized R
+                        </button>
+                      </div>
+                    </div>
+                    <div id="reports-scatter-chart"></div>
+                    <div class="scatter-legend">
+                      <span>Circle = Winning trade</span>
+                      <span>Diamond = Losing trade</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- VIEW E: DAILY JOURNAL & PLAYBOOKS -->
+              <section
+                class="workspace-view"
+                id="view-journal"
+                data-view="journal"
+                aria-label="Daily journal and playbooks"
+                hidden
+              >
+                <div class="journal-layout">
+                  <div
+                    class="session-list"
+                    id="journal-session-list"
+                    aria-label="Trading sessions"
+                  ></div>
+                  <div class="panel-card" id="journal-session-detail" aria-live="polite"></div>
+                </div>
+
+                <div class="panel-card">
+                  <div class="panel-head">
+                    <h3>NQ / MNQ Discipline Playbook</h3>
+                    <span class="panel-readout">Live adherence across filtered trades</span>
+                  </div>
+                  <div class="playbook-grid" id="playbook-rules-list"></div>
+                </div>
+              </section>
+
+              <!-- VIEW F: PROP FIRMS CASH LEDGER -->
+              <section
+                class="workspace-view"
+                id="view-prop-firms"
+                data-view="prop-firms"
+                aria-label="Prop firms cash ROI ledger"
+                hidden
+              >
+                <div class="demo-banner">
+                  <div class="demo-banner-left">
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                    <span
+                      >Fictional prop-firm cash simulation · independent of journal trade
+                      P&amp;L</span
+                    >
+                  </div>
+                </div>
+
+                <div class="prop-roi-grid" id="prop-roi-strip"></div>
+                <div class="prop-accounts-grid" id="prop-accounts-grid"></div>
+
+                <div class="panel-card">
+                  <div class="panel-head">
+                    <h3>Fictional Cash Ledger</h3>
+                    <div
+                      class="filter-group"
+                      id="prop-filter-tabs"
+                      role="group"
+                      aria-label="Filter prop ledger entries"
+                    >
+                      <button
+                        type="button"
+                        class="filter-chip"
+                        data-prop-filter="all"
+                        aria-pressed="true"
+                      >
+                        All
+                      </button>
+                      <button
+                        type="button"
+                        class="filter-chip"
+                        data-prop-filter="expense"
+                        aria-pressed="false"
+                      >
+                        Expenses
+                      </button>
+                      <button
+                        type="button"
+                        class="filter-chip"
+                        data-prop-filter="refund"
+                        aria-pressed="false"
+                      >
+                        Refunds
+                      </button>
+                      <button
+                        type="button"
+                        class="filter-chip"
+                        data-prop-filter="payout"
+                        aria-pressed="false"
+                      >
+                        Payouts
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table-scroll">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Firm / Phase</th>
+                          <th>Type</th>
+                          <th>Category</th>
+                          <th>Reference</th>
+                          <th>Status</th>
+                          <th>Cash Impact</th>
+                        </tr>
+                      </thead>
+                      <tbody id="prop-ledger-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: ARCHITECTURE -->
+      <section class="content-section" id="architecture" aria-labelledby="arch-heading">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-kicker">
+              <span class="kicker-dot" aria-hidden="true"></span>
+              DETERMINISTIC ENGINE ARCHITECTURE
+            </p>
+            <h2 id="arch-heading">Built for private ownership and verifiable math.</h2>
+            <p>
+              Every metric in Trading Bauhaus—from FIFO round-trip matching to Edge Score v2—runs on
+              documented TypeScript formulas backed by isolated SQLite storage.
+            </p>
+          </div>
+
+          <div class="pipeline-grid">
+            <article class="pipeline-card">
+              <div class="pipeline-step">
+                <span>01 / INGESTION</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+              </div>
+              <h3>Broker &amp; CSV Sync</h3>
+              <p>
+                Import NinjaTrader, TradingView, IBKR, or CSV fills with automatic timezone
+                normalization and fee preservation.
+              </p>
+            </article>
+
+            <article class="pipeline-card">
+              <div class="pipeline-step">
+                <span>02 / MATCHING</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" />
+                </svg>
+              </div>
+              <h3>FIFO Round-Trip Engine</h3>
+              <p>
+                Reconstructs raw executions into closed round trips with exact realized R multiples,
+                duration, and pro-rata fees.
+              </p>
+            </article>
+
+            <article class="pipeline-card">
+              <div class="pipeline-step">
+                <span>03 / SCORING</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <polygon points="12 2 19 21 12 17 5 21 12 2" />
+                </svg>
+              </div>
+              <h3>Open Edge Score v2</h3>
+              <p>
+                Pinned 0–100 weighted score across Win % (15), Profit Factor (25), Avg Win/Loss
+                (20), Drawdown (15), Recovery (10), and Consistency (15).
+              </p>
+            </article>
+
+            <article class="pipeline-card">
+              <div class="pipeline-step">
+                <span>04 / REFLECTION</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+                  />
+                </svg>
+              </div>
+              <h3>Grounded AI &amp; Replay</h3>
+              <p>
+                Candle replay inspects MAE/MFE bar by bar while optional BYOK AI answers cite actual
+                filtered journal numbers.
+              </p>
+            </article>
+          </div>
+
+          <div class="arch-pillars">
+            <div class="arch-pillar">
+              <strong>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <ellipse cx="12" cy="5" rx="9" ry="3" />
+                  <path d="M3 5v14a9 3 0 0 0 18 0V5" />
+                  <path d="M3 12a9 3 0 0 0 18 0" />
+                </svg>
+                Isolated SQLite Databases
+              </strong>
+              <p>
+                Owner and invited member records live in separate SQLite files under
+                JOURNAL_DATA_DIR with zero shared multi-tenant tables.
+              </p>
+            </div>
+            <div class="arch-pillar">
+              <strong>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <rect width="18" height="11" x="3" y="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                Zero External Telemetry
+              </strong>
+              <p>
+                Self-hosted deployments store credentials encrypted at rest using JOURNAL_SECRET
+                with no third-party analytics tracking.
+              </p>
+            </div>
+            <div class="arch-pillar">
+              <strong>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M12 20V10M18 20V4M6 20v-4" />
+                </svg>
+                Non-Load-Bearing Color
+              </strong>
+              <p>
+                Every monetary readout pairs color with signed numbers, zero baselines, and distinct
+                win/loss shapes for accessibility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: SELF-HOST QUICKSTART -->
+      <section class="content-section" id="self-host" aria-labelledby="selfhost-heading">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-kicker">
+              <span class="kicker-dot" aria-hidden="true"></span>
+              SELF-HOST QUICKSTART
+            </p>
+            <h2 id="selfhost-heading">Run Trading Bauhaus on your own machine or server.</h2>
+            <p>
+              Requires Node 22+ and pnpm 11.25.0, or Docker Compose. Local databases initialize
+              automatically on first boot.
+            </p>
+          </div>
+
+          <div class="selfhost-grid">
+            <div class="code-stack">
+              <div class="code-card">
+                <div class="code-card-head">
+                  <span>Local Development (Node 22 + pnpm)</span>
+                  <button
+                    type="button"
+                    class="copy-btn"
+                    data-copy-text="pnpm install --frozen-lockfile && pnpm dev"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <pre><code>pnpm install --frozen-lockfile
+pnpm dev
+# Open http://localhost:3000</code></pre>
+              </div>
+
+              <div class="code-card">
+                <div class="code-card-head">
+                  <span>Docker Compose (Persistent ./data volume)</span>
+                  <button type="button" class="copy-btn" data-copy-text="docker compose up -d">
+                    Copy
+                  </button>
+                </div>
+                <pre><code>docker compose up -d
+# http://localhost:3000 · SQLite persists under ./data</code></pre>
+              </div>
+            </div>
+
+            <div class="env-card">
+              <h3>Essential Environment Variables</h3>
+              <ul class="env-list">
+                <li>
+                  <code>JOURNAL_PASSWORD</code>
+                  <p>Owner login secret required for production self-hosted instances.</p>
+                </li>
+                <li>
+                  <code>JOURNAL_MULTI_USER</code>
+                  <p>Enables one-use invitation links and isolated per-member SQLite databases.</p>
+                </li>
+                <li>
+                  <code>JOURNAL_SECRET</code>
+                  <p>
+                    Encryption key source protecting stored broker credentials and API keys at rest.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: COMMERCIAL & CONTRIBUTION LICENSE -->
+      <section class="content-section" id="license" aria-labelledby="license-heading">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-kicker">
+              <span class="kicker-dot" aria-hidden="true"></span>
+              COMMERCIAL &amp; CONTRIBUTION-GATED LICENSE
+            </p>
+            <h2 id="license-heading">
+              Source-available ownership with transparent Solana attribution.
+            </h2>
+            <p>
+              Trading Bauhaus is licensed under
+              <code>LicenseRef-TradingBauhaus-Commercial-1.0</code>. Self-hosted or commercial use
+              requires either a verified contribution or a written commercial agreement.
+            </p>
+          </div>
+
+          <div class="license-grid">
+            <article class="license-card">
+              <h3>License Terms Summary</h3>
+              <p>
+                All intellectual property, UI architecture, analytics engines, and source code
+                belong exclusively to Trading Bauhaus (Annoris).
+              </p>
+              <ul class="license-list">
+                <li>
+                  Verified Solana contribution unlocks individual self-hosted deployment rights.
+                </li>
+                <li>
+                  Written commercial agreement required for team, enterprise, or SaaS hosting.
+                </li>
+                <li>
+                  Do not strip payment gates, license checks, or copyright attribution notices.
+                </li>
+              </ul>
+            </article>
+
+            <article class="license-card">
+              <h3>Official Contribution &amp; Licensing Wallet (SOL / SPL)</h3>
+              <p>
+                Send verified SOL or USDC-SPL contributions to the official project wallet and
+                retain the transaction signature as proof.
+              </p>
+
+              <div class="wallet-box">
+                <code class="wallet-address" id="solana-wallet-text"
+                  >3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm</code
+                >
+                <button
+                  type="button"
+                  class="copy-btn"
+                  id="copy-solana-btn"
+                  data-copy-text="3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm"
+                >
+                  Copy Wallet
+                </button>
+              </div>
+
+              <div class="license-actions">
+                <a
+                  href="https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-btn"
+                >
+                  Verify on Solscan
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://github.com/annoris/AI-trading-bauhaus-journal"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-btn cta-btn-secondary"
+                >
+                  View GitHub Repository
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <div>
+            <a href="#welcome" class="brand-wordmark">
+              <span>TRADING</span>
+              <strong>BAUHAUS<span class="brand-dot">•</span></strong>
+            </a>
+            <p class="hero-meta-note">
+              Sovereign execution journal, Edge Score v2 analytics &amp; AI reflection.
+            </p>
+          </div>
+
+          <nav class="footer-links" aria-label="Footer navigation">
+            <a href="#welcome">Showcase</a>
+            <a href="#workspace">Live Workspace</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#self-host">Self-Host</a>
+            <a href="#license">License</a>
+          </nav>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© 2026 Trading Bauhaus (Annoris). LicenseRef-TradingBauhaus-Commercial-1.0</span>
+          <span
+            >All workspace figures are synthetic NQ/MNQ demo records for read-only evaluation.</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- NATIVE TRADE DETAIL & CANDLE REPLAY DIALOG -->
+    <dialog class="trade-dialog" id="trade-modal" aria-labelledby="trade-modal-title">
+      <div class="trade-dialog-inner">
+        <div class="trade-dialog-head">
+          <div id="trade-modal-header">
+            <h3 id="trade-modal-title">Trade Detail</h3>
+          </div>
+          <button
+            type="button"
+            class="icon-btn"
+            id="trade-modal-close"
+            aria-label="Close trade replay modal"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+            <span>Close</span>
+          </button>
+        </div>
+
+        <div class="trade-dialog-body">
+          <div class="dialog-meta-grid" id="trade-modal-meta"></div>
+
+          <div class="replay-box">
+            <div class="panel-head">
+              <h3>OHLC Candlestick Replay</h3>
+              <span class="panel-readout">Synthetic 1m context · Entry &amp; Exit markers</span>
+            </div>
+            <div id="trade-replay-chart"></div>
+            <div class="replay-controls">
+              <button type="button" class="icon-btn" id="replay-restart-btn">Restart</button>
+              <button type="button" class="cta-btn" id="replay-play-btn">Play</button>
+              <button type="button" class="icon-btn" id="replay-step-btn">Step +1</button>
+              <label class="sr-only" for="replay-scrubber">Replay bar progress</label>
+              <input
+                type="range"
+                id="replay-scrubber"
+                class="replay-scrubber"
+                min="1"
+                max="24"
+                value="24"
+              />
+            </div>
+            <div class="replay-readout tabular-nums" id="replay-readout"></div>
+          </div>
+
+          <div class="dialog-meta-grid" id="trade-modal-excursions"></div>
+
+          <div class="dialog-split">
+            <div class="panel-card">
+              <div class="panel-head">
+                <h3>Playbook Rule Checklist</h3>
+              </div>
+              <ul class="rule-check-list" id="trade-modal-rules"></ul>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-head">
+                <h3>Structured Review Notes</h3>
+              </div>
+              <div id="trade-modal-notes"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,101 +1,101 @@
-# Bauhaus: datos y seguridad para el piloto y el crecimiento
+# Bauhaus: Data and Security Plan for Private Pilot and Growth
 
-Revisión: 3 noviembre 2026. Este documento separa la edición actual de piloto privado del diseño futuro para cientos de usuarios. Las plantillas de despliegue no prueban que exista un servicio remoto desplegado.
+Revision: November 3, 2026. This document separates the current private-pilot edition from the future design for hundreds of users. Deployment templates do not prove that a remote hosted service exists or is deployed.
 
-## Situación actual comprobada
+## Verified current state
 
-La app es un monolito modular Next.js con SQLite y Drizzle. El propietario inicia sesión con `JOURNAL_PASSWORD`; el modo multiusuario de producción usa invitaciones de un solo uso, miembros con contraseñas derivadas con scrypt y sesiones opacas con hash. La base del propietario contiene identidades, invitaciones y actividad de acceso. Cada miembro tiene un archivo SQLite separado bajo `users/<user-id>/journal.db`; la demo pública tiene otro en `public-demo/journal.db`. El middleware y los handlers seleccionan el contexto de base en servidor.
+The application is a modular Next.js monolith backed by SQLite and Drizzle. The owner signs in with `JOURNAL_PASSWORD`; production multi-user mode uses single-use invitations, member accounts with `scrypt`-derived passwords, and hashed opaque sessions. The owner's database holds identities, invitations, and access activity. Each member has a separate SQLite file under `users/<user-id>/journal.db`; the public demo uses another at `public-demo/journal.db`. Middleware and route handlers resolve the database context server-side.
 
-La separación actual es por archivo SQLite dentro de una sola instalación y un volumen operativo. No hay `user_id` en cada fila del journal ni aislamiento entre procesos/servidores; no se debe describir como SaaS multi-tenant ya validado. Las pruebas A/B actuales ejercitan handlers reales para cuentas, exportaciones, adjuntos, soporte, credenciales de proveedores, suspensión de sesiones y escrituras de demo. Aún falta cubrir todas las APIs y ejecutar esa matriz en staging. La demo usa una base separada y sus escrituras se bloquean en middleware y handlers.
+Current isolation is per-SQLite-file within a single installation and operational volume. There is no `user_id` column on every journal row and no isolation across processes or servers; this must not be described as a validated multi-tenant SaaS. Existing A/B isolation tests exercise real handlers for accounts, exports, attachments, support, provider credentials, session revocation/suspension, and demo writes. Full API coverage and executing that test matrix in staging remain pending. The demo uses a separate database, and write requests to it are blocked in both middleware and handlers.
 
-Las invitaciones se comparten manualmente como enlaces bearer de un solo uso que caducan; todavía no verifican propiedad del correo. No hay recuperación de contraseña ni MFA. Existe una bandeja de soporte y un registro local, depurado, de fallos de API autenticados; no hay captura de errores del navegador ni alertas externas. Las claves de IA y mercado definidas en el entorno del servidor solo están disponibles dentro del journal del propietario en modo multiusuario; cada miembro necesita credenciales propias. No hay sistema de suscripciones para cobrar por Bauhaus.
+Invitations are shared manually as expiring single-use bearer links; they do not yet verify email ownership. There is no password recovery or MFA. A support inbox and a redacted local log of authenticated API failures exist; there is no browser error capture or external alerting. AI and market-data keys configured in the server environment are available only inside the owner's journal in multi-user mode; each member requires personal credentials. There is no subscription billing system to charge for Bauhaus.
 
-Hay plantillas Docker/Caddy para un preview privado. No se verificó una instalación remota, HTTPS real, proxy, almacenamiento persistente, backup fuera del host ni restauración en staging. La capacidad para grupos de cientos de usuarios no se ha medido.
+Docker/Caddy templates exist for a private preview. A remote installation, live HTTPS, reverse proxy behavior, persistent storage, off-host backups, and staging restore have not been verified. Capacity for cohorts of hundreds of users has not been measured.
 
-La estimación local previa de 169 trades, 368 ejecuciones, un adjunto y dos datasets solo describe una instantánea antigua de desarrollo; no se debe usar para dimensionar una instalación actual o proyectar costes.
+The earlier local estimate of 169 trades, 368 executions, one attachment, and two datasets describes only an old development snapshot; it must not be used to size a current installation or project costs.
 
-## Volumen y capacidad
+## Volume and capacity
 
-300 × 50 = 15.000 trades diarios. 22 sesiones/mes = 330.000 trades/mes; 252 sesiones/año = 3.780.000 trades/año. Si operan 365 días, son 5.475.000. Un trade puede tener varias ejecuciones, anotaciones y comprobaciones de reglas.
+300 × 50 = 15,000 trades/day. 22 sessions/month = 330,000 trades/month; 252 sessions/year = 3,780,000 trades/year. Across 365 trading days, that is 5,475,000 trades/year. A single trade may include multiple executions, annotations, and rule checks.
 
-Presupuesto orientativo, no medición: si trade + ejecuciones + índices promedian 2–5 KB, 3,78 millones representan aproximadamente 7,56–18,9 GB/año, sin adjuntos, notas extensas, WAL ni backups. Medir con una carga representativa antes de contratar capacidad. Una captura de 1 MB por trade representa 330 GB/mes: las imágenes dominan el coste. Fuera de PostgreSQL siguen ocupando espacio y tienen coste; separarlas no elimina esos bytes.
+Illustrative sizing estimate, not a benchmark measurement: if a trade plus executions and indexes averages 2–5 KB, 3.78 million trades represent roughly 7.56–18.9 GB/year, excluding attachments, lengthy notes, WAL overhead, and backups. Measure under a representative workload before provisioning capacity. One 1 MB screenshot per trade equals 330 GB/month: images dominate storage cost. Moving them outside PostgreSQL still consumes storage and incurs cost; separating them does not eliminate those bytes.
 
-## Arquitectura actual y evolución recomendada
+## Current architecture and recommended evolution
 
-Para el piloto privado, conservar Next.js modular y una base SQLite por miembro reduce el riesgo de mezclar journals mientras se valida el producto con pocas cuentas. Completar primero backup/restore cifrado, staging, observabilidad, políticas de soporte y pruebas de aislamiento. Medir tamaño, consultas, concurrencia, adjuntos e importaciones con datos piloto antes de decidir una migración.
+For the private pilot, keeping modular Next.js with one SQLite database per member reduces the risk of cross-journal leakage while validating the product with a small number of accounts. First complete encrypted backup/restore workflows, staging validation, observability, support policies, and isolation testing. Measure database size, query latency, concurrency, attachments, and imports on pilot data before deciding on a migration.
 
-Si el uso real llega a cientos de usuarios o varias instancias, evaluar una arquitectura compartida con PostgreSQL, aislamiento de filas y objetos privados para adjuntos. No migrar solo por una proyección genérica ni asumir que una base por miembro o por proceso escalará sin medición.
+If real usage reaches hundreds of users or multiple app instances, evaluate a shared architecture using PostgreSQL, row-level isolation, and private object storage for attachments. Do not migrate solely on generic projections, and do not assume a database-per-member or process-per-user model will scale without measurement.
 
-### Diseño futuro para escala
+### Future design for scale
 
-La propuesta futura es una aplicación Next.js en contenedor, PostgreSQL con aislamiento de filas, almacenamiento de objetos privado para adjuntos/archivos importados y workers para importaciones/estadísticas. No está implementada ni desplegada. No crear un servidor por usuario ni partir tablas sin evidencia de que haga falta.
+The future target design is a containerized Next.js application, PostgreSQL with row-level isolation, private object storage for attachments and imported files, and background workers for imports and statistics. None of this is implemented or deployed. Do not provision one server per user or shard tables without evidence that it is required.
 
-Cada recurso privado lleva `user_id NOT NULL`. Usar una identidad individual obtenida de una sesión verificada en servidor, nunca confiar en un `user_id` enviado por el navegador. La autenticación deberá migrar a un proveedor o librería mantenida, con contraseñas hasheadas apropiadamente, recuperación, sesiones revocables y MFA donde corresponda.
+Every private resource carries `user_id NOT NULL`. Derive the individual identity exclusively from a server-verified session; never trust a `user_id` sent by the browser. Authentication should migrate to a maintained provider or library with properly hashed passwords, account recovery, revocable sessions, and MFA where appropriate.
 
-RLS en PostgreSQL como segunda barrera: `ENABLE ROW LEVEL SECURITY` y `FORCE ROW LEVEL SECURITY`, políticas `USING` y `WITH CHECK`, rol de aplicación sin superusuario ni `BYPASSRLS`. Roles de migración separados. Establecer el contexto de usuario en cada transacción, con `SET LOCAL`/`set_config(..., true)` y valores parametrizados, antes de cualquier consulta. No persistir contexto de usuario en conexiones del pool entre peticiones. RLS no sustituye la autorización de la API ni protege frente al robo de credenciales de servidor.
+PostgreSQL RLS acts as a second defense layer: `ENABLE ROW LEVEL SECURITY` and `FORCE ROW LEVEL SECURITY`, `USING` and `WITH CHECK` policies, and an application role without superuser or `BYPASSRLS`. Use separate migration roles. Set the user context inside every transaction via `SET LOCAL`/`set_config(..., true)` with parameterized values before running any query. Never allow user context to persist on pooled connections across requests. RLS does not replace API authorization or protect against stolen server credentials.
 
-Relaciones compuestas `(user_id, account_id)` → `(user_id, id)` evitan que una fila propia apunte a una cuenta ajena. Aplicar el mismo control a trades, ejecuciones, journal, notebook, rutinas, plantillas, reglas, prop firms, recibos, adjuntos, settings, proveedores, importaciones, exportaciones y trabajos en segundo plano. Enlazar las claves antiguas de trades preservando anotaciones, reglas y adjuntos; comprobar colisiones y transferencias.
+Composite foreign keys `(user_id, account_id)` → `(user_id, id)` prevent a user's row from referencing another user's account. Apply the same constraint across trades, executions, daily journal, notebook, routines, templates, playbooks/rules, prop firms, receipts, attachments, settings, providers, imports, exports, and background jobs. Map legacy trade keys while preserving annotations, rule checks, and attachments; test for key collisions and account transfers.
 
-Índices según consultas: `(user_id, closed_at DESC, id)`, `(user_id, account_id, closed_at DESC, id)` y claves de deduplicación por propietario, broker y ejecución. Guardar dinero con enteros en unidades menores o NUMERIC, timestamps con zona y atributos estructurados en columnas; JSONB solo para datos variables. Evitar índices redundantes.
+Design indexes around query patterns: `(user_id, closed_at DESC, id)`, `(user_id, account_id, closed_at DESC, id)`, and deduplication keys scoped by owner, broker, and execution. Store monetary values as integer minor units or `NUMERIC`, timestamps with time zone, and structured attributes in typed columns; use `JSONB` only for variable data. Avoid redundant indexes.
 
-## Reducir espacio y carga
+## Reducing storage and load
 
-- Guardar PNG/JPEG/WebP/PDF en objetos privados; PostgreSQL solo conserva propietario, clave aleatoria, tipo validado, bytes, hash y fechas. Derivar miniaturas con un worker; conservar el original según política. Nunca publicar el bucket ni URLs permanentes.
-- Deduplicar importaciones con identificador del broker/hash, sin borrar ejecuciones legítimamente iguales. Archivos originales comprimidos en objetos con retención configurable; no conservar indefinidamente snapshots JSON completos repetidos.
-- Compartir velas públicas por proveedor, contrato, mercado, resolución, timestamp y ajuste de precios, cuando la licencia lo permita. No compartir datasets privados subidos por usuarios. No confundir NQ con sus contratos/rollovers ni precios ajustados con reales.
-- Consultas paginadas por cursor, filtros por fecha, agregados diarios por usuario/cuenta/moneda y actualizaciones incrementales. Los resúmenes no reemplazan el historial original ni mezclan monedas. Invalidar al editar o borrar un trade.
-- Importar en lotes en un worker con idempotencia, backpressure, límites por usuario y cuotas de archivos/almacenamiento. Usar pool limitado; no iniciar una conexión por trade.
-- Mantener el historial financiero consultable. Archivo y eliminación solo con política de retención y consentimiento adecuados. Particionado mensual únicamente cuando tamaño/planes de ejecución lo justifiquen; millones de filas no lo exigen por sí solos.
-- Cachear con claves que incluyen propietario y permisos; no servir un resultado privado de un usuario a otro. Velas públicas pueden usar cache compartida.
+- Store PNG/JPEG/WebP/PDF files in private object storage; PostgreSQL retains only the owner, random object key, validated MIME type, byte size, hash, and timestamps. Generate thumbnails in a worker; retain originals per policy. Never make the bucket public or expose permanent URLs.
+- Deduplicate imports by broker/file hash without dropping legitimately identical executions. Store compressed original source files in object storage with configurable retention; do not retain repeated full JSON snapshots indefinitely.
+- Share public market candles by provider, contract, market, resolution, timestamp, and price adjustment basis when licensing permits. Never share private user-uploaded datasets. Do not conflate NQ with specific contracts/rollovers or adjusted prices with unadjusted fills.
+- Use cursor-based paginated queries, date-range filters, daily aggregates per user/account/currency, and incremental updates. Summary tables must not replace raw trade history or mix currencies. Invalidate summaries when editing or deleting a trade.
+- Process imports in batches inside a worker with idempotency, backpressure, per-user limits, and file/storage quotas. Use a bounded connection pool; never open a database connection per trade.
+- Keep financial history queryable. Archive and purge data only under documented retention policies and appropriate user consent. Apply monthly table partitioning only when table size or query plans justify it; millions of rows alone do not require partitioning.
+- Scope caches by owner and permissions; never serve one user's cached private result to another. Public market candles may use a shared cache.
 
-## Controles presentes en el código
+## Controls currently present in the codebase
 
-El modo hosted/producción falla cerrado si falta la contraseña del propietario; el modo `hosted` requiere además `JOURNAL_SECRET` de al menos 32 caracteres, `JOURNAL_PROXY_TOKEN` de al menos 32 caracteres y `JOURNAL_PUBLIC_ORIGIN` HTTPS válido. La plantilla Caddy establece la IP del cliente y el token de proxy. La plantilla requiere validación en staging para confirmar que el proxy real no acepta cabeceras falsificadas.
+Hosted/production mode fails closed if the owner password is missing; `hosted` mode additionally requires `JOURNAL_SECRET` of at least 32 characters, `JOURNAL_PROXY_TOKEN` of at least 32 characters, and a valid HTTPS `JOURNAL_PUBLIC_ORIGIN`. The Caddy template sets the client IP and proxy token. That template requires staging validation to confirm the live proxy rejects spoofed headers.
 
-Los miembros usan credenciales individuales y sus propias bases; suspenderlos revoca sesiones activas. Las cookies son HttpOnly/SameSite; en modo hosted se añade Secure. Las escrituras validan origen y las contraseñas de proveedor guardadas se cifran con AES-256-GCM. Si no se configura `JOURNAL_SECRET`, una clave `.secret` queda en el directorio de datos: proteger/respaldar el directorio completo, o configurar y conservar la clave externa.
+Members use individual credentials and separate databases; suspending a member revokes active sessions. Cookies use `HttpOnly` and `SameSite`; `hosted` mode adds `Secure`. Write requests validate origin, and stored provider credentials are encrypted with AES-256-GCM. If `JOURNAL_SECRET` is not configured, a fallback `.secret` key is written inside the data directory: protect and back up the full directory, or configure and retain the external key.
 
-La API oculta detalles de excepciones y puede emitir referencias de error sin cuerpos, query strings, mensajes internos o contenido del journal. La vista es local, de retención limitada y sin alertas/alta disponibilidad. Cabeceras de seguridad y CSP limitada están configuradas; la CSP no constituye una revisión XSS completa. Ver [acceso y actividad](access-and-activity.md) para límites actuales.
+The API hides exception details and can issue error references without recording request bodies, query strings, internal messages, or journal content. The error view is local, retention-bounded, and lacks external alerting or high availability. Security headers and a baseline CSP are configured; the CSP does not constitute a full XSS audit. See [Private Access and Activity](access-and-activity.md) for current limits.
 
-## Controles pendientes antes de clientes reales
+## Controls still required before real customers
 
-Ampliar las pruebas A/B actuales a cada API, recurso, exportación, sesión y tarea en segundo plano; repetirlas en staging y validar que ningún flujo de demo accede a bases privadas. La separación SQLite por archivo no sustituye la autorización ni un examen de todos los límites de datos.
+Extend existing A/B isolation tests to every API route, resource, export, session, and background task; rerun them in staging and verify that no demo flow accesses private databases. Per-file SQLite separation does not replace explicit authorization or an audit of every data boundary.
 
-Verificar HTTPS, cookies Secure, proxy de confianza, límites reales de cuerpo, persistencia, cuotas y proceso de recuperación en un staging aislado. Añadir verificación de correo, recuperación de cuenta y MFA según necesidad del piloto. Planear límites de abuso compartidos y alertas antes de ampliar acceso.
+Verify HTTPS, `Secure` cookies, trusted proxy behavior, effective request-body size limits, persistence, quotas, and recovery procedures in an isolated staging environment. Add email verification, account recovery, and MFA as required for the pilot. Plan shared rate/abuse limits and alerting before expanding access.
 
-Credenciales de broker/API cifradas con claves externas al servidor/base/backups, idealmente un gestor de secretos/KMS. Ya existe AES-GCM local; la clave de fallback junto a la base no protege frente al robo del directorio completo. Nunca enviar secretos a componentes cliente, NEXT_PUBLIC_, logs o exports. Revisar SSRF en URLs de proveedores e importadores, restringir egress y bloquear redes internas/metadata.
+Encrypt broker/API credentials with keys stored outside the server, database, and backups—ideally in a secrets manager or KMS. Local AES-GCM encryption already exists, but a fallback key stored alongside the database does not protect against theft of the full data directory. Never expose secrets to client components, `NEXT_PUBLIC_` variables, logs, or exports. Audit provider and importer URLs for SSRF, restrict outbound egress, and block internal/metadata networks.
 
-Archivos: validar firma/tamaño, nombre seguro, cuotas, detección de malware en cuarentena, acceso solo tras autorización y enlaces firmados breves. Revisión XSS de notas, HTML y PDF; dependencias actualizadas, CSP completa probada sin romper herramientas. La comprobación actual de tamaño declarado no sustituye un límite de cuerpo real en el servidor/proxy.
+Files: validate file signatures/sizes, sanitize filenames, enforce quotas, scan uploads in quarantine for malware, serve files only after authorization, and use short-lived signed URLs. Perform an XSS review of notes, HTML, and PDF exports; keep dependencies updated and verify a full CSP without breaking application tools. Checking declared content length alone does not replace a true body-size limit at the server/proxy layer.
 
-Base en red privada sin puerto público, roles mínimos, usuario de contenedor no root, disco persistente, backups cifrados separados, recuperación point-in-time y simulacro de restauración. Medir CPU/RAM/latencia y crecimiento con 15.000 trades/día, ráfagas de importación y 300 sesiones activas; no prometer capacidad por el número de usuarios solamente.
+Place the database on a private network with no public port, least-privilege roles, non-root container user, persistent disk, separate encrypted backups, point-in-time recovery, and tested restore drills. Measure CPU, RAM, latency, and storage growth at 15,000 trades/day, import bursts, and 300 active sessions; never promise capacity based on user count alone.
 
-## Publicación
+## Deployment
 
-Hostinger VPS con Docker es una opción compatible con la plantilla disponible; no se ha contratado, configurado ni desplegado. Antes de invitar a un grupo piloto, verificar dominio + HTTPS, proxy, variables secretas, volumen persistente, reinicio, copia fuera del host y restauración. Mantener staging con datos ficticios separado de producción. El volumen de Compose no es un backup.
+A Hostinger VPS running Docker is compatible with the included deployment template; none has been provisioned, configured, or deployed. Before inviting a pilot group, verify domain + HTTPS, reverse proxy rules, secret environment variables, persistent volume behavior, container restarts, off-host backups, and restore procedures. Keep staging with synthetic data separate from production. A Compose volume is not a backup.
 
-## Migración sin perder datos
+## Zero-data-loss migration
 
-1. Backup consistente con SQLite backup API, checksum y restauración ensayada; no copiar solo journal.db con WAL activo.
-2. Crear PostgreSQL y esquema nuevo en staging; vincular datos actuales a un propietario explícito.
-3. Adaptar todas las consultas y jobs a contexto autenticado; trasladar archivos manteniendo relaciones. Comparar conteos, hashes, P&L y saldos por cuenta/moneda/fecha.
-4. Probar aislamiento, roles RLS y pool reutilizado, concurrencia, importaciones y recuperación.
-5. Corte con ventana de escritura controlada y plan de rollback; liberar acceso de clientes solo después de validación.
+1. Take a consistent backup using SQLite's online backup API, verify checksums, and rehearse a restore; never copy `journal.db` directly while WAL files are active.
+2. Provision PostgreSQL and the new schema in staging; map existing data to an explicit owner.
+3. Update all queries and background jobs to require an authenticated context; migrate attachment files while preserving relationships. Reconcile row counts, checksums, P&L, and balances by account, currency, and date.
+4. Test isolation, RLS roles, connection-pool reuse, concurrency, imports, and recovery.
+5. Cut over during a controlled write-freeze window with a tested rollback plan; open customer access only after validation.
 
-## Fuentes oficiales
+## Official references
 
 - PostgreSQL RLS: https://www.postgresql.org/docs/17/ddl-rowsecurity.html
-- PostgreSQL particionado: https://www.postgresql.org/docs/current/ddl-partitioning.html
+- PostgreSQL partitioning: https://www.postgresql.org/docs/current/ddl-partitioning.html
 - OWASP multitenancy: https://cheatsheetseries.owasp.org/cheatsheets/Multi_Tenant_Security_Cheat_Sheet.html
-- OWASP autorización: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
-- OWASP sesiones: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+- OWASP authorization: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
+- OWASP sessions: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
 - OWASP CSRF: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
 - Hostinger Docker deployment: https://github.com/hostinger/deploy-on-vps/blob/main/README.md
 
-## Alternativa Oracle Cloud
+## Oracle Cloud alternative
 
-Oracle Cloud Infrastructure también permite esta arquitectura: VM para la app/worker, PostgreSQL privado (administrado o autogestionado) y Object Storage privado. Oracle Cloud no obliga a usar Oracle Database; cambiar a ese motor implicaría otra adaptación del código. Evaluar región, disponibilidad, costes de PostgreSQL administrado, objetos, backups y tráfico. No asumir que el servicio PostgreSQL administrado está incluido en Always Free. Las instancias Compute Always Free inactivas pueden ser recuperadas por Oracle; no basar disponibilidad comercial exclusivamente en esa modalidad.
+Oracle Cloud Infrastructure also supports this architecture: a VM for the app/worker, private PostgreSQL (managed or self-managed), and private Object Storage. Oracle Cloud does not require using Oracle Database; switching to that engine would require another codebase adaptation. Evaluate region availability, managed PostgreSQL pricing, object storage, backups, and egress traffic. Do not assume managed PostgreSQL is included in Always Free. Idle Always Free Compute instances may be reclaimed by Oracle; do not base commercial availability solely on that tier.
 
-Fuentes: https://www.oracle.com/cloud/postgresql/ y https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm
+Sources: https://www.oracle.com/cloud/postgresql/ and https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm
 
-## Historial de verificación
+## Verification history
 
-Verificación local del 3 noviembre 2026: 620 pruebas aprobadas; typecheck, Prettier, seguridad de límites, verificador de backup/restauración y build de producción aprobados; `pnpm audit` no encontró vulnerabilidades conocidas. Esto cubre el código de esta revisión, no equivale a un pentest externo ni valida infraestructura cloud, staging, correo o recuperación fuera del host.
+Local verification on November 3, 2026: 620 tests passed; typecheck, Prettier, security-boundary check, backup/restore verifier, and production build passed; `pnpm audit` found no known vulnerabilities. This covers the codebase at that revision only; it is not an external penetration test and does not validate cloud infrastructure, staging, email delivery, or off-host recovery.

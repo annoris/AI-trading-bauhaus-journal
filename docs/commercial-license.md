@@ -1,28 +1,28 @@
-# Licencia comercial de Trading Bauhaus
+# Trading Bauhaus Commercial License
 
-Propiedad intelectual exclusiva: **Trading Bauhaus** es una obra de software original creada íntegramente desde cero y perteneciente al 100% de forma exclusiva a su autor y propietario (**Trading Bauhaus / Annoris**). Todos los derechos están reservados bajo los términos de [LICENSE](../LICENSE) (`LicenseRef-TradingBauhaus-Commercial-1.0`).
+Exclusive intellectual property: **Trading Bauhaus** is an original software work created entirely from scratch and owned 100% exclusively by its author and proprietor (**Trading Bauhaus / Annoris**). All rights are reserved under the terms of [LICENSE](../LICENSE) (`LicenseRef-TradingBauhaus-Commercial-1.0`).
 
-## Qué requiere contribución o licencia comercial
+## What requires a contribution or commercial license
 
-Todo el código fuente, arquitectura, motores de cálculo, importadores y diseño de interfaz de Trading Bauhaus son propiedad exclusiva del titular. Su uso, instalación, despliegue autoalojado, copia, modificación, distribución, alojamiento para terceros o explotación comercial requieren **una contribución verificada en la wallet oficial de Solana** o un **acuerdo de licencia comercial por escrito** con el propietario autorizado.
+All source code, architecture, calculation engines, importers, and user interface designs of Trading Bauhaus are the exclusive property of the rights holder. Any use, installation, self-hosted deployment, copying, modification, distribution, third-party hosting, or commercial exploitation requires either **a verified contribution to the official Solana wallet** or a **written commercial license agreement** with the authorized owner.
 
-No se concede una licencia gratuita de redistribución ni de explotación comercial para terceros (SaaS). Tener acceso al repositorio o recibir una invitación a un diario no equivale a adquirir una licencia comercial sobre el código fuente.
+No free license is granted for redistribution or third-party commercial exploitation (SaaS). Having access to the repository or receiving an invitation to a journal does not grant a commercial license to the source code.
 
-## Contribución oficial en Solana (SOL / USDC-SPL)
+## Official Solana contribution (SOL / USDC-SPL)
 
-Para activar el derecho de uso bajo la licencia condicionada a contribución (`LicenseRef-TradingBauhaus-Commercial-1.0`) o apoyar el desarrollo oficial del proyecto:
+To activate usage rights under the contribution-gated license (`LicenseRef-TradingBauhaus-Commercial-1.0`) or support official project development:
 
-- **Wallet oficial de Solana (SOL / SPL):** `3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`
-- **Verificación en cadena:** [Solscan (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`)](https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm)
+- **Official Solana wallet (SOL / SPL):** `3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`
+- **On-chain verification:** [Solscan (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`)](https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm)
 
-Conserve el hash de la transacción (`tx signature`) como comprobante verificable de contribución. Queda estrictamente prohibido redistribuir el software sin autorización, ofrecerlo como servicio gestionado a terceros (SaaS) sin acuerdo comercial escrito, o eludir las comprobaciones de contribución y licencia.
+Keep the transaction hash (`tx signature`) as verifiable proof of contribution. Unauthorized redistribution of the software, offering it as a managed service to third parties (SaaS) without a written commercial agreement, or circumventing contribution and license checks is strictly prohibited.
 
-## Cómo se formaliza la licencia o contribución
+## How to formalize a license or contribution
 
-1. Realizar la contribución verificable a la wallet oficial de Solana (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) para uso individual autoalojado, o contactar al propietario para licencias empresariales/comerciales.
-2. En caso de licencia comercial para empresas o equipos, acordar por escrito con el titular el alcance de uso, número de usuarios/instalaciones, precio, duración y soporte.
-3. Conservar el comprobante criptográfico de la transacción en Solana o el acuerdo firmado como acreditación de licencia válida.
+1. Send a verifiable contribution to the official Solana wallet (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) for individual self-hosted use, or contact the owner for enterprise/commercial licenses.
+2. For company or team commercial licenses, agree in writing with the owner on usage scope, number of users/installations, pricing, term, and support.
+3. Retain the cryptographic Solana transaction receipt or the signed agreement as proof of a valid license.
 
-## Alcance técnico y protección
+## Technical scope and protection
 
-El repositorio define `license: "SEE LICENSE IN LICENSE"` en `package.json`, remitiendo al archivo [LICENSE](../LICENSE) en la raíz del proyecto, que establece la titularidad exclusiva del 100% del software por parte de Trading Bauhaus y la obligación legal de contribución o licencia comercial. El acceso por invitación de la aplicación controla cuentas del diario; no transfiere propiedad intelectual ni concede derechos de redistribución del código.
+The repository defines `license: "SEE LICENSE IN LICENSE"` in `package.json`, referencing [LICENSE](../LICENSE) at the project root, which establishes Trading Bauhaus's 100% exclusive ownership of the software and the legal requirement for a contribution or commercial license. Invitation-based access in the application controls journal accounts only; it does not transfer intellectual property or grant rights to redistribute the code.

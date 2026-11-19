@@ -1,41 +1,41 @@
-# Invitaciones privadas de un solo uso
+# Single-Use Private Invitations
 
-Estado del código: 3 noviembre 2026. Las invitaciones y la aceptación por enlace están implementadas para un propietario y miembros con journals separados. No hay envío de email ni verificación del buzón.
+Code status: November 3, 2026. Invitations and link-based redemption are implemented for one owner and members with separate journals. There is no email delivery or mailbox verification.
 
-## Flujo actual
+## Current flow
 
-1. Configura `JOURNAL_PASSWORD` e inicia sesión como propietario. En producción el modo multiusuario está activado por defecto; en local se puede activar con `JOURNAL_MULTI_USER=true`. Sin contraseña del propietario, la emisión y aceptación de invitaciones no están disponibles.
-2. Abre **Invitations** desde el sidebar privado, introduce el correo que quieres asociar y crea un enlace válido durante siete días.
-3. Copia el enlace y compártelo manualmente por un canal privado. La app no envía emails.
-4. El invitado abre `/accept-invitation`, ve el correo asociado y crea una contraseña de al menos 12 caracteres. La invitación se consume una sola vez y se inicia su sesión.
+1. Configure `JOURNAL_PASSWORD` and sign in as the owner. In production, multi-user mode is enabled by default; locally it can be enabled with `JOURNAL_MULTI_USER=true`. Without an owner password, issuing and redeeming invitations are unavailable.
+2. Open **Invitations** from the private sidebar, enter the email address you want to associate, and create a link valid for seven days.
+3. Copy the link and share it manually over a private channel. The app does not send emails.
+4. The invitee opens `/accept-invitation`, sees the associated email address, and creates a password of at least 12 characters. The invitation is consumed once and their session begins.
 
-El enlace contiene un token aleatorio de 256 bits en el query string `?token=...`. La base almacena solo el hash SHA-256; el token en claro se devuelve una sola vez al propietario y aparece en el enlace que copia. Trátalo como una contraseña: quien tenga el enlace puede aceptar la invitación. El token también puede quedar en el historial del navegador o en logs de infraestructura que guarden URLs completas. No lo incluyas en tickets, capturas ni canales públicos; los logs de proxy/APM no deben guardar query strings de invitación.
+The link carries a 256-bit random token in the query string `?token=...`. The database stores only the SHA-256 hash; the plaintext token is returned once to the owner and appears in the copied link. Treat it like a password: anyone holding the link can accept the invitation. The token may also remain in browser history or infrastructure logs that record full URLs. Do not include it in support tickets, screenshots, or public channels; proxy/APM logs must not store invitation query strings.
 
-El correo está vinculado y normalizado, pero no se verifica contra un buzón. El invitado no tiene que demostrar que controla esa dirección: el endpoint de aceptación recupera el email desde la invitación y asigna una contraseña a quien presente el token. Comparte el enlace directamente con la persona destinataria. Una futura verificación real requiere proveedor de correo, comprobación de buzón, límites contra abuso y una transacción que consuma solo una prueba de verificación emitida en servidor.
+The email address is bound and normalized, but not verified against an actual mailbox. The invitee does not have to prove ownership of that address: the redemption endpoint retrieves the email from the invitation and assigns a password to whoever presents the token. Share the link directly with the intended recipient. Real mailbox verification in the future will require an email provider, mailbox confirmation, abuse limits, and a transaction that consumes a single server-issued verification proof.
 
-## Datos y permisos
+## Data and permissions
 
-Los registros de invitación, usuarios, hashes de contraseña y sesiones se guardan en la base del propietario `JOURNAL_DATA_DIR/journal.db`. Cada invitado recibe una base privada independiente en `JOURNAL_DATA_DIR/users/<user-id>/journal.db`; no comparte sus trades, notas, cuentas ni ajustes con otros miembros o con el propietario. No es una organización con carpetas compartidas, roles configurables o aislamiento SaaS.
+Invitation records, user accounts, password hashes, and sessions are stored in the owner's database at `JOURNAL_DATA_DIR/journal.db`. Each invited member receives an independent private database at `JOURNAL_DATA_DIR/users/<user-id>/journal.db`; they do not share trades, notes, accounts, or settings with other members or the owner. This is not an organization with shared folders, configurable roles, or SaaS multi-tenant isolation.
 
-El propietario puede listar, crear y revocar invitaciones, y suspender/reactivar miembros desde **User access**. `/api/admin/users` también permite revocar sesiones sin suspender la cuenta. Reactivar no restablece las sesiones revocadas. Suspender conserva los datos del miembro.
+The owner can list, create, and revoke invitations, and suspend/reactivate members from **User access**. `/api/admin/users` also supports revoking sessions without suspending the account. Reactivating does not restore revoked sessions. Suspending preserves the member's data.
 
-El enlace de invitación es distinto del perfil público `/demo`. La demo es de solo lectura, usa datos ficticios y su propia base `JOURNAL_DATA_DIR/public-demo/journal.db`; nunca contiene los datos del propietario ni de los miembros.
+The invitation link is separate from the public `/demo` profile. The demo is read-only, uses synthetic data, and runs on its own database at `JOURNAL_DATA_DIR/public-demo/journal.db`; it never contains owner or member data.
 
-## Límites y controles
+## Limits and controls
 
-- El formulario crea enlaces con TTL de siete días; el servicio admite de una a 168 horas. Una invitación no se puede duplicar mientras siga pendiente para el mismo correo y se puede revocar sin borrar su historial.
-- Emisión limitada a 10 por hora, 50 por día y 50 invitaciones pendientes. El historial visible incluye como máximo las últimas 100.
-- La aceptación cuenta hasta 100 intentos globales por ventana de cinco minutos en una fila SQLite. No es rate limiting distribuido y no reemplaza controles de abuso por IP.
-- La creación del usuario y el consumo del token ocurren en la misma transacción SQLite inmediata. El token solo puede aceptarse una vez.
-- Las contraseñas de miembros requieren 12 caracteres como mínimo y se derivan con scrypt y salt aleatorio. El token de sesión se guarda como hash; vence a las 24 horas y cada usuario admite hasta cinco sesiones activas.
-- No hay envío de invitación, verificación de email, restablecimiento de contraseña, MFA, suspensión automatizada, cuotas de uso ni una plataforma de organizaciones.
-- El Full backup JSON corresponde al journal de la sesión activa, no a los demás usuarios o a la demo. Para snapshots completos cifrados, detener la app y usar `pnpm backup -- --confirm-app-stopped <archivo.tbjbackup>`; restaurar en una ruta nueva con `pnpm restore -- <archivo.tbjbackup> <directorio-nuevo>`. El archivo contiene `.secret` si existe. Conserva `JOURNAL_SECRET` y los secretos de acceso en un gestor separado. Todavía no hay una agenda automática ni un destino off-host configurado.
+- The form creates links with a seven-day TTL; the service supports 1 to 168 hours. Duplicate invitations cannot be issued while one remains pending for the same email address, and an invitation can be revoked without deleting its history.
+- Issuance is capped at 10 per hour, 50 per day, and 50 pending invitations. Visible history shows at most the most recent 100 entries.
+- Redemption counts up to 100 global attempts per five-minute window in a single SQLite row. This is not distributed rate limiting and does not replace per-IP abuse controls.
+- User creation and token consumption occur within the same immediate SQLite transaction. Each token can be redeemed only once.
+- Member passwords require at least 12 characters and are derived using `scrypt` with a random salt. Session tokens are stored hashed, expire after 24 hours, and allow up to five active sessions per user.
+- There is no automated invitation email delivery, email verification, password reset, MFA, automated suspension, usage quotas, or organization management platform.
+- The Full backup JSON corresponds only to the active session's journal, not other users or the demo. For full encrypted snapshots, stop the application and run `pnpm backup -- --confirm-app-stopped <archive.tbjbackup>`; restore to a new directory with `pnpm restore -- <archive.tbjbackup> <new-directory>`. The archive contains `.secret` if present. Store `JOURNAL_SECRET` and access secrets in a separate secrets manager. There is still no automated backup schedule or configured off-host destination.
 
-## Rutas actuales
+## Current routes
 
-- `GET/POST/DELETE /api/invitations`: listan, crean y revocan; exigen sesión de propietario y modo multiusuario habilitado.
-- `GET /api/invitations/validate?token=...`: valida un enlace vigente y devuelve el correo asociado.
-- `POST /api/invitations/redeem`: acepta el token y la contraseña nueva, crea el usuario y emite una sesión.
-- `GET/PATCH /api/admin/users`: lista miembros y permite `suspend`, `reactivate` y `revoke-sessions`; solo el propietario puede usarlo.
+- `GET/POST/DELETE /api/invitations`: list, create, and revoke invitations; require an owner session with multi-user mode enabled.
+- `GET /api/invitations/validate?token=...`: validates an active link and returns the associated email address.
+- `POST /api/invitations/redeem`: accepts the token and new password, creates the user, and issues a session.
+- `GET/PATCH /api/admin/users`: lists members and supports `suspend`, `reactivate`, and `revoke-sessions`; restricted to the owner.
 
-El registro es por invitación, no un formulario abierto de creación de cuentas. Estos controles reducen acceso casual, pero un token compartido de forma insegura permite que otra persona acepte esa invitación.
+Registration is invite-only, not an open sign-up form. These controls limit casual access, but an insecurely shared token allows someone else to redeem that invitation.

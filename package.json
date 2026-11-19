@@ -2,6 +2,11 @@
   "name": "trading-bauhaus",
   "private": true,
   "description": "Trading Bauhaus workspace. Broker sync, deep analytics, daily journaling, and AI-native reflection.",
+  "homepage": "https://annoris.github.io/AI-trading-bauhaus-journal/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/annoris/AI-trading-bauhaus-journal.git"
+  },
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=22"
@@ -22,7 +27,10 @@
     "format:check": "prettier --check .",
     "demo:20": "python3 scripts/seed-demo-20.py",
     "security:check": "node scripts/check-security-boundaries.mjs",
-    "license:check": "node scripts/check-licenses.mjs"
+    "license:check": "node scripts/check-licenses.mjs",
+    "pages:serve": "node scripts/serve-pages.mjs",
+    "pages:check": "node scripts/validate-pages.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs"
   },
   "devDependencies": {
     "jsdom": "^26.1.0",

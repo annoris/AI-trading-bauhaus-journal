@@ -11,7 +11,7 @@ The repository is already a modular monorepo:
 - `packages/importers`: broker and journal import adapters.
 - `docs`, `scripts`, `deploy`, and `.github/workflows`: product/operations documentation, checks, deployment templates, and CI.
 
-Add features beside their existing domain code. Do not move the whole app into new folders for appearance; update stale documentation and keep access/data boundaries easy to review. The current workspace has no `.git` directory, so confirm its intended Git remote or checkout before relying on commits for rollback.
+Add features beside their existing domain code. Do not move the whole app into new folders for appearance; update stale documentation and keep access/data boundaries easy to review.
 
 ## Current product foundation
 

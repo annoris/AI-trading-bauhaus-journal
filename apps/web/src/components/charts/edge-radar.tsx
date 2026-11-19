@@ -18,7 +18,7 @@ import { ChartFrame } from "./chart-frame";
 const LABELS: Record<keyof EdgeScoreComponents, string> = {
   winRate: "Win %",
   profitFactor: "Profit factor",
-  avgWinLoss: "Avg win/loss",
+  avgWinLoss: "Win / loss",
   drawdown: "Drawdown",
   recovery: "Recovery",
   consistency: "Consistency",
@@ -45,13 +45,19 @@ export function EdgeRadar({
         width="100%"
         height="100%"
         onResize={(width, height) =>
-          setRadius(Math.max(20, Math.min(width / 2 - 84, height / 2 - 34)))
+          setRadius(Math.max(18, Math.min(width / 2 - 74, height / 2 - 34)))
         }
       >
-        <RadarChart className="journal-edge-radar" data={data} outerRadius={radius}>
+        <RadarChart
+          className="journal-edge-radar"
+          data={data}
+          cx="50%"
+          cy="50%"
+          outerRadius={radius}
+        >
           <PolarGrid stroke={t.gridline} />
           <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
-          <PolarAngleAxis dataKey="metric" tick={{ fill: t.inkMuted, fontSize: 11 }} />
+          <PolarAngleAxis dataKey="metric" tick={{ fill: t.inkMuted, fontSize: 10 }} />
           <Tooltip
             cursor={false}
             allowEscapeViewBox={{ x: false, y: false }}

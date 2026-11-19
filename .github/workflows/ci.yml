@@ -3,6 +3,7 @@ name: Trading Bauhaus checks
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,6 +23,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit
       - run: pnpm license:check
+      - run: pnpm pages:check
       - run: pnpm format:check
       - run: pnpm typecheck
       - run: pnpm test

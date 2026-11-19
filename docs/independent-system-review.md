@@ -1,36 +1,36 @@
-# Revisión independiente de lógica y seguridad
+# Independent Logic and Security Review
 
-**Revisión histórica: 13 octubre 2026.** Esta evaluación describe el estado de aquel día y no debe leerse como inventario actual. La revisión original fue de solo lectura; las correcciones mencionadas se aplicaron y verificaron en esa edición. No se transmitieron secretos, datos del journal ni correos a terceros. No se publicó el proyecto.
+**Historical review: October 13, 2026.** This evaluation describes the codebase state on that date and must not be read as a current inventory. The original review was read-only; the fixes listed below were applied and verified in that edition. No secrets, journal data, or emails were transmitted to third parties. The project was not published.
 
-**Actualización: 3 noviembre 2026.** El código ahora tiene invitaciones individuales, DB SQLite independiente por miembro y demo, suspensión/reactivación, soporte privado, referencias depuradas de errores del servidor y backup/restauración cifrados manuales. La verificación integral de aislamiento A/B/demo sigue en curso; no hay verificación de email, recuperación/MFA, agenda off-host ni staging remoto comprobado. Para el estado vigente, consulta [launch-roadmap](launch-roadmap.md) y [access-and-activity](access-and-activity.md).
+**Update: November 3, 2026.** The codebase now includes individual invitations, separate SQLite databases per member and for the demo, account suspension/reactivation, private support reports, redacted server error references, and manual encrypted backup/restore commands. Comprehensive A/B/demo isolation verification remains ongoing; there is no email verification, account recovery/MFA, scheduled off-host backup, or verified remote staging deployment. For current status, see [launch-roadmap](launch-roadmap.md) and [access-and-activity](access-and-activity.md).
 
-## Alcance
+## Scope
 
-Autenticación, middleware, guard HTTP, invitaciones, control preparado de usuarios/sesiones, confianza en IP del proxy, retención y límites de actividad, Docker/proxy, imports frontend/backend; además revisión acotada de importación/deduplicación, edición masiva, transferencia/borrado de cuentas, reconstrucción de round trips, referencias de adjuntos/notas/reglas y balances de gastos/recibos de prop firms. No fue una revisión exhaustiva de cada función ni un pentest contra infraestructura publicada.
+Authentication, middleware, HTTP guard, invitations, planned user/session controls, proxy IP trust, activity retention and rate limits, Docker/reverse proxy setup, and frontend/backend import boundaries; plus a targeted review of statement import/deduplication, bulk editing, account transfer/deletion, round-trip reconstruction, attachment/note/rule-check references, and prop firm expense/receipt balances. It was neither an exhaustive audit of every feature nor a penetration test against published infrastructure.
 
-## Hallazgos corregidos
+## Findings fixed
 
-| Hallazgo                                                     | Corrección                                                                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Docker básico publicaba puerto sin protección obligatoria    | Loopback y credenciales obligatorias; modo hosted valida configuración y proxy                                |
-| Cookie sin Secure detrás de HTTPS terminado en proxy         | Política derivada del origen público configurado                                                              |
-| Un cliente agotaba el límite global de login                 | Buckets por IP confiable, HMAC en memoria y límites de cardinalidad/circuito                                  |
-| Login parseaba cuerpos sin tamaño máximo                     | Lectura en streaming con máximo 2 KB                                                                          |
-| Registro de IP derivaba claves con scrypt por evento         | Cache de clave por configuración/proceso                                                                      |
-| Middleware impedía registrar rechazos de API                 | Autenticación API delegada al guard común Node; páginas siguen protegidas                                     |
-| Transferencia perdía referencias y podía quedar parcial      | Una transacción inmediata para mover/reconstruir/remapear; adjuntos, checks, notas y estimaciones conservados |
-| Posiciones del destino podían fusionarse silenciosamente     | Rechazo y rollback si no hay correspondencia exacta de ejecuciones                                            |
-| Bulk aceptaba etiquetas/playbooks inválidos                  | Validación consistente de tipos, longitudes, cantidad y existencia; updates en transacción                    |
-| Referencias polimórficas quedaban huérfanas al borrar trades | Limpieza de blobs/checks; notas conservadas con ancla anulada; deletes de ejecuciones en lotes y transacción  |
+| Finding                                                        | Fix                                                                                                      |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Basic Docker exposed port without mandatory protection         | Loopback binding and mandatory credentials; `hosted` mode validates configuration and proxy              |
+| Cookie lacked `Secure` behind HTTPS terminated at proxy        | Cookie policy derived from the configured public origin                                                  |
+| Single client could exhaust the global login rate limit        | Per-trusted-IP buckets, in-memory HMAC, and cardinality/circuit limits                                   |
+| Login parsed request bodies without a maximum size             | Streaming read capped at 2 KB                                                                            |
+| IP logging derived keys via `scrypt` per event                 | Per-configuration/process key cache                                                                      |
+| Middleware prevented logging rejected API requests             | API authentication delegated to the shared Node guard; pages remain protected                            |
+| Account transfer lost references and could end up partial      | Single immediate transaction to move/rebuild/remap; attachments, rule checks, notes, and estimates kept  |
+| Destination positions could silently merge                     | Rejection and rollback unless executions match exactly                                                   |
+| Bulk edit accepted invalid tags/playbooks                      | Consistent validation of types, lengths, counts, and existence; updates wrapped in a transaction         |
+| Polymorphic references were left orphaned when deleting trades | Blob/rule-check cleanup; notes preserved with cleared anchor; execution deletes batched in a transaction |
 
-Las cachés de estimaciones transferidas conservan su fingerprint original; se invalidan si cambia el contexto financiero. No se recalculan ni presentan estimaciones antiguas como verificadas para otra moneda/reconstrucción. No se transfirieron ni borraron trades reales durante estas pruebas.
+Transferred estimate caches retain their original fingerprint and are invalidated if the financial context changes. Old estimates are neither recalculated nor presented as verified for another currency or reconstruction. No real trades were transferred or deleted during these tests.
 
-## Límites que detectó la revisión de octubre (estado histórico)
+## Limits identified in the October review (historical state)
 
-En octubre estaban pendientes el acceso individual, el aislamiento por miembro, y la activación de suspensión en una plataforma publicada. Ya hay invitaciones, sesiones revocables, DB distinta por miembro y controles de suspensión/reactivación en el código local actual; la comprobación exhaustiva de todas las APIs/adjuntos/exportaciones sigue pendiente antes de piloto.
+In October, individual access, per-member isolation, and active suspension enforcement on a published platform were still pending. Invitations, revocable sessions, per-member SQLite databases, and suspend/reactivate controls are now implemented in the current local codebase; exhaustive verification of all API routes, attachments, and exports remains pending before a pilot.
 
-Para activar captura real de IP, configurar proxy confiable y secreto independiente. La vista de actividad mantiene ventana lógica de siete días, con limpieza física horaria/arranque/consultas/escrituras. Los backups, WAL y logs del proxy tienen que configurarse aparte. No registrar cabeceras arbitrarias como IP del usuario ni usar IP sola como prueba de fraude.
+To enable real IP capture, configure a trusted proxy and a separate secret. The activity view maintains a logical seven-day window with physical cleanup on startup, hourly, and on reads/writes. Backups, WAL handling, and proxy logs must be configured separately. Do not log arbitrary headers as the user's IP or rely on IP address alone as proof of fraud.
 
-La configuración Docker/Caddy sigue necesitando verificación real en staging porque Docker no está disponible en este equipo. La revisión independiente no encontró otro bloqueo concreto para una vista previa privada monousuario en el alcance revisado; no certifica que el producto sea invulnerable.
+The Docker/Caddy configuration still requires live verification in staging because Docker was not available on this machine. Within the reviewed scope, the independent review found no other specific blocker for a single-user private preview; this does not certify that the product is invulnerable.
 
-Verificación final: 610 pruebas en 69 archivos y compilación de producción aprobadas. No se realizaron compras, despliegues ni cambios de cuentas reales.
+Final verification: 610 tests across 69 files and the production build passed. No purchases, deployments, or changes to real accounts were made.

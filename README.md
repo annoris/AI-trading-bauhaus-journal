@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/assets/banner.svg" alt="Trading Bauhaus — a private trading journal" width="100%" />
+<img src=".github/assets/banner.svg" alt="Trading Bauhaus — Trade with intention. Review with evidence." width="100%" />
 
 <br/>
 
@@ -8,297 +8,382 @@
 
 **Your trades. Your process. Your own trading journal.**
 
-A Bauhaus-inspired workspace for trade review, performance analytics, candle replay, and daily reflection. Self-host it locally or on your own server.
+A dark-first, Bauhaus-inspired trading journal for trade review, open **Edge Score v2** analytics, OHLC candle replay, daily reflection, and optional grounded AI analysis. Explore the interactive read-only showcase live on GitHub Pages or self-host the complete Next.js 15 + SQLite platform on your own machine or server.
 
-[![TypeScript](https://img.shields.io/badge/lang-TypeScript-white)](packages/core/src/types.ts)
-[![SQLite](https://img.shields.io/badge/db-SQLite-white)](#quickstart)
-[![License: Commercial / Contribution-Gated](https://img.shields.io/badge/license-Commercial%20%2F%20Contribution-white)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-101313?style=flat-square&logo=typescript&logoColor=35d074)](packages/core/src/types.ts)
+[![Next.js](https://img.shields.io/badge/Next.js-15-101313?style=flat-square&logo=nextdotjs&logoColor=f4f4f4)](apps/web/package.json)
+[![SQLite](https://img.shields.io/badge/SQLite-Isolated_Journals-101313?style=flat-square&logo=sqlite&logoColor=35d074)](#self-hosted-quickstart--configuration)
+[![CI Checks](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/ci.yml/badge.svg)](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/pages.yml/badge.svg)](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/pages.yml)
+[![License: Commercial / Contribution-Gated](https://img.shields.io/badge/License-Commercial_%2F_Solana_Gated-101313?style=flat-square)](LICENSE)
 
-[Quickstart](#quickstart) · [Screenshots](#screenshots) · [Features](#features) · [How it works](#how-it-works) · [Sponsor & Contribute](#sponsor--contribute) · [Licencia comercial · ES](docs/commercial-license.md)
+[**Live Interactive Demo (GitHub Pages)**](https://annoris.github.io/AI-trading-bauhaus-journal/) · [Visual Walkthrough](#visual-walkthrough) · [Core Capabilities](#core-capabilities) · [Self-Host Quickstart](#self-hosted-quickstart--configuration) · [Documentation](#documentation-index) · [Sponsor & License](#sponsor--contribute)
 
 </div>
 
 ---
 
-## Screenshots
+## Table of Contents
 
-**Step inside your trading workspace.** Four real screens, one connected review
-workflow. Every figure below comes from synthetic, read-only demo data.
+- [What is Trading Bauhaus?](#what-is-trading-bauhaus)
+- [Visual Walkthrough](#visual-walkthrough)
+- [Visual System, Typography & Accessibility](#visual-system-typography--accessibility)
+- [How It Works & Core Capabilities](#how-it-works--core-capabilities)
+- [Self-Hosted Quickstart & Configuration](#self-hosted-quickstart--configuration)
+- [Technical Architecture & Project Structure](#technical-architecture--project-structure)
+- [Running Locally, Validation & Screenshot Capture](#running-locally-validation--screenshot-capture)
+- [GitHub Pages Deployment](#github-pages-deployment)
+- [Documentation Index](#documentation-index)
+- [Principles, Disclaimer & Commercial License](#principles-disclaimer--commercial-license)
 
-### Dashboard — start with the whole picture
+---
 
-See your session overview, risk context, and key performance metrics together.
+## What is Trading Bauhaus?
 
-![Trading Bauhaus dashboard showing a sample review and performance metrics](docs/imagenes-proyecto/02-dashboard-demo.png)
+**Trading Bauhaus** turns raw broker executions into an auditable review terminal. Whether you inspect the zero-dependency interactive browser showcase or run the full self-hosted Next.js 15 + SQLite application locally or in Docker, every figure traces back to documented formulas, signed numbers, zero-anchored charts, and isolated storage under your own control.
 
-### Trades — give every execution context
+> **Early Release & Fictional Demo Notice:** APIs and SQLite schema may evolve before 1.0. Parser coverage varies by statement format (see [importer status](docs/importers.md)). Every figure shown in the live GitHub Pages showcase and screenshots comes from a deterministic, **fictional NQ / MNQ futures demo dataset** (51 closed trades across October–November 2026) and does not represent live brokerage returns or investment advice. Self-hosted or commercial use requires a verified contribution via Solana or a written commercial agreement ([licensing terms](#commercial-license)).
 
-Review entries, exits, fees, strategy labels, and results alongside your trade history.
+### Key Highlights
 
-![Trading Bauhaus trade history with sample entries, exits, strategies, and results](docs/imagenes-proyecto/03-operaciones-demo.png)
+- **Live Client-Side Showcase (`site/`):** A zero-dependency, buildless HTML5 / CSS3 / vanilla ES-module workspace deployed to [**GitHub Pages**](https://annoris.github.io/AI-trading-bauhaus-journal/) featuring interactive timeframe/symbol filtering, Simulated AI Journal Analyst prompts, 6-axis Edge Score v2 radar, interactive `<dialog>` OHLC candle replay, monthly P&L calendar drilldowns, scatter explorer, daily journal playbooks, prop-firm cash ROI ledger, Privacy Mask (`$••••`), and Dark/Light theme switching.
+- **Open, Auditable Math (`packages/core`):** FIFO / LIFO / weighted-average round-trip matching, R-multiple risk math, drawdown curves, Sharpe/Sortino/SQN ratios, and the pinned **Edge Score v2** formula (`Win %`, `Profit factor`, `Avg win/loss`, `Drawdown`, `Recovery`, `Consistency`).
+- **14 Documented Statement Formats & Broker Sync (`packages/importers`):** Auto-detects TradeZella, Tradervue, TradingView, MetaTrader 4/5, ThinkorSwim, IBKR (Activity + Flex), NinjaTrader, Tradovate, TopstepX, Webull, DAS Trader, plus a custom CSV mapper and read-only broker sync adapters.
+- **Isolated Per-Member SQLite & Encrypted Backups (`apps/web`):** Owner and invited-member journals live in separate SQLite databases under `JOURNAL_DATA_DIR`, with AES-256-GCM encryption at rest for saved credentials and encrypted `.tbjbackup` snapshot/restore commands.
+- **Optional BYOK AI Reflection:** Connect Anthropic or OpenAI keys on your own server for grounded session recaps, trade critiques, and Q&A over filtered journal aggregates—never third-party journal telemetry.
 
-### Calendar — revisit each trading day
+---
 
-Read daily and weekly P&L at a glance, then return to the sessions behind the numbers.
+## Visual Walkthrough
 
-![Trading Bauhaus calendar showing synthetic daily and weekly trading results](docs/imagenes-proyecto/04-calendario-demo.png)
+Every screenshot below was captured directly from the live rendered GitHub Pages showcase using headless Google Chrome (`1440×900` desktop and `390×844` `@2x` mobile) via `pnpm screenshots`.
 
-### Reports — explore the patterns in your journal
+### 1. Editorial Welcome Showcase (`#welcome`)
 
-Compare performance metrics, follow your equity curve, and inspect daily outcomes.
+<img src="docs/screenshots/01-welcome-showcase.png" alt="Trading Bauhaus editorial welcome showcase with Bauhaus orbital rings and live computed dashboard preview" width="100%" />
 
-![Trading Bauhaus reports with sample performance metrics, equity curve, and daily P&L](docs/imagenes-proyecto/05-informes-demo.png)
+- **On Screen:** A `#090b0b` obsidian canvas frames the crisp `TRADING BAUHAUS •` navigation bar (`Showcase`, `Live Workspace`, `Architecture`, `Self-Host`, `License`, `Privacy`, `Light`, `GitHub`, and `Explore Demo`), paired with the editorial headline _"An AI analyst grounded in your journal."_
+- **Highlights:** Subtle rotating orbital rings and corner coordinates (`PROCESS / 01`, `REVIEW → REFINE`) frame a live-computed terminal card rendering Net P&L (`+$1,447.08`), Win Rate (`62.7%`), Edge Score (`85.5/100`), a cumulative equity SVG curve, and a 6-axis Edge Radar directly from the synthetic NQ/MNQ dataset.
+- **Interactions:** Clicking **Explore Interactive Demo** scrolls straight into the interactive client-side terminal; **Privacy** masks every monetary value to `$••••` while preserving percentages and chart shapes.
 
-[View the welcome screen](docs/imagenes-proyecto/01-portada.png) ·
-[Capture details and regeneration](docs/imagenes-proyecto/README.md)
+---
 
-## Built for your review process
+### 2. Interactive Dashboard & Simulated AI Analyst (`#view=dashboard`)
 
-**Record every trade. Review the decisions behind it.** Connect a supported broker,
-drop in a statement export, or add trades manually. Trading Bauhaus rebuilds your
-history into round-trip trades, a P&L calendar, analytics, and a daily journal.
+<img src="docs/screenshots/02-dashboard-workspace.png" alt="Trading Bauhaus interactive dashboard showing timeframe and symbol filters, Simulated AI Journal Analyst, and 5 KPI cards including Edge Score v2 radar" width="100%" />
 
-- **Keep your journal on your server.** SQLite storage, isolated member journals,
-  and a read-only public demo.
-- **Review the whole trade.** Imports and broker sync, execution history,
-  performance reports, and a P&L calendar.
-- **Replay and reflect.** Candle replay with configured market data, structured
-  notes, voice dictation, and optional AI reflection using your chosen provider.
+- **On Screen:** Inside the read-only yellow demo banner (`51 trades · All · All Symbols`), the workspace pairs a left sidebar (`Dashboard`, `Trades`, `Calendar`, `Reports`, `Journal`, `Prop Firms`) with Window (`7D`, `30D`, `90D`, `All`) and Symbol (`All`, `NQ`, `MNQ`) filter chips.
+- **Highlights:** The **Simulated AI Journal Analyst** breaks down _Performance Read_, _Setup Pattern_, _Risk and Execution_ (showing `$2,000.00 trailing drawdown`), and _Next Review_, alongside interactive prompt chips (_Best setup edge?_, _Cost of mistakes?_, _Rule compliance?_) that dynamically cite exact filtered numbers. Below sit five executive KPI cards—including the semicircle **Trade Win %** gauge, dual **Avg Win / Loss** ratio bar, and unclipped 6-axis **Edge Score v2** radar—plus an interactive equity curve and recent executions list.
+- **Interactions:** Toggling any timeframe or symbol chip recalculates every KPI, chart, AI briefing card, and cited prompt response in real time.
 
-> ⚠️ **Early release.** APIs and schema may still move before 1.0. Parser validation varies by format; see [importer status](docs/importers.md). Original contributions require a commercial license; [licensing terms](#license) and seller details are still being finalized. Demo figures are fictional and do not represent actual trading returns.
+---
 
-## Quickstart
+### 3. Trades Explorer (`#view=trades`)
 
-Run these commands from the Trading Bauhaus project directory. The public demo is read-only; private workspaces require an owner or an owner-issued invitation.
+<img src="docs/screenshots/03-trades-explorer.png" alt="Trading Bauhaus Trades Explorer with search, setup filter, outcome chips, and sortable execution table" width="100%" />
+
+- **On Screen:** Full-width search bar, setup filter (`All Setups`, `Opening range pullback`, `VWAP reclaim/reject`, `Breakout retest`), outcome filter (`All`, `Wins`, `Losses`), four live summary cards (`Matching Trades`, `Net P&L`, `Win Rate`, `Avg Realized R`), and a sortable execution ledger.
+- **Highlights:** Every row preserves entry/exit ET timestamps, contract count, direction badge (`LONG` / `SHORT`), setup label, mistake tag badges (`late entry`, `early exit`, `slipped stop`, or `clean`), holding duration, signed realized R, signed net P&L, and a dedicated **Replay** trigger.
+- **Interactions:** Click any column header (`Date`, `Symbol`, `Duration`, `Result (R)`, `Net P&L`) to toggle ascending/descending sort, or click **Replay** on any row to launch the candlestick replay modal.
+
+---
+
+### 4. Trade Detail & OHLC Candlestick Replay Modal (`<dialog id="trade-modal">`)
+
+<img src="docs/screenshots/04-trade-replay-modal.png" alt="Trading Bauhaus native dialog modal displaying OHLC candlestick replay with TGT, ENT, and STP levels, scrubber, MAE/MFE, and playbook checklist" width="100%" />
+
+- **On Screen:** A native `<dialog>` overlay opens for the selected trade (`MNQ · LONG · 2026-11-19 (TB-DEMO-051)`), displaying Net P&L, Realized R, Entry → Exit price levels, Setup & Duration, and a synthetic 1-minute OHLC SVG candlestick chart.
+- **Highlights:** Dashed reference lines and right-hand price pills (`TGT 20999.75`, `ENT 20973.00`, `STP 20960.00`) stay clear of Y-axis grid ticks, while directional `BUY`/`SELL` and `EXIT` markers appear as replay advances past the fill bar. Below the chart sit `Restart`, `Play / Pause`, `Step +1`, an interactive range scrubber, simulated bar-by-bar unrealized net P&L readout, Est. MAE/MFE, Capture Efficiency, playbook rule checklist, and structured review notes.
+- **Interactions:** Step bar-by-bar, press `Play` for animated playback, scrub directly across all 24 bars, or dismiss cleanly with `Escape`, backdrop click, or `Close` (restoring focus to the triggering row).
+
+---
+
+### 5. Monthly P&L Calendar & Session Inspector (`#view=calendar`)
+
+<img src="docs/screenshots/05-pnl-calendar.png" alt="Trading Bauhaus P&L Calendar showing October 2026 daily heatmap, weekly totals column, and monthly insights" width="100%" />
+
+- **On Screen:** Month switcher (`October 2026` / `November 2026`), five monthly performance insight cards (`Month Net P&L +$1,032.88`, `Trading Days 22 (19G / 3R)`, `Trade Win Rate 71.0%`, `Best Session`, `Top Weekday`), and an 8-column `Sun–Sat + Week` calendar matrix.
+- **Highlights:** Profitable and losing sessions combine soft emerald/crimson tints with explicit signed totals and trade counts, while the rightmost column totals each calendar week (`W1`–`W5`).
+- **Interactions:** Clicking any shaded trading day selects that date and populates the **Session Inspector** directly below the calendar with that day's clickable trades (opening candle replay) and journal reflection.
+
+---
+
+### 6. Reports, Setup Breakdowns & Trade Scatter Explorer (`#view=reports`)
+
+<img src="docs/screenshots/06-reports-analytics.png" alt="Trading Bauhaus Reports view with seven statistical KPIs, full-width Cumulative Net P&L curve, and Daily Net P&L bars" width="100%" />
+
+- **On Screen:** Three report sub-tabs (**Overview**, **Setups & Mistakes**, **Trade Explorer**) begin on Overview with seven statistical KPI cards (`Net P&L`, `Expectancy`, `Profit Factor`, `Sharpe (Ann.)`, `SQN`, `Max Drawdown`, `Recovery Factor`), a full-width Cumulative Net P&L area curve, and a zero-anchored Daily Net P&L bar chart.
+- **Highlights:** **Setups & Mistakes** compares win rate, profit factor, average R, and net P&L per setup alongside quantified mistake impact cards; **Trade Explorer** plots Holding Duration vs. Net P&L (or Realized R) using distinct circle (win) and diamond (loss) markers.
+- **Interactions:** Hover points on the equity curve or daily bars for exact trade/day readouts, switch Y-axis metrics on the scatter plot, or click any scatter marker to launch that trade's candlestick replay.
+
+---
+
+### 7. Daily Journal & Discipline Playbook (`#view=journal`)
+
+<img src="docs/screenshots/07-journal-prop-firms.png" alt="Trading Bauhaus Daily Journal showing session selector, Pre-Market Plan, Execution Review, Lesson Carried Forward, and Playbook rule adherence" width="100%" />
+
+- **On Screen:** A chronological session selector on the left pairs with structured journal notes (`Pre-Market Plan`, `Execution Review`, `Lesson Carried Forward`, focus rating, and clickable session trades) on the right, above the 6-rule **NQ / MNQ Discipline Playbook**.
+- **Highlights:** Each playbook rule displays its live adherence percentage computed directly across the active filtered trade set. From the sidebar, **Prop Firms** opens the independent fictional cash-ROI ledger tracking evaluation expenses, fee refunds, partial payouts, and pending requests separately from trade P&L.
+- **Interactions:** Select any trading session date to inspect its notes and launch replay on its executions, or filter Prop Firms ledger entries by `All`, `Expenses`, `Refunds`, and `Payouts`.
+
+---
+
+### 8. Responsive Mobile Terminal (`390×844 @2x`)
+
+<img src="docs/screenshots/08-mobile-responsive.png" alt="Trading Bauhaus mobile layout at 390x844 showing compact header, scrollable workspace tabs, and clean single-column cards with zero horizontal overflow" width="100%" />
+
+- **On Screen:** At narrow viewports (`390×844`), the sticky header preserves `TRADING BAUHAUS •`, `Privacy`, `Light`, and the drawer toggle (`#mobile-nav-btn`), while the workspace sidebar becomes a horizontal touch-scrollable tab strip above single-column filter controls, AI analyst blocks, and KPI cards.
+- **Highlights:** Enforces `44px` minimum touch targets, `tabular-nums` alignment, and `minmax(0, 1fr)` grid sizing with verified zero horizontal overflow (`scrollWidth <= innerWidth`).
+- **Interactions:** Opening the mobile drawer sets `main.inert = true`, moves focus to the close button, traps drawer escape behavior cleanly, and lets mobile users toggle Privacy Mask or Dark/Light themes from inside the drawer.
+
+---
+
+## Visual System, Typography & Accessibility
+
+### Color Palette (`site/assets/css/tokens.css` & `apps/web/src/app/globals.css`)
+
+| Token       | Dark Mode (Default) | Light Mode | Role Across Terminal & Showcase                            |
+| :---------- | :------------------ | :--------- | :--------------------------------------------------------- |
+| `--bg`      | `#090b0b`           | `#f9f9f7`  | Primary obsidian / warm-paper canvas                       |
+| `--card`    | `#101313`           | `#fcfcfb`  | KPI cards, panels, tables, and sidebar surface             |
+| `--popover` | `#151919`           | `#fcfcfb`  | Modal controls, chart reference badges, elevated surfaces  |
+| `--border`  | `#29302e`           | `#e1e0d9`  | Crisp structural hairlines separating Bauhaus grid cards   |
+| `--fg`      | `#f4f4f4`           | `#0b0b0b`  | Primary text and numeric KPI values                        |
+| `--muted`   | `#a6afaa`           | `#52514e`  | Secondary metadata, axis labels, helper prose              |
+| `--brand`   | `#35d074`           | `#15803d`  | Primary emerald accent, active filters, Edge Radar polygon |
+| `--profit`  | `#35d074`           | `#006300`  | Positive fills, equity curve profit, winning markers       |
+| `--loss`    | `#f87171`           | `#d03b3b`  | Negative P&L, drawdown readout, losing diamond markers     |
+| `--warning` | `#facc15`           | `#a16207`  | Read-only demo banner and review mistake badges            |
+
+### Typography & Accessibility Discipline
+
+- **Geometric Sans & Monospace Stack:** Uses `Inter` / system sans (`-apple-system`, `BlinkMacSystemFont`, `"Segoe UI"`) paired with `JetBrains Mono` / system monospace for coordinates, prices, timestamps, and wallet hashes—with `font-variant-numeric: tabular-nums` on every financial readout.
+- **Non-Load-Bearing Color:** Every monetary metric ships as signed text (`+$1,447.08` / `-$330.96`), bar charts anchor to zero, wins vs. losses in scatter plots use distinct geometric shapes (circles vs. rotated diamonds), and modal states use `EXIT` / `PASS` / `BREAK` text badges.
+- **Accessible Controls:** Skip link (`#main-content`), `44px` minimum touch targets (`accessibility.css`), high-contrast `:focus-visible` outlines, `inert` background locking when the mobile drawer opens, `Escape` dismissal on dialogs, and `@media (prefers-reduced-motion: reduce)` animation dampening.
+
+---
+
+## How It Works & Core Capabilities
+
+One core primitive drives the entire Trading Bauhaus engine: a normalized **execution** (fill). Executions enter from broker sync, 14 documented statement importers, or manual entry; the round-trip engine groups fills into trades; and every analytics surface, report, and AI reflection reads from those round trips.
+
+```mermaid
+flowchart LR
+    BS["Broker Sync (22 providers)"] --> EX["Normalized Executions (deduped fills)"]
+    IM["14 Statement Formats + CSV Mapper"] --> EX
+    MN["Manual Trade Entry"] --> EX
+    EX --> RT["Round-Trip Engine (FIFO / LIFO / WAVG)"]
+    RT --> D["Dashboard & P&L Calendar"]
+    RT --> J["Daily Journal, Dictation & Playbooks"]
+    RT --> R["Reports & Open Edge Score v2"]
+    RT --> AI["Optional BYOK AI Reflection"]
+    MD["Optional Market Data / Candle CSV"] --> TR["Candle Replay & Est. MAE / MFE"]
+    RT --> TR
+    PC["Manual Prop Entries / Cash CSV"] --> PF["Prop Firm Cash ROI Ledger"]
+```
+
+### Feature Matrix
+
+| Capability                    | Details                                                                                                                                                                                                                                                                             |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Broker Sync**               | Read-only sync for Alpaca, Binance, Bybit, Coinbase, Kraken, OKX, Tradier, IBKR Flex, Hyperliquid, Questrade, Topstep, Trading212, Webull, Crypto.com, E\*TRADE, Public, Charles Schwab, TradeStation, tastytrade, Robinhood Crypto, Gemini, and KuCoin.                            |
+| **Statement Import**          | **14 documented formats** auto-detected: **TradeZella**, **Tradervue**, TradingView (paper & strategy exports), MetaTrader 4/5, ThinkorSwim, IBKR (Activity + Flex), NinjaTrader, Tradovate, TopstepX, Webull, DAS Trader, plus a custom column mapper and execution deduplication. |
+| **Round-Trip Engine**         | Flat-to-flat position cycles from raw fills using FIFO, LIFO, or weighted average per account—handling partial fills, scale-ins, flips, and futures multipliers while preserving annotations across rebuilds.                                                                       |
+| **Analytics & Edge Score v2** | Net/gross P&L, win & day-win rates, profit factor, expectancy, realized R multiples, streaks, drawdown & recovery factor, profit concentration, Sharpe/Sortino/SQN, rolling performance trends, cross-analysis matrices, and the open 0–100 **Edge Score v2**.                      |
+| **Trade Pages & Replay**      | Entry/exit markers, optional configured market-data candles (London Strategic Edge, Alpaca, OANDA, Binance, Coinbase, or OHLCV CSV upload), step/play/scrub replay, and estimated MAE/MFE.                                                                                          |
+| **Daily Journal & Playbooks** | Intraday P&L curve, autosaving Markdown notes, file attachments, browser speech dictation, foldered notebooks, and per-trade rule adherence checklists.                                                                                                                             |
+| **Optional AI Reflection**    | Bring your own **Anthropic** or **OpenAI** API key (`apps/web/.env.local` or encrypted settings). Requests run from your server to your selected provider over filtered journal aggregates—never third-party analytics.                                                             |
+| **Prop Firm Cash Ledger**     | Tracks evaluation/reset costs, fee refunds, payout requests, partial payouts, reversals, renewal reminders, and true **Cash ROI** independently from trading P&L.                                                                                                                   |
+| **Privacy & Backups**         | Instant Privacy Mask (`$••••`), CSV/PDF/PNG/JSON per-account exports, plus encrypted full-installation snapshots (`pnpm backup` / `pnpm restore` / `pnpm verify:backup`).                                                                                                           |
+
+---
+
+## Self-Hosted Quickstart & Configuration
+
+### Local Development & Production Preview
+
+Requirements: **Node.js 22+** and **pnpm 11.25.0** (pinned in [`package.json`](package.json)). First launch creates local SQLite databases automatically under `apps/web/data/`.
 
 ```bash
 pnpm install --frozen-lockfile
 pnpm dev
-# http://localhost:3000
+# App runs at http://localhost:3000
 ```
 
-Requirements: **Node 22+** and **pnpm 11.25.0** (the version pinned in `package.json`). First run creates the SQLite database and applies additive schema upgrades automatically. With the commands above, local data lives in `apps/web/data/`.
+For smooth everyday use without per-route compilation, stop the dev server and run the production preview build:
 
-For smooth everyday use or UI reviews, stop the development server and run `pnpm preview`.
-This builds the app once, then serves the optimized production version at the same address,
-using the same local data. Unlike `pnpm dev`, it does not compile each page on its first
-visit or hot-reload code edits. After code changes, stop it and rerun `pnpm preview` to
-rebuild; use `pnpm start` to reuse an existing build. Switch back to `pnpm dev` when editing.
-Run only one mode at a time, since development and production share the build directory.
+```bash
+pnpm preview
+# Builds and serves optimized app on http://localhost:3000
+```
 
-### Try it with demo data
+### Demo Data & Sample Imports
 
-On an empty dashboard, choose **Load demo data** to create a separate demo account with about 90 days of generated trades. You can remove that account later in **Accounts**.
+- On an empty private dashboard, choose **Load demo data** to populate a separate synthetic demo account (~90 days of generated trades) that can be removed later in **Accounts**.
+- Test file import using [`docs/samples/demo-trades-tradingview.csv`](docs/samples/demo-trades-tradingview.csv) under **Import → File upload** (13 symbols, March 2025 – September 2026).
+- With the local server running, execute `pnpm demo:20` (requires Python 3) to seed **Demo — 20 trades** (18 closed trades + 2 open positions with annotations).
 
-To try statement import, use [`docs/samples/demo-trades-tradingview.csv`](docs/samples/demo-trades-tradingview.csv) in **Import → File upload**. It contains synthetic TradingView paper-trading fills across 13 symbols, from March 2025 through September 2026. Review the detected format, timezone, warnings, and preview before importing.
-
-The **Prop firms** page has its own **Load demo data** button: a read-only simulation of fictional firms, evaluation costs, and payouts. That preview stays in browser memory and does not write financial records.
-
-### Preview with exactly 20 trades
-
-With the local server running, execute `pnpm demo:20` (requires Python 3). This creates the separate **Demo — 20 trades** account: 18 closed trades and 2 open positions, with synthetic entries, partial exits, fees, stops, targets, strategy labels, mistake tags, and review notes. The script prints the account URL and verifies the count. Re-running it reuses the same examples and reapplies their demo annotations; avoid editing that account if you intend to rerun the generator. It never deletes existing accounts. These are fictitious prices, not historical market data.
-
-### Docker
+### Docker Compose
 
 ```bash
 docker compose up -d
-# http://localhost:3000, owner/member/demo databases persist under ./data on the host
+# http://localhost:3000 — owner, member, and demo SQLite DBs persist under ./data
 ```
 
-### Public demo and invite-only access
+See [`deploy/compose.preview.yml`](deploy/compose.preview.yml) and [`deploy/Caddyfile.example`](deploy/Caddyfile.example) for reverse-proxy preview templates.
 
-The public **Example profile** opens a seeded, read-only journal with fictional records. Its database is isolated at `JOURNAL_DATA_DIR/public-demo/journal.db`; it persists across app restarts and never uses owner or member journals. Production requires a strong `JOURNAL_PASSWORD` for the owner; multi-user mode is on by default there. The owner can create seven-day, one-use invitation links from **Invitations** in the private sidebar and share them directly; the app does not send invitation email.
+### Environment Variables (`.env.example`)
 
-Owner records stay in `JOURNAL_DATA_DIR/journal.db`. Each invited member gets a separate database under `JOURNAL_DATA_DIR/users/<user-id>/journal.db`, so journal entries, trades, accounts, notes, and settings are private to that member. The root page and `/demo` remain public; workspace pages and data APIs require an owner or invited-member session. Set `JOURNAL_MULTI_USER=false` explicitly only for the legacy single-owner setup.
+| Env Var              | Effect                                                                                                                                                             |
+| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `JOURNAL_PASSWORD`   | Owner password; required in production self-hosted deployments.                                                                                                    |
+| `JOURNAL_MULTI_USER` | Set to `true` for 7-day, one-use invitation links and separate member SQLite databases (`JOURNAL_DATA_DIR/users/<user-id>/journal.db`); defaults on in production. |
+| `JOURNAL_SECRET`     | Encryption key source for stored broker, market-data, and AI credentials at rest (`AES-256-GCM`).                                                                  |
+| `JOURNAL_DATA_DIR`   | Directory for SQLite databases, attachments, and local `.secret` key file (defaults to `./data` relative to app process).                                          |
+| `ANTHROPIC_API_KEY`  | Owner-only Anthropic API key in multi-user mode (members save personal keys in their own journal).                                                                 |
+| `OPENAI_API_KEY`     | Owner-only OpenAI API key in multi-user mode (`gpt-4.1-mini` default or custom model ID).                                                                          |
 
-### Configuration
+### Encrypted Backup & Restore
 
-| Env var              | Effect                                                                                                   |
-| -------------------- | -------------------------------------------------------------------------------------------------------- |
-| `JOURNAL_PASSWORD`   | Owner password; required in production                                                                   |
-| `JOURNAL_MULTI_USER` | Set to `true` for owner-issued invitations and separate member databases; defaults on in production      |
-| `JOURNAL_SECRET`     | Encryption key source for credentials at rest (default: generated key file in the data dir)              |
-| `JOURNAL_DATA_DIR`   | Database, attachments, and local encryption key directory (default `./data` relative to the app process) |
-| `ANTHROPIC_API_KEY`  | Owner-only Anthropic AI key in invite-only mode; otherwise uses the configured environment key           |
-| `OPENAI_API_KEY`     | Owner-only OpenAI AI key in invite-only mode; otherwise uses the configured environment key              |
+Export individual accounts as JSON/CSV/PDF/PNG from **Settings → Data & backups**, or snapshot the entire installation (owner, all members, public demo, `.secret`, and attachments) while the app is stopped using a 20+ character `JOURNAL_BACKUP_PASSPHRASE`:
 
-Set these in the process environment or in `apps/web/.env.local` for local Next.js runs; the root [`.env.example`](.env.example) documents the values. In local development, set `JOURNAL_MULTI_USER=true` to preview invited-member access. For Docker, configure the service environment in [`docker-compose.yml`](docker-compose.yml).
-
-For AI, open **Settings → AI**, select **Anthropic** or **OpenAI**, enter your API key, and choose **Save AI settings**. OpenAI defaults to `gpt-4.1-mini`; you can enter another text model ID available to your account. Each provider keeps its own encrypted key and model choice. Existing Anthropic settings continue to work. In invite-only multi-user mode, environment keys are restricted to the owner; each member must save a personal key in their own journal and cannot consume the owner's API allowance. An OpenAI-only owner environment setup selects OpenAI automatically; with both keys present, Anthropic remains the default until the owner saves a provider choice. Environment keys override the owner's saved keys and must be changed on the server. Saving settings does not make a model request or verify account access.
-
-Deploy anywhere a Node process and a persistent disk exist: Docker, Railway, Fly.io, a small VPS. Serverless platforms without a disk need an external database, which this release does not support. SQLite on disk is the point.
-
-Optional historical market data powers estimated MAE/MFE and candle replay on closed trades. Configure a connection or upload candle CSVs in **Settings → Market data**. No provider is enabled or selected by default. See [Market data and replay](#market-data-and-replay) below and the [market data guide](docs/market-data.md) for setup, calculation definitions, and coverage limits.
-
-The **Prop firms** sidebar tracks evaluation/reset costs, refunds, payout requests, and actual receipts across your own firms and accounts. It includes cash ROI, partial payouts, reversals, renewal reminders, attachments, and generic CSV import/export. In invite-only multi-user mode, server environment credentials for market data and AI are restricted to the owner; each member configures personal credentials in their journal. See [Prop firm tracking](#prop-firm-tracking) below and the [prop firm guide and research](docs/prop-firms.md) for workflows and metric definitions.
-
-### Add a trade manually
-
-Choose **Add trade** on the dashboard to open the entry form. Select or create a manual account, enter the symbol, and add your buy and sell executions with their date, time, quantity, price, and optional fee. Save an entry alone for an open position, or include the exit for a closed trade. Use **Add execution** for partial fills or additional legs. Dates and times use your device's timezone.
-
-The optional **Notes** field supports Markdown and saves with the trade. When adding fills to an existing position, new notes append to its existing notes. After saving, the dashboard refreshes automatically. The same form is available under **Import → Manual**.
-
-### Combine accounts in a reporting currency
-
-Choose each account's currency from the dropdown when creating it. The dashboard and calendar use that currency for native amounts. To combine accounts with different currencies, open **Settings → Currency conversion**, choose a reporting currency, enter your own baseline rates, and enable conversion. Each rate means **1 unit of the account currency = the entered amount in the reporting currency**; the reporting currency itself always has a rate of 1.
-
-Conversion works entirely offline and uses no rate service or API key. Saved rates apply consistently to P&L, fees, starting balances, charts, drawdown and other monetary metrics. These are fixed-rate trading-performance figures, not live FX valuations or broker conversion amounts. Updating rates recalculates displayed history; original records remain unchanged, and trade details and reports continue using their original account data. Until all required rates are saved, mixed-currency dashboard and calendar selections show separate currency totals rather than a combined amount.
-
-## Why this exists
-
-A trading journal is a **verified record** of what you actually did and a place to reflect on that record. Trading Bauhaus keeps the journal in its configured data directory and lets you connect the AI provider you choose.
-
-- **You control your connections.** Broker, market-data, and saved AI credentials are encrypted at rest with AES-256-GCM. Your server uses them to contact the provider you configure.
-- **Your numbers are auditable.** The [Edge Score](docs/edge-score.md) is a documented, versioned formula, not a proprietary black box. Metric formulas are documented and covered by unit tests.
-- **Your journal is portable.** Export trades as CSV, journal records as JSON, and reviews as PDF or PNG. Create an encrypted installation snapshot to retain every owner/member/demo journal, encryption key file, and attachment; see [Export and backup](#export-and-backup).
-
-## How it works
-
-One primitive drives everything: a raw **execution** (a fill). Executions come in from broker sync, statement imports, or manual entry; the round-trip engine turns them into trades; every surface reads from there.
-
-```mermaid
-flowchart LR
-    BS["Broker sync (broker-sdk)"] --> EX["Executions (deduped fills)"]
-    IM["14 documented statement formats + CSV mapper"] --> EX
-    MN["Manual entry"] --> EX
-    EX --> RT["Round-trip engine (FIFO / LIFO / WAVG)"]
-    RT --> D["Dashboard + calendar"]
-    RT --> J["Daily journal + voice"]
-    RT --> R["Reports + Edge Score"]
-    RT --> AI["AI reflection"]
-    MD["Optional provider / candle CSV"] --> TR["Trade replay + estimated MAE/MFE"]
-    RT --> TR
-    PC["Manual prop entries / cash CSV"] --> PF["Prop firm cash ledger"]
+```bash
+pnpm backup -- --confirm-app-stopped /path/to/snapshot.tbjbackup
+pnpm restore -- /path/to/snapshot.tbjbackup /path/to/new-data-dir
+pnpm verify:backup
 ```
 
-## Features
+---
 
-|                          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Broker sync**          | Read-only sync for Alpaca, Binance, Bybit, Coinbase, Kraken, OKX, Tradier, IBKR Flex, Hyperliquid, Questrade, Topstep, Trading212, Webull, Crypto.com, E*TRADE, Public, Charles Schwab, TradeStation, tastytrade, Robinhood Crypto, Gemini, and KuCoin. Connect forms adapt to each supported provider.                                                                                                                                                                                                                                                    |
-| **Statement import**     | **14 documented formats**, auto-detected: **TradeZella** and **Tradervue** (CSV migration), TradingView (paper and strategy exports), MetaTrader 4 and 5, ThinkorSwim, IBKR (activity + Flex), NinjaTrader, Tradovate, TopstepX, Webull, DAS Trader, plus a column mapper for any other CSV. Matching execution records dedupe within an account; review warnings and skipped rows before committing an import. Have an export we don't recognize? Open an issue with an anonymized sample; real files are the most useful contribution this repo can get. |
-| **Round-trip engine**    | Flat-to-flat position cycles from raw fills. FIFO / LIFO / weighted-average per account. Partial fills, scale-ins, flips, futures multipliers. Annotations survive rebuilds.                                                                                                                                                                                                                                                                                                                                                                               |
-| **Analytics**            | Net/gross P&L, win and day-win rates, profit factor, expectancy, R multiples, streaks, drawdown and recovery, profit concentration, duration/time-of-day/weekday performance, per-symbol/tag/mistake/playbook breakdowns. Advanced filters on every dimension, comparison groups, and a two-way cross-analysis matrix. Reports also include rolling performance trends and a trade explorer scatter plot, with saved MAE/MFE estimates where available.                                                                                                    |
-| **Dashboard**            | P&L calendar with weekly totals, cumulative and daily P&L, gauges, the open **Edge Score v2** radar, open positions, time-of-day performance. Drag cards to rearrange, hide what you don't use, save named layouts. Calendar insights highlight daily patterns. Light/dark themes, a collapsible sidebar, and mobile navigation support smaller screens.                                                                                                                                                                                                   |
-| **Trade pages**          | Entry/exit markers and P&L labels for recorded executions, optional user-selected market candles, and trade replay. Estimated MAE/MFE, running P&L, executions, ratings, stops/targets, tags, and mistakes.                                                                                                                                                                                                                                                                                                                                                |
-| **Daily journal**        | Day stats, intraday P&L curve, autosaving Markdown notes with templates and attachments (images, PDFs). Type them or **dictate** them with browser speech recognition (no journal API key required; browser support and speech processing vary).                                                                                                                                                                                                                                                                                                           |
-| **Notebook & playbooks** | Folders, search, tags, trade links; named setups with rule checklists scored per trade, with adherence and followed-vs-broken performance in Reports.                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **AI reflection**        | Bring your own Anthropic or OpenAI API key: session recaps, per-trade critiques, "ask your journal" over your own aggregates. Key encrypted at rest; requests go from your server to the model, nowhere else.                                                                                                                                                                                                                                                                                                                                              |
-| **Routines & misses**    | Pre-, during- and post-session routines with weekday schedules and a 13-week history; a missed-opportunity log kept out of your trading metrics.                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Journal defaults**     | Configure breakeven tolerance, plus fee and stop/target rules per account and symbol; set timezone and contract multipliers for consistent calculations.                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Prop firms**           | Evaluation and reset expenses, refunds, payout requests, partial receipts, reversals, cash ROI, account phases, renewal reminders, attachments, and generic cash CSV import/export. Separate from trade P&L.                                                                                                                                                                                                                                                                                                                                               |
-| **Privacy & export**     | Privacy mode masks every monetary value (charts keep their shape) and persists across tabs. Trades export to CSV, reviews to PDF or PNG, and journal records to JSON; credentials, candle datasets, and attachment binaries are excluded from that export.                                                                                                                                                                                                                                                                                                 |
+## Technical Architecture & Project Structure
 
-IBKR broker sync uses **Settings → General → Default import timezone** for Flex
-timestamps without an offset. Existing synced accounts with unknown or different
-timezone provenance require recovery into a separate account; see
-[IBKR timezone recovery](docs/importers.md#ibkr-broker-sync-and-timezone-recovery).
+```text
+AI-trading-bauhaus-journal/
+├── site/                                 # Zero-dependency GitHub Pages interactive showcase
+│   ├── .nojekyll                         # Serves static files directly on GitHub Pages
+│   ├── index.html                        # Semantic HTML5 showcase, 6-view terminal & <dialog> replay
+│   └── assets/
+│       ├── css/{tokens,styles,workspace,accessibility}.css
+│       ├── images/favicon.svg
+│       └── js/{demo-data,charts,app}.js  # Deterministic dataset, custom SVGs & interactive controller
+├── apps/web/                             # Self-hosted Next.js 15 + Drizzle + SQLite full application
+│   ├── src/app/                          # App Router pages & guarded API routes
+│   ├── src/components/                   # UI primitives, ECharts/Recharts wrappers, Solana gate
+│   ├── src/db/                           # SQLite schema & isolated DB bootstrapper
+│   └── src/server/                       # Auth, invitations, importers, AI, Solana verifier, demo seed
+├── packages/
+│   ├── core/                             # @trading-bauhaus/journal-core (pure calculations & Edge Score v2)
+│   └── importers/                        # @trading-bauhaus/journal-importers (14 statement format parsers)
+├── docs/                                 # English technical documentation, samples & screenshot suite
+│   ├── screenshots/                      # 8 live Chrome CDP PNG screenshots + README.md
+│   └── samples/                          # Synthetic CSV & MT5 HTML test samples
+├── scripts/
+│   ├── serve-pages.mjs                   # Local HTTP preview server for site/ (127.0.0.1:4176)
+│   ├── validate-pages.mjs                # Static HTML/CSS/JS/README/screenshot integrity validator
+│   ├── capture-screenshots.mjs           # Headless Chrome CDP screenshot & smoke-check suite
+│   ├── check-security-boundaries.mjs     # Static client/server isolation & API guard check
+│   ├── check-licenses.mjs                # Dependency SPDX license allowlist gate
+│   └── {backup,restore,verify}-*.mjs     # Encrypted installation snapshot & verification CLI
+├── deploy/                               # Preview Docker Compose, env example & Caddyfile template
+├── .github/workflows/
+│   ├── ci.yml                            # Full monorepo CI (audit, licenses, pages, prettier, tsc, tests, build)
+│   └── pages.yml                         # Automated GitHub Pages validation & deployment workflow
+└── package.json                          # Root pnpm workspace scripts & repository metadata
+```
 
-## Market data and replay
+### Using Internal Domain Packages
 
-Trade pages initially show recorded fills. Opening a trade or Reports does **not** automatically request market history.
-
-Choose an optional connection in **Settings → Market data**: **London Strategic Edge, Alpaca, OANDA, Binance, Coinbase**, or **Market data CSV**. Provider access, instruments, feeds, and quotas depend on your account; the journal ships no credentials or provider history. Candle uploads use their own OHLCV format, separate from trade statement imports.
-
-On a closed trade, choose the source, exact symbol, and resolution, then select **Load market data**. Replay offers restart, play/pause, stepping, speed, and scrubbing. Confirm the instrument, price basis, and currency before calculating monetary excursions; derivatives also need a contract multiplier.
-
-**MAE/MFE are estimates from observed candles and executions**, not tick-perfect values. They include scaling and partial exits, exclude fees and currency conversion, and remain unavailable when coverage or required inputs are missing. Option-contract history and reversing fills spanning multiple position cycles are currently unsupported. Saved valid estimates can be explored in **Reports → Trade explorer**; batch calculation is an explicit action and can be stopped. Recorded fills and realized P&L remain unchanged.
-
-See the [market data guide](docs/market-data.md) for provider configuration, CSV schema, replay behavior, and calculation limits.
-
-## Prop firm tracking
-
-Track evaluation, verification, funded, instant-funded, and live accounts across your own firms. Keep resets and phase changes as linked records, with expenses, refunds, supporting attachments, and an audit history.
-
-Payout requests and approvals are separate from actual receipts. Partial payments and reversals flow into cash totals on their receipt dates; **cash ROI uses money received and costs paid**, not nominal account size or trading P&L. Currency totals stay separate. Renewal reminders appear in the tracker; they do not charge money or send background notifications.
-
-Use the documented generic CSV template to preview and import expenses, refunds, and money already received. Export filtered cash movements to CSV or the full tracker records with the journal's JSON export. This is a local tracker, with no automatic bank or prop firm sync and no payout-eligibility engine. See the [prop firm guide](docs/prop-firms.md) for workflows, formulas, and import rules.
-
-## Migrating from TradeZella or Tradervue
-
-Export a supported CSV and open **Import → File upload**. Choose the destination account and timezone, inspect the detected format and preview, then import. Unknown headers go to a column mapper; review warnings, errors, and skipped rows before saving.
-
-**Settings → General** has separate **Display timezone** and **Default import timezone** fields. Use the broker statement's zone for imports and your preferred zone for trade times, analytics and journal days. Each file can override its statement timezone; the preview shows converted execution times before saving. Existing timestamps are unchanged by settings edits. See [timezone setup and correcting earlier imports](docs/importers.md#statement-and-display-timezones).
-
-- **TradeZella:** trade-level rows become one entry and one exit at the reported average prices. Where the reconciliation check permits it, the difference between price-implied P&L and stated net P&L is folded into fees to preserve the stated result to the cent. Large discrepancies, including contract-multiplier cases, can skip that reconciliation; compare totals with your source export.
-- **Tradervue:** the supported generic fill CSV imports executions directly, including the documented fee fields. It does not need trade-level reconstruction.
-- **Reconstruction limits:** an average-price trade export cannot recover original partial fills or the intratrade price path. MetaTrader 5 deal reports and TradingView strategy exports have their own source and validation rules. The currently documented MT5 formats are HTML/CSV, not XLSX.
-
-See [supported formats and validation status](docs/importers.md). Have an export we do not recognize? An anonymized sample and its export settings help us validate support.
-
-## Export and backup
-
-**Settings → Data & backups → Full backup (JSON)** exports the currently signed-in journal (owner or member): accounts (without credentials), executions, trades and annotations, daily journal entries, notebook folders and notes, templates, playbooks and rule checks, routines, missed trades, journal defaults, prop firm records and their audit history, and attachment metadata. It does not combine other members' journals or the public demo database. Trades also export as CSV; review exports support PDF and PNG.
-
-JSON export excludes credentials, candle datasets, saved market-data estimates, and attachment binaries. It remains an account-level export. For a full installation snapshot, stop the app and run `pnpm backup -- --confirm-app-stopped <new-backup-file>` with a unique `JOURNAL_BACKUP_PASSPHRASE` of at least 20 characters supplied from a secret manager. The encrypted archive includes SQLite online snapshots for owner, every member and the public demo, plus other regular files in `JOURNAL_DATA_DIR` (including `.secret` and attachment BLOBs). Put the archive in a restricted off-host location; the command does not upload or schedule it. Preserve `JOURNAL_SECRET`, the owner password, proxy token and public origin in a separate secret manager.
-
-Restore with `pnpm restore -- <encrypted-backup-file> <new-data-directory>`. It refuses to overwrite an existing directory, validates the encrypted stream, and runs SQLite `quick_check` on every restored database. The new directory is not activated automatically; validate it, configure the original external secrets and plan a stopped cutover. Plaintext snapshot files are created temporarily in `JOURNAL_DATA_DIR` with restrictive permissions and removed on completion; run on encrypted storage because ordinary file deletion is not secure erasure. Keep original candle CSVs separately if they are not in SQLite.
-
-Default locations: `apps/web/data/` for the pnpm commands above, or the host's `./data` bind mount for `docker-compose.yml`. The preview Compose file uses the named `journal_data` volume; it survives container recreation, but `docker compose down -v` deletes it. Back up that entire volume separately before removing it. `JOURNAL_DATA_DIR` overrides the app's path.
-
-## Architecture and improvement priorities
-
-See [architecture and trader workflow priorities (Spanish)](docs/architecture.md) for module boundaries and trading workflow improvements, and the [launch roadmap](docs/launch-roadmap.md) for support, billing readiness, backups, deployment, and launch validation. The Trades table includes net result in R and strategy names; planned risk and mistake tags are available through Columns.
-
-## Project structure
-
-| Package                                    | What it is                                                                                                   |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| [`packages/core`](packages/core)           | `@trading-bauhaus/journal-core`: internal trading calculations and analytics. No IO or framework dependency. |
-| [`packages/importers`](packages/importers) | `@trading-bauhaus/journal-importers`: internal statement parsers and migration importers.                    |
-| [`apps/web`](apps/web)                     | The app: Next.js 15, SQLite (Drizzle), Tailwind, Recharts/ECharts, charting, TanStack Table, and AI SDK.     |
-
-### Internal domain packages
-
-The core and importer packages are private parts of this workspace and are not published to npm. The app imports them directly through workspace names:
+The domain packages can be imported directly within the workspace without IO or framework coupling:
 
 ```ts
 import { buildRoundTrips, computeMetrics, computeEdgeScore } from "@trading-bauhaus/journal-core";
 import { parseAuto } from "@trading-bauhaus/journal-importers";
 
 const parsed = parseAuto(csvText, { timeZone: "America/New_York" });
-if (!parsed) throw new Error("Unrecognized format: offer a column mapping.");
-if (parsed.errors?.length) throw new Error(parsed.errors.join("\n"));
-if (parsed.needsSymbol) throw new Error("Supply the missing symbol and parse again.");
-// Review parsed.warnings and parsed.skippedRows before saving.
+if (!parsed) throw new Error("Unrecognized format: open column mapper.");
+
 const executions = parsed.executions.map((fill) => ({
   ...fill,
   id: crypto.randomUUID(),
   accountId: "my-account",
   source: "import" as const,
 }));
+
 const trades = buildRoundTrips(executions, { method: "fifo" });
 const metrics = computeMetrics(trades, { timeZone: "America/New_York" });
 const edge = computeEdgeScore(metrics);
 ```
 
+---
+
+## Running Locally, Validation & Screenshot Capture
+
+### Preview & Validate the GitHub Pages Showcase (`Node >= 22`, zero install needed)
+
 ```bash
-pnpm test          # tests for the core, importers, and app logic
-pnpm typecheck     # all packages
-pnpm format:check  # prettier
-pnpm build         # production build
+# 1. Start the local static showcase server (http://127.0.0.1:4176)
+pnpm pages:serve
+
+# 2. Run static validation (HTML IDs/anchors, CSS url(), JS syntax, 8 screenshots, README links)
+pnpm pages:check
+
+# 3. Regenerate all 8 screenshots in docs/screenshots/ via headless Chrome CDP
+pnpm screenshots
 ```
 
-## Principles
+### Full Monorepo Verification Suite
 
-No external journal analytics or tracking service. The self-hosted journal stands alone. Sanctioned APIs only.
+```bash
+pnpm install --frozen-lockfile
+pnpm security:check   # Client/server import boundaries & guarded API route checks
+pnpm license:check    # Dependency license allowlist verification
+pnpm format:check     # Prettier formatting across workspace
+pnpm typecheck        # TypeScript across core, importers, and apps/web
+pnpm test             # Vitest test suite (72 test files, 628 tests)
+pnpm build            # Security boundary check + Next.js production build
+```
 
-External requests serve the features you choose: broker sync, market history, and Anthropic- or OpenAI-powered reflection. Browser dictation may use the browser vendor's speech service ([browser speech recognition behavior](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)). Next.js has its own [framework telemetry setting](https://nextjs.org/telemetry); set `NEXT_TELEMETRY_DISABLED=1` to disable it when running or building the app.
+---
 
-## Disclaimer
+## GitHub Pages Deployment
 
-Trading Bauhaus reports and analyzes what your broker reports. Nothing it computes or generates (including AI recaps, critiques, and answers) is investment advice, and no metric predicts future results. Verify important numbers against your broker's own statements.
+The interactive showcase in [`site/`](site/) is completely static and deploys automatically via GitHub Actions:
 
-## Sponsor & Contribute
+1. **Continuous Validation ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)):** Runs `pnpm pages:check` alongside `pnpm audit`, `pnpm license:check`, `pnpm format:check`, `pnpm typecheck`, `pnpm test`, and `pnpm build` on every push and pull request.
+2. **Automated Pages Publish ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)):** Validates `site/` with `node scripts/validate-pages.mjs`, uploads the `site` artifact, and deploys directly to **`https://annoris.github.io/AI-trading-bauhaus-journal/`** on every push to `main`.
 
-Trading Bauhaus is sustained through direct community contributions and commercial licensing. To support ongoing development, broker integrations, and analytics improvements—or to fulfill the contribution requirement under our license—you can contribute directly via **Solana (SOL / USDC-SPL)**:
+---
+
+## Documentation Index
+
+- **Architecture & Design:** [Architecture & Priorities](docs/architecture.md) · [Bauhaus Visual System](docs/bauhaus-design.md) · [Design Tokens](docs/design.md) · [Secure Code Structure](docs/secure-code-structure.md)
+- **Analytics & Domain Specs:** [Edge Score v2 Formula](docs/edge-score.md) · [Calendar Insights](docs/calendar-insights.md) · [Performance Trends](docs/performance-trends.md) · [Trade Explorer](docs/trade-explorer.md) · [AI Account & Filter Scope](docs/ai-scope.md)
+- **Imports, Market Data & Prop Tracking:** [Importers & Timezone Recovery](docs/importers.md) · [Market Data & Candle Replay](docs/market-data.md) · [Prop Firm Cash Tracker](docs/prop-firms.md)
+- **Access, Security & Operations:** [Access & Private Activity](docs/access-and-activity.md) · [One-Time Invitations](docs/invitations.md) · [Hosted Data & Security Plan](docs/hosted-data-security-plan.md) · [Independent System Review](docs/independent-system-review.md) · [Launch Roadmap](docs/launch-roadmap.md) · [Launch Kit](docs/launch-kit.md)
+- **Visuals & Licensing:** [Screenshot Suite Guide](docs/screenshots/README.md) · [Commercial & Contribution License Guide](docs/commercial-license.md) · [Changelog](CHANGELOG.md) · [Security Policy](SECURITY.md)
+
+---
+
+## Principles, Disclaimer & Commercial License
+
+### Principles
+
+No external journal analytics or telemetry tracking service. Your self-hosted journal stands alone and contacts external APIs only for broker sync, user-configured market history, or optional Anthropic/OpenAI reflection. Set `NEXT_TELEMETRY_DISABLED=1` to disable Next.js framework telemetry.
+
+### Disclaimer
+
+Trading Bauhaus reports and analyzes the execution records you provide. Nothing it computes or generates (including simulated demo briefings, AI recaps, critiques, or answers) is investment advice, and no historical metric predicts future trading results. Always verify important numbers against your broker statements.
+
+### Sponsor & Contribute
+
+Trading Bauhaus is sustained through direct community contributions and commercial licensing. Support development or fulfill self-hosted license activation via **Solana (SOL / USDC-SPL)**:
 
 - **Official Solana Wallet:** `3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`
-- **Explorer / Verification:** [View on Solscan](https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm)
-- **GitHub Funding metadata:** [`.github/FUNDING.yml`](.github/FUNDING.yml)
+- **On-Chain Explorer:** [View on Solscan](https://solscan.io/account/3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm)
+- **GitHub Funding Metadata:** [`.github/FUNDING.yml`](.github/FUNDING.yml)
 
-## License
+### Commercial License
 
-Trading Bauhaus is an original software work created from scratch and owned 100% exclusively by Trading Bauhaus (Annoris). It is distributed under the **Trading Bauhaus Source-Available Commercial & Contribution-Gated License** (`LicenseRef-TradingBauhaus-Commercial-1.0`, specified as `SEE LICENSE IN LICENSE` in [`package.json`](package.json)).
+Trading Bauhaus is an original software work created from scratch and owned 100% exclusively by **Trading Bauhaus (Annoris)**. It is distributed under the **Trading Bauhaus Source-Available Commercial & Contribution-Gated License** (`LicenseRef-TradingBauhaus-Commercial-1.0`, specified as `SEE LICENSE IN LICENSE` in [`package.json`](package.json)).
 
-Usage, self-hosted deployment, or commercial utilization requires either a verified contribution to the official Solana wallet (`3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm`) or a written commercial license agreement with the owner. Unauthorized redistribution, resale, public SaaS hosting, or bypassing payment/contribution gates is strictly prohibited. See [LICENSE](LICENSE) and the [purchase and licensing guide (Spanish)](docs/commercial-license.md) for complete terms.
+Installation, self-hosted deployment, or commercial utilization requires either a verified contribution to `3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm` or a written commercial license agreement with the owner. Unauthorized redistribution, resale, public SaaS hosting, or circumvention of payment/contribution gates is strictly prohibited. See [`LICENSE`](LICENSE) and the [Commercial License Guide](docs/commercial-license.md) for complete terms.

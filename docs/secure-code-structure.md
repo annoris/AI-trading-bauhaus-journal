@@ -1,120 +1,120 @@
-# Estructura y preparación de Bauhaus
+# Bauhaus Code Structure and Readiness
 
-Estado del documento: 3 noviembre 2026. La edición actual admite acceso del propietario e invitaciones con una DB SQLite separada por miembro; esto no la convierte en un SaaS con organizaciones ni es una certificación de seguridad.
+Document status: November 3, 2026. The current edition supports owner access and invitations with a separate SQLite DB per member; this does not make it an organization-based SaaS or constitute a security certification.
 
-## Decisión de arquitectura
+## Architecture decision
 
-Mantener el monolito modular Next.js; no introducir microservicios sin una necesidad medida. Los controles se ejecutan en el servidor. HTML/JS/rutas que recibe un navegador son observables; no deben contener claves o permisos decisivos. Una interfaz oculta no es una barrera de seguridad.
+Keep the modular Next.js monolith; do not introduce microservices without a measured need. Security controls execute on the server. HTML, JS, and routes delivered to a browser are observable; they must never contain keys or authoritative permission checks. A hidden UI element is not a security boundary.
 
-Estructura actual organizada:
+Current organized structure:
 
 ```text
 apps/web/src/
-  app/                       páginas y adaptadores HTTP
-    api/                     validación de entrada → servicio → respuesta
-  components/                presentación; sin acceso a base/secretos
-  lib/                       utilidades compartidas, tipos y hooks sin secretos
+  app/                       pages and HTTP adapters
+    api/                     input validation → service → response
+  components/                presentation; no database or secret access
+  lib/                       shared utilities, types, and hooks without secrets
   server/
     security/
-      auth.ts                firma, validación y expiración de sesiones locales
-      request.ts             origen de escrituras y límite de login local
-      http.ts                guard API, errores y respuestas privadas
-    auth.ts                  re-export compatible
-    api.ts                   re-export compatible
-    request-security.ts      re-export compatible
-    market-data/             proveedores y transporte limitado
-    settings.ts              configuración y secretos cifrados locales
-    ...                      lógica existente, pendiente de separar por dominios
-  db/                        esquema SQLite actual y acceso exclusivo de servidor
+      auth.ts                signing, validation, and local session expiration
+      request.ts             write-request origin checks and local login rate limit
+      http.ts                API guard, error handling, and private responses
+    auth.ts                  backward-compatible re-export
+    api.ts                   backward-compatible re-export
+    request-security.ts      backward-compatible re-export
+    market-data/             providers and bounded HTTP transport
+    settings.ts              configuration and local encrypted secrets
+    ...                      existing logic, pending domain separation
+  db/                        current SQLite schema and server-only access
 packages/
-  core/                      cálculos puros de trading
-  importers/                 parsers de formatos
+  core/                      pure trading calculations
+  importers/                 statement format parsers
 scripts/
   check-security-boundaries.mjs
   benchmark-journal.py
 deploy/
-  compose.preview.yml        preview privada por invitación, SQLite en volumen persistente
-  Caddyfile.example          HTTPS frontal y límite de cuerpos
+  compose.preview.yml        invite-only private preview, SQLite on persistent volume
+  Caddyfile.example          frontend HTTPS termination and request-body limit
 ```
 
-No mover todos los archivos por estética: mantener imports compatibles y aislar primero las responsabilidades sensibles. El frontend sigue igual.
+Do not move all files purely for aesthetics: preserve compatible imports and isolate sensitive responsibilities first. The frontend remains unchanged.
 
-## Escalado posterior para organizaciones/SaaS
+## Future scaling for organizations/SaaS
 
-El modelo por invitación y la DB separada por miembro ya existen. El diseño siguiente es una posible evolución para organizaciones con datos compartidos y despliegue SaaS; no describe capacidades actuales.
+The invitation model and per-member separate DB already exist. The design below outlines a possible future evolution for organizations with shared data and SaaS deployment; it does not describe current capabilities.
 
 ```text
 server/
-  security/                  identidad, sesión, autorización, cuotas y auditoría
+  security/                  identity, session, authorization, quotas, and audit
   modules/
-    accounts/                servicios y repositorios de cuentas y credenciales
-    trading/                 trades, ejecuciones, importación y deduplicación
-    journal/                 notas, carpetas, plantillas y adjuntos
-    discipline/              rutinas y verificaciones
-    prop-firms/              fases, gastos, pagos, recibos y auditoría
-    analytics/               agregados, filtros y exportación por propietario
-    integrations/            brokers, IA y proveedores externos
-  storage/                   objetos privados y firmas temporales
-  jobs/                      workers con propietario e idempotencia
-  db/                        PostgreSQL, transacciones, migraciones y RLS
+    accounts/                account and credential services and repositories
+    trading/                 trades, executions, import, and deduplication
+    journal/                 notes, folders, templates, and attachments
+    discipline/              routines and rule checks
+    prop-firms/              phases, expenses, payouts, receipts, and audit
+    analytics/               aggregates, filters, and owner-scoped exports
+    integrations/            brokers, AI, and external providers
+  storage/                   private objects and short-lived signed URLs
+  jobs/                      owner-scoped, idempotent workers
+  db/                        PostgreSQL, transactions, migrations, and RLS
 ```
 
-Para esa evolución, el contrato seguirá siendo `ruta → validar → autenticar → autorizar recurso → servicio → repositorio con propietario → respuesta pública mínima`. La identidad debe derivarse de la sesión y jamás de un campo enviado por el navegador. Incluso si un atacante conoce el ID de un recurso ajeno, la consulta debe rechazarlo. Usuarios normales sin privilegios de migración ni bypass de RLS.
+For that evolution, the request contract remains `route → validate → authenticate → authorize resource → service → owner-scoped repository → minimal public response`. Identity must be derived from the session and never from a browser-supplied field. Even if an attacker knows another user's resource ID, the query must reject it. Normal application users must have no migration privileges and no RLS bypass.
 
-Para cada dominio, el repositorio recibe contexto de usuario verificado. La autorización abarca consultas, mutaciones, archivos, settings, exportaciones, jobs y cache. No basta añadir user_id a trades: reglas, notas, proveedores y rutinas también necesitan propietario. RLS, políticas de escritura y relaciones compuestas aportan una segunda barrera.
+For every domain, the repository receives a verified user context. Authorization covers queries, mutations, files, settings, exports, jobs, and caches. Adding `user_id` only to `trades` is insufficient: rules, notes, providers, and routines also require an owner. RLS, write policies, and composite foreign keys provide a second barrier.
 
-## Hallazgos y acciones
+## Findings and actions
 
-| Área           | Situación                                                                                                                   | Acción                                                                                                                                         |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Identidades    | Propietario con `JOURNAL_PASSWORD`; miembros por invitación con contraseña propia, sesión revocable y control de suspensión | Añadir verificación de buzón y recuperación/MFA si se requieren; no hay email automático                                                       |
-| Datos          | DB del propietario, DB distinta por miembro y DB pública de demo de solo lectura                                            | Para organizaciones compartidas, diseñar pertenencia/roles por tenant y migrar a PostgreSQL con propietario en todas las tablas privadas y RLS |
-| Consultas      | queryTrades filtra y convierte muchos registros en memoria                                                                  | Paginación y agregados por fecha/cuenta/usuario; conservar semántica de zona horaria y moneda                                                  |
-| Adjuntos       | BLOB dentro de SQLite, validación de firma y 8 MB                                                                           | Objetos privados, cuarentena, cuotas y enlaces temporales autorizados                                                                          |
-| IA             | Credenciales backend cifradas; claves de entorno solo owner en multi-user                                                   | Confirmar consentimiento, límites de gasto, timeout y datos enviados al proveedor en cada flujo                                                |
-| Market data    | URLs fijas por proveedor; redirects rechazados, cache limitada                                                              | Conservar destinos controlados; no añadir URL arbitraria sin política egress/SSRF; datasets privados separados                                 |
-| Secretos       | Clave de fallback junto a datos                                                                                             | Para nube, clave persistente separada, backups independientes; evitar variables públicas                                                       |
-| Copias         | CLI manual cifra snapshots consistentes de `JOURNAL_DATA_DIR` y verifica restauración SQLite                                | Configurar retención cifrada off-host, custodia separada de secretos y simulacro completo en staging                                           |
-| Auth/HTTP      | Seguridad antes repartida en tres archivos                                                                                  | Centralizada en server/security con entradas compatibles y pruebas                                                                             |
-| Dependencias   | Audit inicial reportó 19 avisos (2 críticos)                                                                                | Corregido: Next.js 15.5.27, PostCSS 8.5.26, source-map-js 1.2.2 y undici 7.29.1. Audit de producción posterior: 0 avisos conocidos             |
-| Contenedor     | Usuario node no root ya existente                                                                                           | Preparado compose preview con filesystem de solo lectura, sin capacidades, sin privilegios nuevos y puerto loopback                            |
-| Paquete Docker | Ya excluía datos y .env                                                                                                     | Añadidas exclusiones de outputs, backups, claves y artefactos de compilación                                                                   |
-| Public assets  | Landing con imágenes de demostración                                                                                        | En producción solo marketing aprobado; nunca copiar journal/adjuntos/credenciales a public                                                     |
+| Area           | Status                                                                                              | Action                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Identities     | Owner with `JOURNAL_PASSWORD`; invited members with own password, revocable session, and suspension | Add mailbox verification and recovery/MFA if required; no automated email delivery exists                                               |
+| Data           | Owner DB, separate DB per member, and read-only public demo DB                                      | For shared organizations, design per-tenant membership/roles and migrate to PostgreSQL with owner scoping on all private tables and RLS |
+| Queries        | `queryTrades` filters and converts many records in memory                                           | Add pagination and aggregates by date/account/user; preserve timezone and currency semantics                                            |
+| Attachments    | BLOB inside SQLite, signature validation, and 8 MB limit                                            | Move to private object storage, quarantine scanning, quotas, and authorized temporary links                                             |
+| AI             | Encrypted backend credentials; env keys owner-only in multi-user mode                               | Confirm consent, spending caps, timeouts, and exact payload sent to the provider in each flow                                           |
+| Market data    | Fixed URLs per provider; redirects rejected, bounded cache                                          | Keep controlled destinations; never add arbitrary URLs without egress/SSRF policy; isolate private datasets                             |
+| Secrets        | Fallback key stored next to data                                                                    | For cloud deployments, keep persistent key separate with independent backups; avoid public env vars                                     |
+| Backups        | Manual CLI encrypts consistent snapshots of `JOURNAL_DATA_DIR` and verifies SQLite restore          | Configure encrypted off-host retention, separate secret custody, and full staging restore drill                                         |
+| Auth/HTTP      | Security logic previously split across three files                                                  | Centralized under `server/security` with backward-compatible entrypoints and tests                                                      |
+| Dependencies   | Initial audit reported 19 advisories (2 critical)                                                   | Fixed: Next.js 15.5.27, PostCSS 8.5.26, source-map-js 1.2.2, and undici 7.29.1. Subsequent production audit: 0 known advisories         |
+| Container      | Non-root `node` user already present                                                                | Prepared `compose.preview.yml` with read-only root filesystem, dropped capabilities, `no-new-privileges`, and loopback port             |
+| Docker context | Already excluded data and `.env`                                                                    | Added exclusions for build outputs, backups, keys, and compilation artifacts                                                            |
+| Public assets  | Landing page with demo images                                                                       | In production, serve only approved marketing assets; never copy journals, attachments, or credentials into `public`                     |
 
-Los avisos de dependencias indican versiones afectadas, no prueban explotación de esta instalación. El parche se realiza sin cambiar a una versión mayor de Next.js.
+Dependency advisories indicate affected package versions rather than proving exploitability in this installation. Patching was completed without upgrading to a new major version of Next.js.
 
-## Comprobaciones automáticas
+## Automated checks
 
-`pnpm security:check` inspecciona imports locales estáticos/dinámicos literales, ignora imports solo de tipos, recorre dependencias de entradas `use client` y falla si alcanzan `server/` o `db/`. Detecta nombres de variables públicas de secretos y exports API de variables que evitan el wrapper común. No cubre código generado, paquetes externos, imports calculados ni todos los estilos posibles de exportación; no es un pentest ni un scanner de secretos completo.
+`pnpm security:check` inspects literal static and dynamic local imports, ignores type-only imports, walks dependencies from `use client` entrypoints, and fails if any reach `server/` or `db/`. It detects secret names in public client variables and API variable exports that bypass the shared wrapper. It does not cover generated code, external packages, computed imports, or every possible export pattern; it is neither a penetration test nor a complete secret scanner.
 
-Antes de cada publicación: security:check, suite de pruebas, build y audit de dependencias. En SaaS además pruebas con usuarios A/B y jobs/pool reutilizados; exportación y adjunto ajeno deben fallar, incluso con IDs válidos. Probar restauración y migración antes de modificar producción.
+Before every release: run `security:check`, the test suite, the production build, and dependency audit. In a SaaS model, also run A/B user isolation tests and reused job/pool tests; cross-user exports and attachment reads must fail even with valid IDs. Test backup restoration and migrations before modifying production.
 
-## Despliegue previo a SaaS
+## Pre-SaaS deployment
 
-`deploy/compose.preview.yml` es una preview privada de un solo host, con owner y miembros por invitación en bases SQLite separadas. Requiere contraseña, clave de cifrado y origen público. Expone solo 127.0.0.1:3000; el proxy HTTPS del host publica 443. El volumen `journal_data` mantiene la DB del owner, las DB de `users/` y la DB pública de `public-demo/` entre recreaciones del contenedor. Compose no configura copias fuera del host; `docker compose down -v` elimina el volumen. Este despliegue no proporciona aislamiento SaaS entre organizaciones.
+`deploy/compose.preview.yml` provides a single-host private preview with the owner and invited members in separate SQLite databases. It requires an owner password, encryption key, and public origin. It binds only `127.0.0.1:3000`; the host's HTTPS reverse proxy publishes port 443. The `journal_data` volume persists the owner DB, `users/` DBs, and the `public-demo/` DB across container recreations. Compose does not configure off-host backups; `docker compose down -v` deletes the volume. This deployment does not provide multi-tenant SaaS isolation between organizations.
 
-La plantilla Caddy limita cuerpos a 10 MB: coordinar importaciones grandes con límites de aplicación antes de habilitarlas. No abrir puertos DB. Sin Docker disponible en este entorno no se ha probado la imagen/compose en ejecución; verificar en staging, incluido permiso de volumen, tmpfs, recuperación y health checks. No se activaron configuraciones cloud ni se generaron contraseñas del usuario.
+The Caddy template caps request bodies at 10 MB: align large imports with application limits before enabling them. Never expose database ports publicly. Because Docker is unavailable in this environment, the image and Compose stack have not been runtime-tested here; verify them in staging, including volume permissions, `tmpfs`, recovery, and health checks. No cloud resources were provisioned and no user passwords were generated.
 
-Plan completo de crecimiento y migración: [hosted-data-security-plan.md](hosted-data-security-plan.md).
+Full growth and migration plan: [hosted-data-security-plan.md](hosted-data-security-plan.md).
 
-## Orden de trabajo para una oferta SaaS
+## Work sequence for a SaaS offering
 
-1. Configurar backup/retención off-host y ensayar restauración completa en staging aislado; los comandos cifrados manuales ya están implementados y verificados localmente.
-2. Identidad individual y matriz de permisos.
-3. PostgreSQL, propietarios, relaciones y RLS; migrar con conteos/hashes y P&L comparados.
-4. Repositorios por dominio y autorización en cada ruta/job/cache.
-5. Objetos privados, cuotas, importaciones en worker y estadísticas incrementales.
-6. Sesiones revocables, límites compartidos, observabilidad sin secretos y alertas.
-7. Prueba de carga y revisión de seguridad externa; publicación gradual y seguimiento.
+1. Configure off-host backup/retention and rehearse a full restore in isolated staging; manual encrypted commands are already implemented and locally verified.
+2. Individual identity and permission matrix.
+3. PostgreSQL, owner columns, foreign-key relationships, and RLS; migrate with verified row counts, hashes, and P&L reconciliation.
+4. Domain-scoped repositories and authorization across every route, job, and cache.
+5. Private object storage, quotas, worker-based imports, and incremental statistics.
+6. Revocable sessions, shared rate limits, secret-free observability, and alerting.
+7. Load testing and external security review; gradual rollout and monitoring.
 
-El producto actual puede dar acceso a miembros invitados con DB separada; este orden aplica a una oferta SaaS con organizaciones y recursos compartidos. No hay envío de invitaciones por email: el propietario comparte los enlaces manualmente. La página de invitaciones no verifica control del buzón, y el enlace es una credencial de portador. La demo pública es read-only, sintética y separada en `JOURNAL_DATA_DIR/public-demo/journal.db`.
+The current product can grant access to invited members with separate DBs; the sequence above applies to a multi-tenant SaaS offering with shared organizations and resources. There is no automated email invitation delivery: the owner shares links manually. The invitation page does not verify mailbox ownership, and each link is a bearer credential. The public demo is read-only, synthetic, and isolated at `JOURNAL_DATA_DIR/public-demo/journal.db`.
 
-## Resultados históricos de preparación (octubre de 2026)
+## Historical readiness results (October 2026)
 
-Seguridad centralizada sin romper los imports existentes. La comprobación de límites de frontend/backend se ejecuta automáticamente con `pnpm build` y en la construcción Docker. Se actualizó Next.js a 15.5.27 y Vitest a 4.1.11, con versiones corregidas de dependencias transitivas fijadas en pnpm-workspace.yaml y lockfile actualizado.
+Security logic was centralized without breaking existing imports. The frontend/backend boundary check runs automatically during `pnpm build` and Docker image builds. Next.js was updated to 15.5.27 and Vitest to 4.1.11, with patched transitive dependency versions pinned in `pnpm-workspace.yaml` and an updated lockfile.
 
-Verificación final: 583 pruebas en 63 archivos aprobadas con Vitest 4.1.11; build de producción aprobado; auditoría completa (producción y desarrollo) con 0 avisos conocidos en la fecha de revisión. La detección de imports revisó 225 archivos y 93 entradas cliente. Estos resultados no reemplazan pruebas de aislamiento multiusuario ni revisión de infraestructura. Docker no está instalado aquí: las plantillas de contenedor/proxy requieren validación en staging antes de usarlas.
+Final verification: 583 tests across 63 files passed with Vitest 4.1.11; production build passed; full dependency audit (production and development) showed 0 known advisories at the time of review. The import boundary check inspected 225 files and 93 client entrypoints. These results do not replace multi-user isolation testing or infrastructure review. Docker is not installed here: container and proxy templates require staging validation before use.
 
-Invitaciones privadas de un solo uso y sus límites: [invitations.md](invitations.md). El registro es solo por enlace invitado, no abierto.
+Single-use private invitations and their limits: [invitations.md](invitations.md). Registration is invite-only via link, not open sign-up.
 
-Control actual de suspensión, sesiones, aislamiento por DB e IP privada: [access-and-activity.md](access-and-activity.md). Las cifras de pruebas anteriores son históricas y no verifican por sí solas los cambios posteriores.
+Current suspension, session, per-DB isolation, and private IP logging controls: [access-and-activity.md](access-and-activity.md). Historical test counts above do not by themselves verify subsequent changes.

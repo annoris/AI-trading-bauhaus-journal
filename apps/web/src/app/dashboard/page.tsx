@@ -188,8 +188,8 @@ function SimulatedAiReview({ data, currency }: { data: StatsPayload; currency: s
           <p className="demo-ai-review-label">Risk and execution</p>
           <p className="text-sm">
             Max drawdown is {amount(metrics.maxDrawdown)}. The fictional sample rules show a{" "}
-            {amount(500)} daily loss limit and {amount(2_000)}
-            trailing drawdown; these are not rules from a real firm.
+            {amount(500)} daily loss limit and {amount(2_000)} trailing drawdown; these are not
+            rules from a real firm.
             {frequentMistake && (
               <>
                 {" "}
