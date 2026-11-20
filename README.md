@@ -21,6 +21,16 @@ A dark-first, Bauhaus-inspired trading journal for trade review, open **Edge Sco
 
 > **If Trading Bauhaus helps sharpen your execution review, please consider giving the repository a Star on GitHub!**
 
+<br/>
+
+<h3>🎬 Live Interactive Walkthrough (AI Journal Analyst, OHLC Replay, Calendar &amp; Analytics)</h3>
+
+<a href="https://annoris.github.io/AI-trading-bauhaus-journal/">
+  <img src="./docs/linkedin-screenshots/trading-bauhaus-journal-showcase.gif" alt="Trading Bauhaus — Live Interactive Walkthrough (AI Journal Analyst, OHLC Replay, Calendar & Analytics)" width="100%" />
+</a>
+
+<sub><strong>Live Interactive Showcase</strong> — Real-time browser walkthrough of the <a href="https://annoris.github.io/AI-trading-bauhaus-journal/">Trading Bauhaus GitHub Pages demo</a>: Editorial Welcome, Simulated AI Journal Analyst, Edge Score v2 radar, Trades Explorer, interactive OHLC Candlestick Replay, Monthly P&amp;L Calendar, Reports, Journal, and Prop Firms ROI ledger.</sub>
+
 </div>
 
 ---
