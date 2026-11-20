@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { fmtShortDate } from "@/lib/utils";
 
 type Invitation = {
   id: string;
@@ -48,14 +49,6 @@ function invitationStatus(invitation: Invitation, now: number): InvitationStatus
   if (invitation.revokedAt) return "Revoked";
   if (invitation.expiresAt <= now) return "Expired";
   return "Pending";
-}
-
-function formatDate(value: number) {
-  return new Intl.DateTimeFormat(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(value));
 }
 
 function StatusBadge({ status }: { status: "Active" | "Deactivated" | InvitationStatus }) {
@@ -521,7 +514,9 @@ export default function OwnerInvitationsPage() {
                     </div>
                     <div className="flex items-center justify-between gap-3 sm:block">
                       <span className="text-xs text-muted-foreground sm:hidden">Joined</span>
-                      <p className="text-sm text-muted-foreground">{formatDate(user.createdAt)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {fmtShortDate(user.createdAt)}
+                      </p>
                     </div>
                     <div className="flex justify-end">
                       {user.role === "owner" ? (
@@ -613,7 +608,7 @@ export default function OwnerInvitationsPage() {
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">{invitation.email}</p>
                         <p className="mt-0.5 text-xs text-muted-foreground">
-                          Created {formatDate(invitation.createdAt)}
+                          Created {fmtShortDate(invitation.createdAt)}
                         </p>
                       </div>
                     </div>
@@ -626,7 +621,7 @@ export default function OwnerInvitationsPage() {
                         {status === "Pending" ? "Expires" : "Valid until"}
                       </span>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(invitation.expiresAt)}
+                        {fmtShortDate(invitation.expiresAt)}
                       </p>
                     </div>
                     <div className="flex justify-end">

@@ -6,7 +6,8 @@
  * Notice: All records are synthetic, fictional, and read-only.
  */
 
-export const SOLANA_WALLET = "3HvUMCUSSHEdtA35UuD4J7mbgpTxJ7LgT2X7GfdzvBdm";
+import { formatMoney, formatProfitFactor, formatR, formatWinRate } from "./charts.js?v=1.2.0";
+
 export const DEMO_ANCHOR_DATE = "2026-11-19";
 
 export const DEMO_RULES = Object.freeze({
@@ -1230,25 +1231,10 @@ export function computeAiBriefing(trades, metrics, edgeScore) {
   const ddBuffer = roundMoney(DEMO_RULES.trailingDrawdown - metrics.maxDrawdown);
   const targetRemaining = roundMoney(DEMO_RULES.profitTarget - metrics.netPnl);
 
-  const pfText = metrics.profitFactorIsInfinite
-    ? "∞"
-    : metrics.profitFactor !== null
-      ? metrics.profitFactor.toFixed(2)
-      : "—";
-  const wrText = metrics.winRate !== null ? `${(metrics.winRate * 100).toFixed(1)}%` : "—";
-  const avgRText =
-    metrics.avgRealizedR !== null
-      ? `${metrics.avgRealizedR >= 0 ? "+" : ""}${metrics.avgRealizedR.toFixed(2)}R`
-      : "—";
-
-  const fmtUsd = (val, signed = false) => {
-    const formatted = Math.abs(val).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    if (!signed) return `$${formatted}`;
-    return `${val >= 0 ? "+" : "-"}$${formatted}`;
-  };
+  const pfText = formatProfitFactor(metrics);
+  const wrText = formatWinRate(metrics.winRate);
+  const avgRText = formatR(metrics.avgRealizedR);
+  const fmtUsd = (val, signed = false) => formatMoney(val, false, { signed });
 
   const performanceRead = `${metrics.closedTrades} closed trades produced ${fmtUsd(
     metrics.netPnl,
@@ -1300,7 +1286,7 @@ export function answerAiPrompt(promptKey, trades, metrics, edgeScore, maskMoneyF
     };
   }
 
-  const money = maskMoneyFn || ((v) => `${v >= 0 ? "+" : "-"}$${Math.abs(v).toFixed(2)}`);
+  const money = maskMoneyFn || ((v) => formatMoney(v, false, { signed: true }));
   const setups = computeBreakdownBySetup(trades).filter((s) => s.trades > 0);
   const mistakes = computeMistakeImpact(trades);
   const adherence = computeRuleAdherence(trades);
@@ -1308,25 +1294,19 @@ export function answerAiPrompt(promptKey, trades, metrics, edgeScore, maskMoneyF
   if (promptKey === "best-setup") {
     const best = setups[0];
     const second = setups[1];
-    const pfStr = best.profitFactorIsInfinite
-      ? "∞"
-      : best.profitFactor !== null
-        ? best.profitFactor.toFixed(2)
-        : "—";
+    const pfStr = formatProfitFactor(best);
     return {
       title: `Best Setup Edge: ${best.setup}`,
-      body: `${best.setup} delivered ${money(best.netPnl)} across ${best.trades} trades (${(
-        (best.winRate ?? 0) * 100
-      ).toFixed(1)}% win rate, PF ${pfStr}, ${
-        best.avgR !== null ? `${best.avgR >= 0 ? "+" : ""}${best.avgR.toFixed(2)}R` : "—"
-      } avg R).${
+      body: `${best.setup} delivered ${money(best.netPnl)} across ${best.trades} trades (${formatWinRate(
+        best.winRate,
+      )} win rate, PF ${pfStr}, ${formatR(best.avgR)} avg R).${
         second
           ? ` By comparison, ${second.setup} generated ${money(second.netPnl)} across ${second.trades} trades.`
           : ""
       }`,
       citations: [
         `${best.trades} ${best.setup} trades`,
-        `Win rate ${((best.winRate ?? 0) * 100).toFixed(1)}%`,
+        `Win rate ${formatWinRate(best.winRate)}`,
         `Expectancy ${money(best.netPnl / best.trades)}/trade`,
       ],
     };

@@ -2,14 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Check, Clock3, LifeBuoy, LockKeyhole, Send, ShieldAlert } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { SupportStatusChip, type SupportStatus } from "@/components/support-status-chip";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { apiErrorMessage, consumeRecentApiErrorReference } from "@/lib/api-error";
+import { fmtDateTime } from "@/lib/utils";
 
-type Status = "open" | "in_progress" | "resolved";
 type Category = "profile" | "journal" | "imports" | "ai" | "access" | "other";
 type Report = {
   id: string;
@@ -18,41 +18,11 @@ type Report = {
   description: string;
   route: string;
   errorId: string;
-  status: Status;
+  status: SupportStatus;
   ownerReply: string;
   createdAt: number;
   updatedAt: number;
 };
-
-const statusLabel: Record<Status, string> = {
-  open: "Open",
-  in_progress: "In progress",
-  resolved: "Resolved",
-};
-
-function StatusChip({ status }: { status: Status }) {
-  return (
-    <Badge
-      variant="outline"
-      className={
-        status === "resolved"
-          ? "rounded-full border-brand/25 bg-brand/10 text-brand"
-          : status === "in_progress"
-            ? "rounded-full border-amber-500/25 bg-amber-500/10 text-amber-600 dark:text-amber-400"
-            : "rounded-full border-border bg-muted text-muted-foreground"
-      }
-    >
-      {statusLabel[status]}
-    </Badge>
-  );
-}
-
-function formatDate(value: number) {
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
 
 export default function SupportPage() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -270,10 +240,10 @@ export default function SupportPage() {
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="text-sm font-semibold">{report.subject}</p>
-                        <StatusChip status={report.status} />
+                        <SupportStatusChip status={report.status} />
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {report.category} · {report.route} · {formatDate(report.createdAt)} · Ref{" "}
+                        {report.category} · {report.route} · {fmtDateTime(report.createdAt)} · Ref{" "}
                         {report.id.slice(0, 8)}
                       </p>
                     </div>

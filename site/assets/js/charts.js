@@ -4,12 +4,13 @@
  * Color only reinforces: signed figures, zero baselines, and distinct marker shapes carry meaning.
  */
 
-const escapeAttr = (value) =>
-  String(value)
+export const escapeHtml = (value) =>
+  String(value ?? "")
     .replaceAll("&", "&amp;")
-    .replaceAll('"', "&quot;")
     .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 
 export function formatMoney(value, privacyMode = false, { signed = true, compact = false } = {}) {
   if (privacyMode) {
@@ -25,6 +26,40 @@ export function formatMoney(value, privacyMode = false, { signed = true, compact
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+}
+
+export function formatR(r) {
+  if (r === null || r === undefined || Number.isNaN(r)) return "—";
+  return `${r >= 0 ? "+" : ""}${r.toFixed(2)}R`;
+}
+
+export function formatProfitFactor(metrics) {
+  if (metrics.profitFactorIsInfinite) return "∞";
+  if (metrics.profitFactor === null) return "—";
+  return metrics.profitFactor.toFixed(2);
+}
+
+export function formatWinRate(winRate) {
+  return winRate !== null && winRate !== undefined ? `${(winRate * 100).toFixed(1)}%` : "—";
+}
+
+function renderYGridLines({ pad, width, yMin, yMax, yAt, formatLabel, ticks = 4 }) {
+  const lines = [];
+  for (let t = 0; t <= ticks; t++) {
+    const val = yMin + ((yMax - yMin) * t) / ticks;
+    const y = yAt(val);
+    lines.push(`
+      <line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${width - pad.right}" y2="${y.toFixed(
+        1,
+      )}" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="3 3" />
+      <text x="${pad.left - 10}" y="${(y + 3.5).toFixed(
+        1,
+      )}" text-anchor="end" fill="var(--dim)" font-size="10.5" class="tabular-nums">${escapeHtml(
+        formatLabel(val),
+      )}</text>
+    `);
+  }
+  return lines.join("");
 }
 
 export function formatShortDate(dateStr) {
@@ -140,7 +175,7 @@ export function renderEdgeRadarSVG(components, { compact = false } = {}) {
       const score = Math.max(0, Math.min(100, components[a.key] ?? 0));
       const [x, y] = pointAt(a.angleDeg, (score / 100) * radius);
       return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="var(--brand)" stroke="var(--card)" stroke-width="1.4">
-        <title>${escapeAttr(a.label)}: ${Math.round(score)}/100</title>
+        <title>${escapeHtml(a.label)}: ${Math.round(score)}/100</title>
       </circle>`;
     })
     .join("");
@@ -157,7 +192,7 @@ export function renderEdgeRadarSVG(components, { compact = false } = {}) {
           fill="var(--muted)"
           font-size="${compact ? 9.5 : 10.5}"
           font-weight="500"
-        >${escapeAttr(a.label)} <tspan fill="var(--fg)" font-weight="600" class="tabular-nums">${val}</tspan></text>
+        >${escapeHtml(a.label)} <tspan fill="var(--fg)" font-weight="600" class="tabular-nums">${val}</tspan></text>
       `;
     })
     .join("");
@@ -231,24 +266,17 @@ export function renderEquityCurveSVG(
   const strokeColor = positive ? "var(--profit)" : "var(--loss)";
 
   // Y gridlines
-  const ticks = 4;
-  const gridLines = [];
-  if (!compact) {
-    for (let t = 0; t <= ticks; t++) {
-      const val = yMin + ((yMax - yMin) * t) / ticks;
-      const y = yAt(val);
-      gridLines.push(`
-        <line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${width - pad.right}" y2="${y.toFixed(
-          1,
-        )}" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="3 3" />
-        <text x="${pad.left - 10}" y="${(y + 3.5).toFixed(
-          1,
-        )}" text-anchor="end" fill="var(--dim)" font-size="10.5" class="tabular-nums">
-          ${formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 })}
-        </text>
-      `);
-    }
-  }
+  const gridLines = compact
+    ? ""
+    : renderYGridLines({
+        pad,
+        width,
+        yMin,
+        yMax,
+        yAt,
+        formatLabel: (val) =>
+          formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 }),
+      });
 
   // X ticks
   const xTickIndices =
@@ -267,7 +295,7 @@ export function renderEquityCurveSVG(
           const item = coords[idx];
           if (!item || !item.date) return "";
           const label = idx === 0 ? "Start" : formatShortDate(item.date);
-          return `<text x="${item.x.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10.5">${escapeAttr(
+          return `<text x="${item.x.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10.5">${escapeHtml(
             label,
           )}</text>`;
         })
@@ -303,7 +331,7 @@ export function renderEquityCurveSVG(
           <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0.01" />
         </linearGradient>
       </defs>
-      ${gridLines.join("")}
+      ${gridLines}
       <line
         x1="${pad.left}"
         y1="${zeroY.toFixed(1)}"
@@ -344,22 +372,15 @@ export function renderDailyBarsSVG(days, privacyMode = false) {
   const slotW = plotW / days.length;
   const barW = Math.max(4, Math.min(26, slotW * 0.66));
 
-  const gridLines = [0, 0.25, 0.5, 0.75, 1]
-    .map((t) => {
-      const val = yMin + (yMax - yMin) * t;
-      const y = yAt(val);
-      return `
-        <line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${width - pad.right}" y2="${y.toFixed(
-          1,
-        )}" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="3 3" />
-        <text x="${pad.left - 10}" y="${(y + 3.5).toFixed(
-          1,
-        )}" text-anchor="end" fill="var(--dim)" font-size="10.5" class="tabular-nums">
-          ${formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 })}
-        </text>
-      `;
-    })
-    .join("");
+  const gridLines = renderYGridLines({
+    pad,
+    width,
+    yMin,
+    yMax,
+    yAt,
+    formatLabel: (val) =>
+      formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 }),
+  });
 
   const bars = days
     .map((day, idx) => {
@@ -396,7 +417,7 @@ export function renderDailyBarsSVG(days, privacyMode = false) {
     .map((day) => {
       const idx = days.indexOf(day);
       const cx = pad.left + idx * slotW + slotW / 2;
-      return `<text x="${cx.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10">${escapeAttr(
+      return `<text x="${cx.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10">${escapeHtml(
         formatShortDate(day.date),
       )}</text>`;
     })
@@ -440,24 +461,17 @@ export function renderScatterSVG(trades, metric = "pnl", privacyMode = false) {
   const yAt = (val) => pad.top + ((yMax - val) / (yMax - yMin)) * plotH;
   const zeroY = yAt(0);
 
-  const gridLines = [0, 0.25, 0.5, 0.75, 1]
-    .map((t) => {
-      const val = yMin + (yMax - yMin) * t;
-      const y = yAt(val);
-      const label =
-        metric === "r"
-          ? `${val >= 0 ? "+" : ""}${val.toFixed(1)}R`
-          : formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 });
-      return `
-        <line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${width - pad.right}" y2="${y.toFixed(
-          1,
-        )}" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="3 3" />
-        <text x="${pad.left - 10}" y="${(y + 3.5).toFixed(
-          1,
-        )}" text-anchor="end" fill="var(--dim)" font-size="10.5" class="tabular-nums">${escapeAttr(label)}</text>
-      `;
-    })
-    .join("");
+  const gridLines = renderYGridLines({
+    pad,
+    width,
+    yMin,
+    yMax,
+    yAt,
+    formatLabel: (val) =>
+      metric === "r"
+        ? `${val >= 0 ? "+" : ""}${val.toFixed(1)}R`
+        : formatMoney(val, privacyMode, { signed: true, compact: Math.abs(val) >= 1000 }),
+  });
 
   const xTicks = [0, 5, 10, 15, 20, 25, 30]
     .filter((m) => m <= maxDur)
@@ -691,7 +705,7 @@ export function renderCandlestickSVG(trade, visibleCount) {
   ]
     .map((idx) => {
       const cx = pad.left + idx * slotW + slotW / 2;
-      return `<text x="${cx.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10" class="tabular-nums">${escapeAttr(
+      return `<text x="${cx.toFixed(1)}" y="${height - 8}" text-anchor="middle" fill="var(--dim)" font-size="10" class="tabular-nums">${escapeHtml(
         bars[idx].timeLabel,
       )}</text>`;
     })

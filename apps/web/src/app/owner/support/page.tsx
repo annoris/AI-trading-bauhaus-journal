@@ -12,14 +12,16 @@ import {
   ShieldCheck,
   UserRound,
 } from "lucide-react";
+import { SupportStatusChip, type SupportStatus } from "@/components/support-status-chip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { apiErrorMessage } from "@/lib/api-error";
+import { fmtDateTime } from "@/lib/utils";
 
-type Status = "open" | "in_progress" | "resolved";
+type Status = SupportStatus;
 type Report = {
   id: string;
   reporterId: string;
@@ -42,36 +44,6 @@ type ErrorEvent = {
   actor: "owner" | "member";
   occurredAt: number;
 };
-
-const statusLabel: Record<Status, string> = {
-  open: "Open",
-  in_progress: "In progress",
-  resolved: "Resolved",
-};
-
-function StatusChip({ status }: { status: Status }) {
-  return (
-    <Badge
-      variant="outline"
-      className={
-        status === "resolved"
-          ? "rounded-full border-brand/25 bg-brand/10 text-brand"
-          : status === "in_progress"
-            ? "rounded-full border-amber-500/25 bg-amber-500/10 text-amber-600 dark:text-amber-400"
-            : "rounded-full border-loss/25 bg-loss/10 text-loss"
-      }
-    >
-      {statusLabel[status]}
-    </Badge>
-  );
-}
-
-function formatDate(value: number) {
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
 
 export default function OwnerSupportPage() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -283,7 +255,7 @@ export default function OwnerSupportPage() {
                     </p>
                   </div>
                   <time className="shrink-0 text-[11px] text-muted-foreground">
-                    {formatDate(event.occurredAt)}
+                    {fmtDateTime(event.occurredAt)}
                   </time>
                 </div>
               ))}
@@ -371,7 +343,7 @@ export default function OwnerSupportPage() {
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <h3 className="text-sm font-semibold">{report.subject}</h3>
-                          <StatusChip status={report.status} />
+                          <SupportStatusChip status={report.status} openTone="loss" />
                           <Badge variant="outline" className="rounded-full capitalize">
                             {report.category}
                           </Badge>
@@ -382,7 +354,7 @@ export default function OwnerSupportPage() {
                             {report.reporterEmail}
                           </span>
                           <span>{report.route}</span>
-                          <span>{formatDate(report.createdAt)}</span>
+                          <span>{fmtDateTime(report.createdAt)}</span>
                           <span>Ref {report.id.slice(0, 8)}</span>
                           {report.errorId && (
                             <span className="font-mono">Error {report.errorId}</span>

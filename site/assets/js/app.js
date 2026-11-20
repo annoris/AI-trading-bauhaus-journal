@@ -10,17 +10,21 @@ import {
   computeRuleAdherence,
   filterTrades,
   generateDemoDataset,
-} from "./demo-data.js";
+} from "./demo-data.js?v=1.2.0";
 import {
+  escapeHtml as esc,
   formatMoney,
+  formatProfitFactor as formatPF,
+  formatR,
   formatShortDate,
+  formatWinRate,
   renderCandlestickSVG,
   renderDailyBarsSVG,
   renderEdgeRadarSVG,
   renderEquityCurveSVG,
   renderScatterSVG,
   renderWinRateGaugeSVG,
-} from "./charts.js";
+} from "./charts.js?v=1.2.0";
 
 const VALID_VIEWS = new Set([
   "dashboard",
@@ -61,16 +65,9 @@ const state = {
   lastMenuTrigger: null,
 };
 
-const esc = (value) =>
-  String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-
 const money = (value, opts = {}) => formatMoney(value, state.privacyMode, opts);
 const maskCurrency = (value) => money(value, { signed: false });
+const pnlTone = (value) => (value >= 0 ? "tone-profit" : "tone-loss");
 
 function formatDuration(minutes) {
   if (!Number.isFinite(minutes)) return "—";
@@ -81,15 +78,36 @@ function formatDuration(minutes) {
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
-function formatR(r) {
-  if (r === null || r === undefined || Number.isNaN(r)) return "—";
-  return `${r >= 0 ? "+" : ""}${r.toFixed(2)}R`;
+function renderTradeRow(trade, { metaText, subtitle }) {
+  return `
+    <button type="button" class="recent-row" data-open-trade="${esc(trade.id)}">
+      <div class="recent-left">
+        <div class="recent-top">
+          <span>${esc(trade.symbol)}</span>
+          <span class="badge ${trade.direction === "long" ? "badge-long" : "badge-short"}">${esc(trade.direction)}</span>
+          <span class="tabular-nums" style="color:var(--muted);font-weight:500;font-size:12px;">${esc(metaText)}</span>
+        </div>
+        <span class="recent-setup">${esc(subtitle)}</span>
+      </div>
+      <div class="recent-right tabular-nums">
+        <span class="recent-pnl ${pnlTone(trade.netPnl)}">${esc(money(trade.netPnl))}</span>
+        <span class="recent-r">${esc(formatR(trade.realizedR))}</span>
+      </div>
+    </button>
+  `;
 }
 
-function formatPF(metrics) {
-  if (metrics.profitFactorIsInfinite) return "∞";
-  if (metrics.profitFactor === null) return "—";
-  return metrics.profitFactor.toFixed(2);
+function renderSummaryCards(items) {
+  return items
+    .map(
+      ({ label, value, tone = "", style = "" }) => `
+      <div class="summary-mini">
+        <span>${label}</span>
+        <strong class="tabular-nums${tone ? ` ${tone}` : ""}"${style ? ` style="${style}"` : ""}>${esc(value)}</strong>
+      </div>
+    `,
+    )
+    .join("");
 }
 
 function getScopedTrades() {
@@ -187,7 +205,7 @@ function renderHeroPreview() {
 
   const metrics = computeMetrics(dataset.trades);
   const edge = computeEdgeScore(metrics);
-  const winPct = metrics.winRate !== null ? `${(metrics.winRate * 100).toFixed(1)}%` : "—";
+  const winPct = formatWinRate(metrics.winRate);
 
   container.innerHTML = `
     <div class="preview-kpi-row">
@@ -386,23 +404,11 @@ function renderDashboard(scoped) {
     const recent = [...scoped].reverse().slice(0, 6);
     recentHost.innerHTML = recent.length
       ? recent
-          .map(
-            (t) => `
-          <button type="button" class="recent-row" data-open-trade="${esc(t.id)}">
-            <div class="recent-left">
-              <div class="recent-top">
-                <span>${esc(t.symbol)}</span>
-                <span class="badge ${t.direction === "long" ? "badge-long" : "badge-short"}">${esc(t.direction)}</span>
-                <span class="tabular-nums" style="color:var(--muted);font-weight:500;font-size:12px;">${esc(t.dateKey)}</span>
-              </div>
-              <span class="recent-setup">${esc(t.setup)} · ${esc(formatDuration(t.durationMinutes))}</span>
-            </div>
-            <div class="recent-right tabular-nums">
-              <span class="recent-pnl ${t.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(t.netPnl))}</span>
-              <span class="recent-r">${esc(formatR(t.realizedR))}</span>
-            </div>
-          </button>
-        `,
+          .map((t) =>
+            renderTradeRow(t, {
+              metaText: t.dateKey,
+              subtitle: `${t.setup} · ${formatDuration(t.durationMinutes)}`,
+            }),
           )
           .join("")
       : `<div class="chart-empty">No trades match this filter.</div>`;
@@ -445,24 +451,12 @@ function renderTradesView(scoped) {
 
   const strip = document.getElementById("trades-summary-strip");
   if (strip) {
-    strip.innerHTML = `
-      <div class="summary-mini">
-        <span>Matching Trades</span>
-        <strong class="tabular-nums">${metrics.closedTrades}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Net P&amp;L</span>
-        <strong class="tabular-nums ${metrics.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(metrics.netPnl))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Win Rate</span>
-        <strong class="tabular-nums">${metrics.winRate !== null ? `${(metrics.winRate * 100).toFixed(1)}%` : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Avg Realized R</span>
-        <strong class="tabular-nums">${esc(formatR(metrics.avgRealizedR))}</strong>
-      </div>
-    `;
+    strip.innerHTML = renderSummaryCards([
+      { label: "Matching Trades", value: String(metrics.closedTrades) },
+      { label: "Net P&amp;L", value: money(metrics.netPnl), tone: pnlTone(metrics.netPnl) },
+      { label: "Win Rate", value: formatWinRate(metrics.winRate) },
+      { label: "Avg Realized R", value: formatR(metrics.avgRealizedR) },
+    ]);
   }
 
   const tbody = document.getElementById("trades-table-body");
@@ -513,28 +507,22 @@ function renderCalendarView(scoped) {
   const strip = document.getElementById("cal-insights-strip");
   if (strip) {
     const ins = cal.insights;
-    strip.innerHTML = `
-      <div class="summary-mini">
-        <span>Month Net P&amp;L</span>
-        <strong class="tabular-nums ${ins.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(ins.netPnl))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Trading Days</span>
-        <strong class="tabular-nums">${ins.tradingDays} (${ins.greenDays}G / ${ins.redDays}R)</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Trade Win Rate</span>
-        <strong class="tabular-nums">${ins.winRate !== null ? `${(ins.winRate * 100).toFixed(1)}%` : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Best Session</span>
-        <strong class="tabular-nums tone-profit">${ins.bestDay ? `${formatShortDate(ins.bestDay.date)} (${money(ins.bestDay.netPnl)})` : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Top Weekday</span>
-        <strong class="tabular-nums">${ins.topWeekday ? `${ins.topWeekday.label} (${money(ins.topWeekday.netPnl)})` : "—"}</strong>
-      </div>
-    `;
+    strip.innerHTML = renderSummaryCards([
+      { label: "Month Net P&amp;L", value: money(ins.netPnl), tone: pnlTone(ins.netPnl) },
+      { label: "Trading Days", value: `${ins.tradingDays} (${ins.greenDays}G / ${ins.redDays}R)` },
+      { label: "Trade Win Rate", value: formatWinRate(ins.winRate) },
+      {
+        label: "Best Session",
+        value: ins.bestDay
+          ? `${formatShortDate(ins.bestDay.date)} (${money(ins.bestDay.netPnl)})`
+          : "—",
+        tone: "tone-profit",
+      },
+      {
+        label: "Top Weekday",
+        value: ins.topWeekday ? `${ins.topWeekday.label} (${money(ins.topWeekday.netPnl)})` : "—",
+      },
+    ]);
   }
 
   const grid = document.getElementById("cal-grid");
@@ -618,23 +606,11 @@ function renderCalendarDayInspector(scoped) {
         ${
           dayTrades.length
             ? dayTrades
-                .map(
-                  (t) => `
-              <button type="button" class="recent-row" data-open-trade="${esc(t.id)}">
-                <div class="recent-left">
-                  <div class="recent-top">
-                    <span>${esc(t.symbol)}</span>
-                    <span class="badge ${t.direction === "long" ? "badge-long" : "badge-short"}">${esc(t.direction)}</span>
-                    <span class="tabular-nums" style="font-size:11.5px;color:var(--muted);">${esc(t.entryTime)}</span>
-                  </div>
-                  <span class="recent-setup">${esc(t.setup)} · Click to open candle replay</span>
-                </div>
-                <div class="recent-right tabular-nums">
-                  <span class="recent-pnl ${t.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(t.netPnl))}</span>
-                  <span class="recent-r">${esc(formatR(t.realizedR))}</span>
-                </div>
-              </button>
-            `,
+                .map((t) =>
+                  renderTradeRow(t, {
+                    metaText: t.entryTime,
+                    subtitle: `${t.setup} · Click to open candle replay`,
+                  }),
                 )
                 .join("")
             : `<div class="chart-empty">No matching trades for this symbol filter on ${esc(state.selectedCalDate)}.</div>`
@@ -671,36 +647,21 @@ function renderReportsView(scoped) {
 
   const kpi7 = document.getElementById("reports-kpi-grid");
   if (kpi7) {
-    kpi7.innerHTML = `
-      <div class="summary-mini">
-        <span>Net P&amp;L</span>
-        <strong class="tabular-nums ${metrics.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(metrics.netPnl))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Expectancy</span>
-        <strong class="tabular-nums">${metrics.expectancy !== null ? esc(money(metrics.expectancy)) : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Profit Factor</span>
-        <strong class="tabular-nums">${esc(formatPF(metrics))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Sharpe (Ann.)</span>
-        <strong class="tabular-nums">${metrics.sharpeRatio !== null ? metrics.sharpeRatio.toFixed(2) : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>SQN</span>
-        <strong class="tabular-nums">${metrics.sqn !== null ? metrics.sqn.toFixed(2) : "—"}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Max Drawdown</span>
-        <strong class="tabular-nums tone-loss">${esc(money(-metrics.maxDrawdown))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Recovery Factor</span>
-        <strong class="tabular-nums">${metrics.recoveryFactor !== null ? metrics.recoveryFactor.toFixed(2) : "—"}</strong>
-      </div>
-    `;
+    kpi7.innerHTML = renderSummaryCards([
+      { label: "Net P&amp;L", value: money(metrics.netPnl), tone: pnlTone(metrics.netPnl) },
+      { label: "Expectancy", value: metrics.expectancy !== null ? money(metrics.expectancy) : "—" },
+      { label: "Profit Factor", value: formatPF(metrics) },
+      {
+        label: "Sharpe (Ann.)",
+        value: metrics.sharpeRatio !== null ? metrics.sharpeRatio.toFixed(2) : "—",
+      },
+      { label: "SQN", value: metrics.sqn !== null ? metrics.sqn.toFixed(2) : "—" },
+      { label: "Max Drawdown", value: money(-metrics.maxDrawdown), tone: "tone-loss" },
+      {
+        label: "Recovery Factor",
+        value: metrics.recoveryFactor !== null ? metrics.recoveryFactor.toFixed(2) : "—",
+      },
+    ]);
   }
 
   const eqHost = document.getElementById("reports-equity-chart");
@@ -741,12 +702,8 @@ function renderReportsView(scoped) {
     const breakdown = computeBreakdownBySetup(scoped);
     setupBody.innerHTML = breakdown
       .map((s) => {
-        const pf = s.profitFactorIsInfinite
-          ? "∞"
-          : s.profitFactor !== null
-            ? s.profitFactor.toFixed(2)
-            : "—";
-        const wr = s.winRate !== null ? `${(s.winRate * 100).toFixed(1)}%` : "—";
+        const pf = formatPF(s);
+        const wr = formatWinRate(s.winRate);
         return `
           <tr>
             <td><strong>${esc(s.setup)}</strong><br /><span style="color:var(--dim);font-size:11px;">${esc(s.tag)}</span></td>
@@ -889,23 +846,11 @@ function renderJournalView(scoped) {
 
       <div class="recent-list" style="margin-top:14px;">
         ${activeSession.trades
-          .map(
-            (t) => `
-          <button type="button" class="recent-row" data-open-trade="${esc(t.id)}">
-            <div class="recent-left">
-              <div class="recent-top">
-                <span>${esc(t.symbol)}</span>
-                <span class="badge ${t.direction === "long" ? "badge-long" : "badge-short"}">${esc(t.direction)}</span>
-                <span class="tabular-nums" style="color:var(--muted);font-size:12px;">${esc(t.entryTime)} → ${esc(t.exitTime)}</span>
-              </div>
-              <span class="recent-setup">${esc(t.setup)} · Click to replay</span>
-            </div>
-            <div class="recent-right tabular-nums">
-              <span class="recent-pnl ${t.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(t.netPnl))}</span>
-              <span class="recent-r">${esc(formatR(t.realizedR))}</span>
-            </div>
-          </button>
-        `,
+          .map((t) =>
+            renderTradeRow(t, {
+              metaText: `${t.entryTime} → ${t.exitTime}`,
+              subtitle: `${t.setup} · Click to replay`,
+            }),
           )
           .join("")}
       </div>
@@ -944,29 +889,17 @@ function renderPropFirmsView() {
 
   const roiStrip = document.getElementById("prop-roi-strip");
   if (roiStrip) {
-    const roiText = summary.cashRoi !== null ? `${(summary.cashRoi * 100).toFixed(1)}%` : "—";
-    roiStrip.innerHTML = `
-      <div class="summary-mini">
-        <span>Total Paid (Net Fees)</span>
-        <strong class="tabular-nums tone-loss">${esc(money(-summary.netSpend))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Fee Refunds</span>
-        <strong class="tabular-nums">${esc(money(summary.refunds))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Cash Received</span>
-        <strong class="tabular-nums tone-profit">${esc(money(summary.received))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Net Cash Flow</span>
-        <strong class="tabular-nums ${summary.netCashFlow >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(summary.netCashFlow))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Cash ROI</span>
-        <strong class="tabular-nums tone-profit">${esc(roiText)}</strong>
-      </div>
-    `;
+    roiStrip.innerHTML = renderSummaryCards([
+      { label: "Total Paid (Net Fees)", value: money(-summary.netSpend), tone: "tone-loss" },
+      { label: "Fee Refunds", value: money(summary.refunds) },
+      { label: "Cash Received", value: money(summary.received), tone: "tone-profit" },
+      {
+        label: "Net Cash Flow",
+        value: money(summary.netCashFlow),
+        tone: pnlTone(summary.netCashFlow),
+      },
+      { label: "Cash ROI", value: formatWinRate(summary.cashRoi), tone: "tone-profit" },
+    ]);
   }
 
   const accountsGrid = document.getElementById("prop-accounts-grid");
@@ -1091,46 +1024,33 @@ function openTradeModal(tradeId, triggerEl = null) {
 
   const metaEl = document.getElementById("trade-modal-meta");
   if (metaEl) {
-    metaEl.innerHTML = `
-      <div class="summary-mini">
-        <span>Net P&amp;L</span>
-        <strong class="tabular-nums ${trade.netPnl >= 0 ? "tone-profit" : "tone-loss"}">${esc(money(trade.netPnl))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Realized R</span>
-        <strong class="tabular-nums ${trade.realizedR >= 0 ? "tone-profit" : "tone-loss"}">${esc(formatR(trade.realizedR))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Entry → Exit</span>
-        <strong class="tabular-nums" style="font-size:14px;">${trade.avgEntry.toFixed(2)} → ${trade.exitPrice.toFixed(2)}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Setup · Duration</span>
-        <strong style="font-size:13px;">${esc(trade.setup)} (${esc(formatDuration(trade.durationMinutes))})</strong>
-      </div>
-    `;
+    metaEl.innerHTML = renderSummaryCards([
+      { label: "Net P&amp;L", value: money(trade.netPnl), tone: pnlTone(trade.netPnl) },
+      { label: "Realized R", value: formatR(trade.realizedR), tone: pnlTone(trade.realizedR) },
+      {
+        label: "Entry → Exit",
+        value: `${trade.avgEntry.toFixed(2)} → ${trade.exitPrice.toFixed(2)}`,
+        style: "font-size:14px;",
+      },
+      {
+        label: "Setup · Duration",
+        value: `${trade.setup} (${formatDuration(trade.durationMinutes)})`,
+        style: "font-size:13px;",
+      },
+    ]);
   }
 
   const excursionsEl = document.getElementById("trade-modal-excursions");
   if (excursionsEl) {
-    excursionsEl.innerHTML = `
-      <div class="summary-mini">
-        <span>Est. MAE</span>
-        <strong class="tabular-nums tone-loss">${esc(money(trade.replay.mae))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Est. MFE</span>
-        <strong class="tabular-nums tone-profit">${esc(money(trade.replay.mfe))}</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Capture Efficiency</span>
-        <strong class="tabular-nums">${trade.replay.captureEfficiency}%</strong>
-      </div>
-      <div class="summary-mini">
-        <span>Fees · Size</span>
-        <strong class="tabular-nums">${esc(money(trade.fees, { signed: false }))} (${trade.quantity} ct)</strong>
-      </div>
-    `;
+    excursionsEl.innerHTML = renderSummaryCards([
+      { label: "Est. MAE", value: money(trade.replay.mae), tone: "tone-loss" },
+      { label: "Est. MFE", value: money(trade.replay.mfe), tone: "tone-profit" },
+      { label: "Capture Efficiency", value: `${trade.replay.captureEfficiency}%` },
+      {
+        label: "Fees · Size",
+        value: `${money(trade.fees, { signed: false })} (${trade.quantity} ct)`,
+      },
+    ]);
   }
 
   const rulesEl = document.getElementById("trade-modal-rules");

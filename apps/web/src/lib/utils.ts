@@ -45,3 +45,16 @@ export const fmtDuration = (ms: number | null | undefined): string => {
 
 export const pnlClass = (value: number): string =>
   value > 0 ? "text-profit" : value < 0 ? "text-loss" : "text-muted-foreground";
+
+export const fmtDateTime = (value: number): string =>
+  new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(value));
+
+export const fmtShortDate = (value: number): string =>
+  new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(value));

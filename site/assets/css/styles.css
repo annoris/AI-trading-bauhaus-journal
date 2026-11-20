@@ -186,12 +186,6 @@
   box-shadow: none;
 }
 
-@media (max-width: 767px) {
-  .desktop-only-action {
-    display: none;
-  }
-}
-
 .mobile-menu-trigger {
   width: 44px;
   padding: 0;

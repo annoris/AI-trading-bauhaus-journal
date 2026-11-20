@@ -1377,8 +1377,8 @@
   align-items: center;
   padding: 3px 9px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--brand-border, rgba(53, 208, 116, 0.35));
-  background: var(--brand-soft, rgba(53, 208, 116, 0.12));
+  border: 1px solid var(--brand-ring);
+  background: var(--brand-soft);
   color: var(--brand);
   font-family: var(--font-mono);
   font-size: 10.5px;
@@ -1417,7 +1417,7 @@ html[data-app-mode="panel"] .site-header .container {
 html[data-app-mode="panel"] .workspace-section {
   padding: 0;
   border-top: 0;
-  min-height: calc(100dvh - 64px);
+  min-height: calc(100dvh - var(--header-height));
 }
 
 html[data-app-mode="panel"] .workspace-section > .container {
@@ -1438,14 +1438,14 @@ html[data-app-mode="panel"] .workspace-shell {
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  min-height: calc(100dvh - 104px);
+  min-height: calc(100dvh - var(--header-height) - 40px);
 }
 
 @media (min-width: 960px) {
   html[data-app-mode="panel"] .workspace-sidebar {
     position: sticky;
-    top: 64px;
+    top: var(--header-height);
     align-self: start;
-    min-height: calc(100dvh - 104px);
+    min-height: calc(100dvh - var(--header-height) - 40px);
   }
 }
