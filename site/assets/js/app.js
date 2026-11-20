@@ -36,6 +36,7 @@ const tradesById = new Map(dataset.trades.map((t) => [t.id, t]));
 const journalByDate = new Map(dataset.journalDays.map((d) => [d.date, d]));
 
 const state = {
+  appMode: "showcase",
   theme: "dark",
   privacyMode: false,
   activeView: "dashboard",
@@ -1291,19 +1292,64 @@ function wireEvents() {
     closeMobileMenu({ restoreFocus: false });
   });
 
+  // Enter full-screen interactive demo panel triggers
+  for (const el of document.querySelectorAll("[data-enter-demo]")) {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeMobileMenu({ restoreFocus: false });
+      enterDemoPanel(state.activeView || "dashboard", { updateHash: true });
+    });
+  }
+
+  // Exit full-screen demo panel back to showcase overview
+  for (const id of ["exit-panel-btn", "header-exit-panel-btn"]) {
+    document.getElementById(id)?.addEventListener("click", () => {
+      exitDemoPanel({ targetSection: "welcome" });
+    });
+  }
+
+  document.getElementById("brand-home-link")?.addEventListener("click", (e) => {
+    if (state.appMode === "panel") {
+      e.preventDefault();
+      exitDemoPanel({ targetSection: "welcome" });
+    }
+  });
+
+  // Clicking showcase nav anchors in mobile drawer exits panel mode first
+  for (const link of document.querySelectorAll(
+    'a[href="#welcome"], a[href="#architecture"], a[href="#self-host"], a[href="#license"]',
+  )) {
+    link.addEventListener("click", () => {
+      if (state.appMode === "panel") {
+        const target = link.getAttribute("href")?.slice(1) || "welcome";
+        exitDemoPanel({ targetSection: target, updateHash: false });
+      }
+    });
+  }
+
   // Workspace sidebar view switching
   for (const btn of document.querySelectorAll("[data-view-target]")) {
     btn.addEventListener("click", () => {
-      setActiveView(btn.dataset.viewTarget);
+      if (state.appMode !== "panel") {
+        enterDemoPanel(btn.dataset.viewTarget, { updateHash: true });
+      } else {
+        setActiveView(btn.dataset.viewTarget);
+      }
     });
   }
 
   // Hash navigation (#view=... or section anchor)
   window.addEventListener("hashchange", () => {
+    const hash = window.location.hash;
     const hashView = parseViewFromHash();
     if (hashView) {
-      setActiveView(hashView, { updateHash: false });
-      document.getElementById("workspace")?.scrollIntoView({ behavior: "auto" });
+      enterDemoPanel(hashView, { updateHash: false });
+    } else if (hash === "#workspace") {
+      enterDemoPanel(state.activeView || "dashboard", { updateHash: false });
+    } else if (["#welcome", "#architecture", "#self-host", "#license", ""].includes(hash)) {
+      if (state.appMode === "panel") {
+        exitDemoPanel({ targetSection: hash ? hash.slice(1) : "welcome", updateHash: false });
+      }
     }
   });
 
@@ -1528,11 +1574,43 @@ function wireEvents() {
   });
 }
 
-function init() {
-  const hashView = parseViewFromHash();
-  if (hashView) {
-    setActiveView(hashView, { updateHash: false });
+function enterDemoPanel(view = "dashboard", { updateHash = true } = {}) {
+  state.appMode = "panel";
+  document.documentElement.dataset.appMode = "panel";
+  setActiveView(VALID_VIEWS.has(view) ? view : "dashboard", { updateHash });
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function exitDemoPanel({ targetSection = "welcome", updateHash = true } = {}) {
+  state.appMode = "showcase";
+  document.documentElement.dataset.appMode = "showcase";
+  if (updateHash) {
+    window.history.replaceState(
+      null,
+      "",
+      targetSection ? `#${targetSection}` : window.location.pathname,
+    );
+  }
+  const el = targetSection ? document.getElementById(targetSection) : null;
+  if (el) {
+    el.scrollIntoView({ behavior: "auto" });
   } else {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+}
+
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const hashView = parseViewFromHash();
+  const wantsPanel =
+    Boolean(hashView) || window.location.hash === "#workspace" || params.get("demo") === "1";
+  if (wantsPanel) {
+    state.appMode = "panel";
+    document.documentElement.dataset.appMode = "panel";
+    setActiveView(hashView || "dashboard", { updateHash: false });
+  } else {
+    state.appMode = "showcase";
+    document.documentElement.dataset.appMode = "showcase";
     setActiveView("dashboard", { updateHash: false });
   }
   renderAll();

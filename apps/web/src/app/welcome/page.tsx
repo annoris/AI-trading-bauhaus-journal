@@ -138,11 +138,8 @@ export default function Welcome() {
               use, flag missing data, and help you choose the next point to review.
             </p>
             <div className="marketing-cta">
-              <a href="/demo" className="marketing-button">
-                Explore the read-only demo <ArrowRight size={18} />
-              </a>
-              <Link href="/login" className="marketing-invite-link">
-                Already invited? Sign in
+              <Link href="/dashboard" className="marketing-button">
+                Explore Demo Dashboard <ArrowRight size={18} />
               </Link>
             </div>
             <p className="hero-access">
@@ -332,12 +329,12 @@ export default function Welcome() {
                 <span>Request Invitation on Discord</span>
                 <ArrowRight size={16} />
               </a>
-              <a
-                href="/demo"
+              <Link
+                href="/dashboard"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10"
               >
-                Explore Read-Only Demo
-              </a>
+                Explore Demo Dashboard
+              </Link>
             </div>
             <div className="access-readonly-label">
               <ShieldCheck size={14} />
