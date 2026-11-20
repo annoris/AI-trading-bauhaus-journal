@@ -56,4 +56,14 @@ describe("navigation authentication", () => {
     const response = await middleware(new NextRequest("https://journal.test/api/health"));
     expect(response.headers.get("x-middleware-next")).toBe("1");
   });
+
+  it("opens the dashboard directly and redirects /login when no password is configured", async () => {
+    vi.stubEnv("JOURNAL_PASSWORD", "");
+    vi.stubEnv("JOURNAL_MULTI_USER", "");
+    const dash = await middleware(new NextRequest("https://journal.test/dashboard"));
+    expect(dash.headers.get("x-middleware-next")).toBe("1");
+    const login = await middleware(new NextRequest("https://journal.test/login"));
+    expect(login.status).toBe(307);
+    expect(login.headers.get("location")).toBe("https://journal.test/dashboard");
+  });
 });

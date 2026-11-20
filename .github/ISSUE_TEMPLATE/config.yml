@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live Interactive Demo (No Login Required)
+    url: https://annoris.github.io/trading-bauhaus-journal/
+    about: Explore the Trading Bauhaus dashboard live in your browser.
+  - name: Security Vulnerability Reporting
+    url: https://github.com/annoris/trading-bauhaus-journal/blob/main/SECURITY.md
+    about: Report security issues privately instead of opening a public issue.

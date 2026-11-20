@@ -13,11 +13,13 @@ A dark-first, Bauhaus-inspired trading journal for trade review, open **Edge Sco
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-101313?style=flat-square&logo=typescript&logoColor=35d074)](packages/core/src/types.ts)
 [![Next.js](https://img.shields.io/badge/Next.js-15-101313?style=flat-square&logo=nextdotjs&logoColor=f4f4f4)](apps/web/package.json)
 [![SQLite](https://img.shields.io/badge/SQLite-Isolated_Journals-101313?style=flat-square&logo=sqlite&logoColor=35d074)](#self-hosted-quickstart--configuration)
-[![CI Checks](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/ci.yml/badge.svg)](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/ci.yml)
-[![GitHub Pages](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/pages.yml/badge.svg)](https://github.com/annoris/AI-trading-bauhaus-journal/actions/workflows/pages.yml)
+[![CI Checks](https://github.com/annoris/trading-bauhaus-journal/actions/workflows/ci.yml/badge.svg)](https://github.com/annoris/trading-bauhaus-journal/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/annoris/trading-bauhaus-journal/actions/workflows/pages.yml/badge.svg)](https://github.com/annoris/trading-bauhaus-journal/actions/workflows/pages.yml)
 [![License: Commercial / Contribution-Gated](https://img.shields.io/badge/License-Commercial_%2F_Solana_Gated-101313?style=flat-square)](LICENSE)
 
-[**Live Interactive Demo (GitHub Pages)**](https://annoris.github.io/AI-trading-bauhaus-journal/) · [Visual Walkthrough](#visual-walkthrough) · [Core Capabilities](#core-capabilities) · [Self-Host Quickstart](#self-hosted-quickstart--configuration) · [Documentation](#documentation-index) · [Sponsor & License](#sponsor--contribute)
+[**Instant Live Demo (No Login Required)**](https://annoris.github.io/trading-bauhaus-journal/) · [Visual Walkthrough](#visual-walkthrough) · [Core Capabilities](#how-it-works--core-capabilities) · [Self-Host Quickstart](#self-hosted-quickstart--configuration) · [Documentation](#documentation-index) · [Sponsor & License](#sponsor--contribute)
+
+> **If Trading Bauhaus helps sharpen your execution review, please consider giving the repository a Star on GitHub!**
 
 </div>
 
@@ -46,7 +48,7 @@ A dark-first, Bauhaus-inspired trading journal for trade review, open **Edge Sco
 
 ### Key Highlights
 
-- **Live Client-Side Showcase (`site/`):** A zero-dependency, buildless HTML5 / CSS3 / vanilla ES-module workspace deployed to [**GitHub Pages**](https://annoris.github.io/AI-trading-bauhaus-journal/) featuring interactive timeframe/symbol filtering, Simulated AI Journal Analyst prompts, 6-axis Edge Score v2 radar, interactive `<dialog>` OHLC candle replay, monthly P&L calendar drilldowns, scatter explorer, daily journal playbooks, prop-firm cash ROI ledger, Privacy Mask (`$••••`), and Dark/Light theme switching.
+- **Instant Live Workspace (`site/`):** A zero-dependency, buildless HTML5 / CSS3 / vanilla ES-module workspace deployed to [**GitHub Pages (No Login Required)**](https://annoris.github.io/trading-bauhaus-journal/) that opens directly into the live Trading Bauhaus dashboard with timeframe/symbol filtering, Simulated AI Journal Analyst prompts, 6-axis Edge Score v2 radar, interactive `<dialog>` OHLC candle replay, monthly P&L calendar drilldowns, scatter explorer, daily journal playbooks, prop-firm cash ROI ledger, Privacy Mask (`$••••`), and Dark/Light theme switching.
 - **Open, Auditable Math (`packages/core`):** FIFO / LIFO / weighted-average round-trip matching, R-multiple risk math, drawdown curves, Sharpe/Sortino/SQN ratios, and the pinned **Edge Score v2** formula (`Win %`, `Profit factor`, `Avg win/loss`, `Drawdown`, `Recovery`, `Consistency`).
 - **14 Documented Statement Formats & Broker Sync (`packages/importers`):** Auto-detects TradeZella, Tradervue, TradingView, MetaTrader 4/5, ThinkorSwim, IBKR (Activity + Flex), NinjaTrader, Tradovate, TopstepX, Webull, DAS Trader, plus a custom CSV mapper and read-only broker sync adapters.
 - **Isolated Per-Member SQLite & Encrypted Backups (`apps/web`):** Owner and invited-member journals live in separate SQLite databases under `JOURNAL_DATA_DIR`, with AES-256-GCM encryption at rest for saved credentials and encrypted `.tbjbackup` snapshot/restore commands.
@@ -234,14 +236,14 @@ See [`deploy/compose.preview.yml`](deploy/compose.preview.yml) and [`deploy/Cadd
 
 ### Environment Variables (`.env.example`)
 
-| Env Var              | Effect                                                                                                                                                             |
-| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `JOURNAL_PASSWORD`   | Owner password; required in production self-hosted deployments.                                                                                                    |
-| `JOURNAL_MULTI_USER` | Set to `true` for 7-day, one-use invitation links and separate member SQLite databases (`JOURNAL_DATA_DIR/users/<user-id>/journal.db`); defaults on in production. |
-| `JOURNAL_SECRET`     | Encryption key source for stored broker, market-data, and AI credentials at rest (`AES-256-GCM`).                                                                  |
-| `JOURNAL_DATA_DIR`   | Directory for SQLite databases, attachments, and local `.secret` key file (defaults to `./data` relative to app process).                                          |
-| `ANTHROPIC_API_KEY`  | Owner-only Anthropic API key in multi-user mode (members save personal keys in their own journal).                                                                 |
-| `OPENAI_API_KEY`     | Owner-only OpenAI API key in multi-user mode (`gpt-4.1-mini` default or custom model ID).                                                                          |
+| Env Var              | Effect                                                                                                                                                                                                                                            |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `JOURNAL_PASSWORD`   | Owner password; required in production self-hosted deployments.                                                                                                                                                                                   |
+| `JOURNAL_MULTI_USER` | Optional. Set to `true` (with `JOURNAL_PASSWORD`) for 7-day, one-use invitation links and separate member SQLite databases (`JOURNAL_DATA_DIR/users/<user-id>/journal.db`). Off by default so the dashboard opens immediately with no login wall. |
+| `JOURNAL_SECRET`     | Encryption key source for stored broker, market-data, and AI credentials at rest (`AES-256-GCM`).                                                                                                                                                 |
+| `JOURNAL_DATA_DIR`   | Directory for SQLite databases, attachments, and local `.secret` key file (defaults to `./data` relative to app process).                                                                                                                         |
+| `ANTHROPIC_API_KEY`  | Owner-only Anthropic API key in multi-user mode (members save personal keys in their own journal).                                                                                                                                                |
+| `OPENAI_API_KEY`     | Owner-only OpenAI API key in multi-user mode (`gpt-4.1-mini` default or custom model ID).                                                                                                                                                         |
 
 ### Encrypted Backup & Restore
 
@@ -258,7 +260,7 @@ pnpm verify:backup
 ## Technical Architecture & Project Structure
 
 ```text
-AI-trading-bauhaus-journal/
+trading-bauhaus-journal/
 ├── site/                                 # Zero-dependency GitHub Pages interactive showcase
 │   ├── .nojekyll                         # Serves static files directly on GitHub Pages
 │   ├── index.html                        # Semantic HTML5 showcase, 6-view terminal & <dialog> replay
@@ -350,7 +352,7 @@ pnpm build            # Security boundary check + Next.js production build
 The interactive showcase in [`site/`](site/) is completely static and deploys automatically via GitHub Actions:
 
 1. **Continuous Validation ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)):** Runs `pnpm pages:check` alongside `pnpm audit`, `pnpm license:check`, `pnpm format:check`, `pnpm typecheck`, `pnpm test`, and `pnpm build` on every push and pull request.
-2. **Automated Pages Publish ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)):** Validates `site/` with `node scripts/validate-pages.mjs`, uploads the `site` artifact, and deploys directly to **`https://annoris.github.io/AI-trading-bauhaus-journal/`** on every push to `main`.
+2. **Automated Pages Publish ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)):** Validates `site/` with `node scripts/validate-pages.mjs`, uploads the `site` artifact, and deploys directly to **`https://annoris.github.io/trading-bauhaus-journal/`** on every push to `main`.
 
 ---
 

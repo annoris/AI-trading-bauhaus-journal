@@ -6,9 +6,7 @@ export const USER_AUTH_COOKIE = "journal_user_session";
 export const USER_SESSION_MAX_AGE = 60 * 60 * 24;
 
 export const passwordConfigured = (): boolean => Boolean(process.env.JOURNAL_PASSWORD);
-export const multiUserEnabled = (): boolean =>
-  process.env.JOURNAL_MULTI_USER === "true" ||
-  (process.env.JOURNAL_MULTI_USER !== "false" && process.env.NODE_ENV === "production");
+export const multiUserEnabled = (): boolean => process.env.JOURNAL_MULTI_USER === "true";
 
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
 const sign = (payload: string): string =>

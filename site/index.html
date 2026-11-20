@@ -20,14 +20,14 @@
 
     <header class="site-header" id="site-header">
       <div class="container header-inner">
-        <a href="#welcome" class="brand-wordmark" aria-label="Trading Bauhaus home">
+        <a href="#workspace" class="brand-wordmark" aria-label="Trading Bauhaus home">
           <span>TRADING</span>
           <strong>BAUHAUS<span class="brand-dot">•</span></strong>
         </a>
 
         <nav class="desktop-nav" aria-label="Primary navigation">
-          <a class="nav-link" href="#welcome">Showcase</a>
           <a class="nav-link" href="#workspace">Live Workspace</a>
+          <a class="nav-link" href="#welcome">Overview</a>
           <a class="nav-link" href="#architecture">Architecture</a>
           <a class="nav-link" href="#self-host">Self-Host</a>
           <a class="nav-link" href="#license">License</a>
@@ -87,7 +87,7 @@
           </button>
 
           <a
-            href="https://github.com/annoris/AI-trading-bauhaus-journal"
+            href="https://github.com/annoris/trading-bauhaus-journal"
             target="_blank"
             rel="noopener noreferrer"
             class="icon-btn desktop-only-action"
@@ -194,13 +194,13 @@
         </div>
 
         <nav class="mobile-drawer-links" aria-label="Mobile sections">
-          <a href="#welcome">Showcase</a>
           <a href="#workspace">Live Workspace</a>
+          <a href="#welcome">Overview</a>
           <a href="#architecture">Architecture</a>
           <a href="#self-host">Self-Host</a>
           <a href="#license">License</a>
           <a
-            href="https://github.com/annoris/AI-trading-bauhaus-journal"
+            href="https://github.com/annoris/trading-bauhaus-journal"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -221,169 +221,6 @@
     </aside>
 
     <main id="main-content">
-      <!-- SECTION 1: EDITORIAL HERO SHOWCASE -->
-      <section class="hero-section" id="welcome">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="section-kicker">
-              <span class="kicker-dot" aria-hidden="true"></span>
-              AI JOURNAL ANALYST · GROUNDED IN YOUR TRADING RECORD
-            </p>
-            <h1>
-              An AI analyst<br />
-              grounded in<br />
-              <em>your journal.</em>
-            </h1>
-            <p class="hero-lead">
-              Ask about playbooks, timing, mistakes, and risk. Answers cite the exact journal
-              metrics they use, flag missing data, and turn your execution history into a structured
-              next-session review.
-            </p>
-
-            <div class="hero-cta-row">
-              <a href="#workspace" class="cta-btn">
-                Explore Interactive Demo
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a href="#self-host" class="cta-btn cta-btn-secondary">Self-Host Guide</a>
-            </div>
-
-            <p class="hero-meta-note">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-                <path d="m9 12 2 2 4-4" />
-              </svg>
-              Read-only browser demo · 51 synthetic NQ/MNQ futures trades across Oct–Nov 2026.
-            </p>
-            <p class="hero-meta-note">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path
-                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
-                />
-              </svg>
-              Self-hosted instance supports OpenAI or Anthropic BYOK + local SQLite isolation.
-            </p>
-
-            <div class="hero-proof" aria-label="Journal capabilities">
-              <span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Answers cite journal metrics
-              </span>
-              <span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Patterns by playbook, time &amp; mistake
-              </span>
-              <span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Missing data called out
-              </span>
-            </div>
-          </div>
-
-          <div class="hero-visual">
-            <span class="corner-label corner-label-top" aria-hidden="true">PROCESS / 01</span>
-            <span class="corner-label corner-label-bottom" aria-hidden="true">REVIEW → REFINE</span>
-            <div class="hero-orbit hero-orbit-outer" aria-hidden="true"></div>
-            <div class="hero-orbit hero-orbit-inner" aria-hidden="true"></div>
-            <div class="hero-crosshair" aria-hidden="true">
-              <span></span>
-              <span></span>
-            </div>
-
-            <figure class="hero-preview-card">
-              <div class="preview-toolbar">
-                <span class="preview-dots" aria-hidden="true"> <i></i><i></i><i></i> </span>
-                <span>TRADING BAUHAUS / LIVE DEMO</span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-                </svg>
-              </div>
-              <div class="preview-body" id="hero-preview-body"></div>
-              <figcaption class="preview-footnote">
-                <span>Live computed preview · fictional NQ/MNQ dataset</span>
-                <span class="tabular-nums">Edge Score v2</span>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
       <!-- SECTION 2: FULL INTERACTIVE TRADING WORKSPACE -->
       <section class="workspace-section" id="workspace" aria-labelledby="workspace-heading">
         <div class="container">
@@ -1105,6 +942,169 @@
         </div>
       </section>
 
+      <!-- SECTION 1: EDITORIAL HERO SHOWCASE -->
+      <section class="hero-section" id="welcome">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="section-kicker">
+              <span class="kicker-dot" aria-hidden="true"></span>
+              AI JOURNAL ANALYST · GROUNDED IN YOUR TRADING RECORD
+            </p>
+            <h1>
+              An AI analyst<br />
+              grounded in<br />
+              <em>your journal.</em>
+            </h1>
+            <p class="hero-lead">
+              Ask about playbooks, timing, mistakes, and risk. Answers cite the exact journal
+              metrics they use, flag missing data, and turn your execution history into a structured
+              next-session review.
+            </p>
+
+            <div class="hero-cta-row">
+              <a href="#workspace" class="cta-btn">
+                Explore Interactive Demo
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a href="#self-host" class="cta-btn cta-btn-secondary">Self-Host Guide</a>
+            </div>
+
+            <p class="hero-meta-note">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Read-only browser demo · 51 synthetic NQ/MNQ futures trades across Oct–Nov 2026.
+            </p>
+            <p class="hero-meta-note">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+                />
+              </svg>
+              Self-hosted instance supports OpenAI or Anthropic BYOK + local SQLite isolation.
+            </p>
+
+            <div class="hero-proof" aria-label="Journal capabilities">
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Answers cite journal metrics
+              </span>
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Patterns by playbook, time &amp; mistake
+              </span>
+              <span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Missing data called out
+              </span>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <span class="corner-label corner-label-top" aria-hidden="true">PROCESS / 01</span>
+            <span class="corner-label corner-label-bottom" aria-hidden="true">REVIEW → REFINE</span>
+            <div class="hero-orbit hero-orbit-outer" aria-hidden="true"></div>
+            <div class="hero-orbit hero-orbit-inner" aria-hidden="true"></div>
+            <div class="hero-crosshair" aria-hidden="true">
+              <span></span>
+              <span></span>
+            </div>
+
+            <figure class="hero-preview-card">
+              <div class="preview-toolbar">
+                <span class="preview-dots" aria-hidden="true"> <i></i><i></i><i></i> </span>
+                <span>TRADING BAUHAUS / LIVE DEMO</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                </svg>
+              </div>
+              <div class="preview-body" id="hero-preview-body"></div>
+              <figcaption class="preview-footnote">
+                <span>Live computed preview · fictional NQ/MNQ dataset</span>
+                <span class="tabular-nums">Edge Score v2</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <!-- SECTION 3: ARCHITECTURE -->
       <section class="content-section" id="architecture" aria-labelledby="arch-heading">
         <div class="container">
@@ -1330,11 +1330,17 @@ pnpm dev
               <ul class="env-list">
                 <li>
                   <code>JOURNAL_PASSWORD</code>
-                  <p>Owner login secret required for production self-hosted instances.</p>
+                  <p>
+                    Optional password to lock a self-hosted instance. Leave unset for instant
+                    dashboard access.
+                  </p>
                 </li>
                 <li>
                   <code>JOURNAL_MULTI_USER</code>
-                  <p>Enables one-use invitation links and isolated per-member SQLite databases.</p>
+                  <p>
+                    Optional multi-user mode (set to <code>true</code>) for isolated per-member
+                    SQLite databases.
+                  </p>
                 </li>
                 <li>
                   <code>JOURNAL_SECRET</code>
@@ -1430,7 +1436,7 @@ pnpm dev
                   </svg>
                 </a>
                 <a
-                  href="https://github.com/annoris/AI-trading-bauhaus-journal"
+                  href="https://github.com/annoris/trading-bauhaus-journal"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="cta-btn cta-btn-secondary"

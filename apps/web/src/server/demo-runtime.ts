@@ -686,3 +686,14 @@ export async function runWithSeededDemoDatabase<T>(callback: () => T | Promise<T
     return callback();
   });
 }
+
+/**
+ * Populate an empty default local database once on startup so first-time users
+ * land directly inside a rich, realistic Trading Bauhaus dashboard.
+ */
+export function ensureDefaultJournalSeeded(): void {
+  const existingAccount = db.select({ id: accounts.id }).from(accounts).limit(1).get();
+  if (existingAccount) return;
+  const loaded = loadDemoData();
+  seedFictionalJournalContent(loaded.accountId);
+}

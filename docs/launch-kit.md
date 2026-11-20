@@ -3,7 +3,7 @@
 Ready-to-adapt copy for a repository announcement. Nothing in this file has been
 posted to social networks. Use the actual GitHub repository link when publishing;
 the public interactive showcase is published at
-`https://annoris.github.io/AI-trading-bauhaus-journal/`, while the full self-hosted
+`https://annoris.github.io/trading-bauhaus-journal/`, while the full self-hosted
 application runs locally or via Docker (no hosted multi-tenant SaaS or automated
 checkout link is operated).
 
@@ -22,7 +22,7 @@ with your chosen provider. A dark, geometric interface keeps the review workflow
 in focus, while journal data lives in SQLite on your own server.
 
 Explore the public interactive showcase at
-`https://annoris.github.io/AI-trading-bauhaus-journal/`, or run the full self-hosted
+`https://annoris.github.io/trading-bauhaus-journal/`, or run the full self-hosted
 application locally or via Docker. The repository also includes eight real interface
 screenshots with synthetic demo data, setup instructions, and a read-only demo mode
 you can run yourself.

@@ -100,6 +100,17 @@ export const middleware = async (request: NextRequest) => {
       { status: 403, headers: { "Cache-Control": "private, no-store" } },
     );
 
+  const password = process.env.JOURNAL_PASSWORD;
+  const multiUser = process.env.JOURNAL_MULTI_USER === "true";
+
+  if (
+    !password &&
+    !multiUser &&
+    (normalizedPath === "/login" || normalizedPath === "/accept-invitation")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   const publicPath =
     normalizedPath === "/" ||
     normalizedPath === "/login" ||
@@ -128,10 +139,6 @@ export const middleware = async (request: NextRequest) => {
 
   if (!hostedConfigurationValid())
     return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
-  const password = process.env.JOURNAL_PASSWORD;
-  const multiUser =
-    process.env.JOURNAL_MULTI_USER === "true" ||
-    (process.env.JOURNAL_MULTI_USER !== "false" && process.env.NODE_ENV === "production");
   if (!password && !multiUser) return NextResponse.next();
   // APIs authenticate in the shared Node handler so rejected probes are audited.
   if (pathname.startsWith("/api/")) return NextResponse.next();

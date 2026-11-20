@@ -21,7 +21,6 @@ import {
   Landmark,
   Menu,
   ArrowRight,
-  LogOut,
   UserRoundPlus,
   LifeBuoy,
   Bug,
@@ -327,13 +326,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
       return next;
     });
   }
-  async function signOut() {
-    try {
-      await fetch("/api/logout", { method: "POST" });
-    } finally {
-      window.location.assign("/");
-    }
-  }
   const filterQuery = new URLSearchParams();
   for (const key of FILTER_KEYS) {
     const value = search.get(key);
@@ -469,15 +461,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
               {navigation()}
               <div className="space-y-2 border-t p-3">
                 {!demoMode && sessionReady && <PrivacyToggle />}
-                {!demoMode && sessionReady && (
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    onClick={() => void signOut()}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" /> Sign out
-                  </Button>
-                )}
               </div>
             </DialogPrimitive.Content>
           </DialogPrimitive.Portal>
@@ -532,16 +515,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <SolanaContributorBadge collapsed={sidebarCollapsed} />
               <ThemeToggle iconOnly={sidebarCollapsed} />
               <PrivacyToggle iconOnly={sidebarCollapsed} />
-              <Button
-                variant="ghost"
-                title="Sign out"
-                aria-label="Sign out"
-                className={sidebarCollapsed ? "w-full px-0" : "w-full justify-start"}
-                onClick={() => void signOut()}
-              >
-                <LogOut className={sidebarCollapsed ? "h-4 w-4" : "mr-2 h-4 w-4"} />
-                {!sidebarCollapsed && "Sign out"}
-              </Button>
             </div>
           </div>
         )}

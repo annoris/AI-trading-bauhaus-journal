@@ -2,10 +2,10 @@
   "name": "trading-bauhaus",
   "private": true,
   "description": "Trading Bauhaus workspace. Broker sync, deep analytics, daily journaling, and AI-native reflection.",
-  "homepage": "https://annoris.github.io/AI-trading-bauhaus-journal/",
+  "homepage": "https://annoris.github.io/trading-bauhaus-journal/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/annoris/AI-trading-bauhaus-journal.git"
+    "url": "https://github.com/annoris/trading-bauhaus-journal.git"
   },
   "license": "SEE LICENSE IN LICENSE",
   "engines": {

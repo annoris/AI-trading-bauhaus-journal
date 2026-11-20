@@ -1,0 +1,44 @@
+name: Bug Report
+description: Report a bug in Trading Bauhaus (dashboard, importers, analytics, or GitHub Pages demo)
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please include clear reproduction steps so we can fix it quickly.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Area
+      options:
+        - Live GitHub Pages Demo (site/)
+        - Next.js Web Workspace (apps/web)
+        - Core Analytics / Edge Score (packages/core)
+        - Broker / Statement Importers (packages/importers)
+        - Build / CI / Docker
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: What happened vs. what you expected to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Browser, Node.js version (if self-hosted)
+      placeholder: "macOS 15, Chrome 131, Node 22"

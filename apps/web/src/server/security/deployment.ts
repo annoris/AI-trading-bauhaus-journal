@@ -1,10 +1,7 @@
 /** Pure configuration validation: usable in both middleware and Node handlers. */
 export function hostedConfigurationValid(): boolean {
-  const multiUser =
-    process.env.JOURNAL_MULTI_USER === "true" ||
-    (process.env.JOURNAL_MULTI_USER !== "false" && process.env.NODE_ENV === "production");
-  if ((multiUser || process.env.NODE_ENV === "production") && !process.env.JOURNAL_PASSWORD)
-    return false;
+  const multiUser = process.env.JOURNAL_MULTI_USER === "true";
+  if (multiUser && !process.env.JOURNAL_PASSWORD) return false;
   if (process.env.JOURNAL_DEPLOYMENT_MODE !== "hosted") return true;
   try {
     const origin = new URL(process.env.JOURNAL_PUBLIC_ORIGIN ?? "");
